@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace LudoLike
 {
-    class MainMenu
+    public sealed partial class MainMenu : Windows.UI.Xaml.Controls.Page
     {
-        //NYI
+        public MainMenu(){
+            this.InitializeComponent();
+        }
+        
     }
 }
