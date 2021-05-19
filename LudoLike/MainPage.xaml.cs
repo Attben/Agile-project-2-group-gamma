@@ -30,12 +30,13 @@ namespace LudoLike
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public CanvasBitmap BG;
+        public static CanvasBitmap BG;
         public CanvasBitmap CurrentDieImage;
 
         private Dice _dice = new Dice();
         private Random _prng = new Random();
         private Scaling _scaling = new Scaling();
+        private GameStateManager _gameStateManager = new GameStateManager();
 
         public MainPage()
         {
@@ -43,6 +44,7 @@ namespace LudoLike
             Window.Current.SizeChanged += CurrentSizeChanged;
             _scaling.ScalingInit();
             ControlProperties(_scaling.bWidth, _scaling.bHeight);
+            _gameStateManager.GameStateInit();
         }
 
         private void CanvasCreateResources(
@@ -82,7 +84,9 @@ namespace LudoLike
             ICanvasAnimatedControl sender,
             CanvasAnimatedDrawEventArgs args)
         {
-            args.DrawingSession.DrawImage(Scaling.TransformImage(BG));
+            //args.DrawingSession.DrawImage(Scaling.TransformImage(BG));
+            _gameStateManager.Draw(args);
+
             if (_dice.AnimationTimer == 0)
             {
                 args.DrawingSession.DrawImage(CurrentDieImage, 200, 200);
@@ -96,14 +100,28 @@ namespace LudoLike
 
         private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
         {
-
+            var position = e.GetCurrentPoint(Canvas).Position;
+            if(_gameStateManager.CurrentGameState == GameState.NewGame)
+            {
+                var action = Canvas.RunOnGameLoopThreadAsync( () =>
+                {
+                    _gameStateManager.CurrentGameState = GameState.Playing;
+                });
+            }
+            if (_gameStateManager.CurrentGameState == GameState.Playing)
+            {
+                var action = Canvas.RunOnGameLoopThreadAsync(() =>
+                {
+                    _gameStateManager.CurrentGameState = GameState.GameOver;
+                });
+            }
         }
 
         private void CanvasUpdate(
             ICanvasAnimatedControl sender,
             CanvasAnimatedUpdateEventArgs args)
         {
-
+            _gameStateManager.Update();
         }
         private void RollDie(object sender, RoutedEventArgs e)
         {
