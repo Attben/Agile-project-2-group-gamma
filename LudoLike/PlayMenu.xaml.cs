@@ -34,5 +34,16 @@ namespace LudoLike
             this.amountOfPlayersBox.Text = text.ToString(ok);
             
         }
+
+        private void StartGame(object sender, RoutedEventArgs e)
+        {
+            Game game = new Game();
+            double text = this.Slider.Value;
+            string ok = "0";
+            game.AddPlayers(int.Parse(text.ToString(ok)));
+
+            //switch page
+            this.Frame.Navigate(typeof(MainPage));
+        }
     }
 }
