@@ -1,29 +1,27 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Programmering\\Agilt-projekt2\\Agile-project-2-group-gamma\\LudoLike\\LudoLike.csproj": {}
+    "C:\\Users\\joaki\\Source\\Repos\\Agile-project-2-group-gamma2\\LudoLike\\LudoLike.csproj": {}
   },
   "projects": {
-    "C:\\Programmering\\Agilt-projekt2\\Agile-project-2-group-gamma\\LudoLike\\LudoLike.csproj": {
+    "C:\\Users\\joaki\\Source\\Repos\\Agile-project-2-group-gamma2\\LudoLike\\LudoLike.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Programmering\\Agilt-projekt2\\Agile-project-2-group-gamma\\LudoLike\\LudoLike.csproj",
+        "projectUniqueName": "C:\\Users\\joaki\\Source\\Repos\\Agile-project-2-group-gamma2\\LudoLike\\LudoLike.csproj",
         "projectName": "LudoLike",
-        "projectPath": "C:\\Programmering\\Agilt-projekt2\\Agile-project-2-group-gamma\\LudoLike\\LudoLike.csproj",
-        "packagesPath": "C:\\Users\\sebas\\.nuget\\packages\\",
-        "outputPath": "C:\\Programmering\\Agilt-projekt2\\Agile-project-2-group-gamma\\LudoLike\\obj\\",
+        "projectPath": "C:\\Users\\joaki\\Source\\Repos\\Agile-project-2-group-gamma2\\LudoLike\\LudoLike.csproj",
+        "packagesPath": "C:\\Users\\joaki\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\joaki\\Source\\Repos\\Agile-project-2-group-gamma2\\LudoLike\\obj\\",
         "projectStyle": "PackageReference",
         "skipContentFileWrite": true,
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
-          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\",
+          "D:\\programs\\community\\SHARED\\NuGetPackages",
           "C:\\Program Files (x86)\\Microsoft SDKs\\UWPNuGetPackages\\"
         ],
         "configFilePaths": [
-          "C:\\Users\\sebas\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\joaki\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "uap10.0.17763"

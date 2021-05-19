@@ -6,9 +6,19 @@ using System.Threading.Tasks;
 
 namespace LudoLike
 {
-    class Game
+    public class Game
     {
         private List<Player> _players;
         private List<Tile> _board;
+
+
+
+        public void AddPlayers(int amount)
+        {
+            for (int i = 0; i < amount; i++)
+            {
+                _players.Add(new Player());
+            }
+        }
     }
 }
