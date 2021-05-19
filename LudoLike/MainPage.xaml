@@ -7,8 +7,11 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-
+    
     <Grid>
+        <Rectangle x:Name="BoardHolder" Width="814" Height="814">
+            
+        </Rectangle>
         <canvas:CanvasAnimatedControl
             x:Name="Canvas"
             Draw="CanvasDraw"
@@ -17,5 +20,7 @@
             Update="CanvasUpdate"
         />
         <Button Content="Roll die" Height="125" Margin="204,770,0,0" VerticalAlignment="Top" Width="738" Click="RollDie"/>
+        
     </Grid>
+    
 </Page>

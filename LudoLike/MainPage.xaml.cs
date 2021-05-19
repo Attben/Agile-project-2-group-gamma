@@ -59,6 +59,7 @@ namespace LudoLike
         {
             //Load background image
             BG = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/TestBackground.png"));
+            BG = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/TestBackground.png"));
 
             //Load static images belonging to the Dice class
             for (int n = 0; n < 6; ++n)
