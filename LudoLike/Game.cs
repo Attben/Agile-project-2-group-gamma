@@ -11,13 +11,17 @@ namespace LudoLike
         private List<Player> _players;
         private List<Tile> _board;
 
-
+        public Game()
+        {
+            _players = new List<Player>();
+            _board = new List<Tile>();
+        }
 
         public void AddPlayers(int amount)
         {
             for (int i = 0; i < amount; i++)
             {
-                _players.Add(new Player());
+                _players.Add(new Player((Colors)i));
             }
         }
     }
