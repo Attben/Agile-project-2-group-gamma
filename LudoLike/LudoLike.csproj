@@ -120,6 +120,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Game.cs" />
+    <Compile Include="Dice.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
@@ -145,6 +146,14 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Images\Die1.png" />
+    <Content Include="Assets\Images\Die2.png" />
+    <Content Include="Assets\Images\Die3.png" />
+    <Content Include="Assets\Images\Die4.png" />
+    <Content Include="Assets\Images\Die5.png" />
+    <Content Include="Assets\Images\Die6.png" />
+    <Content Include="Assets\Images\SpinningDie.png" />
+    <Content Include="Assets\Images\TestBackground.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
