@@ -1,3 +1,4 @@
+.gitignore
 **/.vs/**
 LudoLike/.vs/**
 LudoLike/bin/**
