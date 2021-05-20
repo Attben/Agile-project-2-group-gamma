@@ -10,9 +10,20 @@ namespace LudoLike
     {
         private int _amount;
 
+        public ScoreTile(int points)
+        {
+            _amount = points;
+        }
+
         public override void TileEvent()
         {
             //Do something with _amount
+        }
+
+        public void TileEvent(Player player)
+        {
+            //Do something with _amount
+            player.ChangeScore(_amount);
         }
     }
 }

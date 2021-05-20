@@ -41,6 +41,7 @@ namespace LudoLike
         public static int BoardWidth = 800;
 
         public CanvasBitmap BG;
+        public static CanvasBitmap BG;
         public CanvasBitmap CurrentDieImage;
         public List<CanvasBitmap> Tiles = new List<CanvasBitmap>();
         public Rect Board;
@@ -53,13 +54,17 @@ namespace LudoLike
 
         private Dice _dice = new Dice();
         private Random _prng = new Random();
+        private Scaling _scaling = new Scaling();
+        private GameStateManager _gameStateManager = new GameStateManager();
 
 
         public MainPage()
         {
             this.InitializeComponent();
-            ScalingInit();
-            CreateEllipses();
+            Window.Current.SizeChanged += CurrentSizeChanged;
+            _scaling.ScalingInit();
+            ControlProperties(_scaling.bWidth, _scaling.bHeight);
+            _gameStateManager.GameStateInit();
         }
 
         private void CreateEllipses()
@@ -73,6 +78,12 @@ namespace LudoLike
             CanvasCreateResourcesEventArgs args)
         {
             args.TrackAsyncAction(CreateResourcesAsync(sender).AsAsyncAction());
+        }
+
+        public void ControlProperties(double width, double height)
+        {
+            Canvas.Width = width;
+            Canvas.Height = height;
         }
 
         async Task CreateResourcesAsync(CanvasAnimatedControl sender)
@@ -97,6 +108,12 @@ namespace LudoLike
                     Tiles.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/peng.png")));
                 }
             }
+        }
+
+        private void CurrentSizeChanged(object sender, WindowSizeChangedEventArgs e)
+        {
+            Scaling.SetScale(e.Size.Width, e.Size.Height);
+            ControlProperties(e.Size.Width, e.Size.Height);
         }
 
         private void CanvasDraw(
@@ -139,6 +156,9 @@ namespace LudoLike
             //    y += 74;
             //}
 
+            //args.DrawingSession.DrawImage(Scaling.TransformImage(BG));
+            _gameStateManager.Draw(args);
+
             if (_dice.AnimationTimer == 0)
             {
                 args.DrawingSession.DrawImage(CurrentDieImage, 200, 200);
@@ -152,66 +172,35 @@ namespace LudoLike
 
         private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
         {
-
+            var position = e.GetCurrentPoint(Canvas).Position;
+            if(_gameStateManager.CurrentGameState == GameState.NewGame)
+            {
+                var action = Canvas.RunOnGameLoopThreadAsync( () =>
+                {
+                    _gameStateManager.CurrentGameState = GameState.Playing;
+                });
+            }
+            if (_gameStateManager.CurrentGameState == GameState.Playing)
+            {
+                var action = Canvas.RunOnGameLoopThreadAsync(() =>
+                {
+                    _gameStateManager.CurrentGameState = GameState.GameOver;
+                });
+            }
         }
 
         private void CanvasUpdate(
             ICanvasAnimatedControl sender,
             CanvasAnimatedUpdateEventArgs args)
         {
-
+            _gameStateManager.Update();
         }
-
-        public void ScalingInit()
-        {
-            SetScale(bWidth, bHeight);
-            ControlProperties(bWidth, bHeight);
-            Window.Current.SizeChanged += CurrentSizeChanged;
-        }
-
-        private void CurrentSizeChanged(object sender, WindowSizeChangedEventArgs e)
-        {
-            SetScale(e.Size.Width, e.Size.Height);
-            ControlProperties(e.Size.Width, e.Size.Height);
-        }
-
-        private void ControlProperties(double width, double height)
-        {
-            Canvas.Width = width;
-            Canvas.Height = height;
-        }
-
         private void RollDie(object sender, RoutedEventArgs e)
         {
             CurrentDieImage = Dice.SpinningDieImage;
             _dice.AnimationTimer = 40;
 
             CurrentDieImage = Dice.DiceImages[_prng.Next(0, 5)];
-        }
-
-        public static void SetScale(double width, double height)
-        {
-            scaleWidth = (float)(width / DesignWidth);
-            scaleHeight = (float)(height / DesignHeight);
-        }
-
-        public static Transform2DEffect TransformImage(CanvasBitmap sourceImage)
-        {
-            Transform2DEffect image = new Transform2DEffect() { Source = sourceImage };
-            image.TransformMatrix = Matrix3x2.CreateScale(scaleWidth, scaleHeight);
-            return image;
-        }
-
-        public static float Xpos(float x)
-        {
-            float output = x * scaleWidth;
-            return output;
-        }
-
-        public static float Ypos(float y)
-        {
-            float output = y * scaleHeight;
-            return output;
         }
     }
 }
