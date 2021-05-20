@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,17 +14,14 @@ namespace LudoLike
         public Game(int numberOfPlayers)
         {
             _players = new List<Player>(numberOfPlayers);
-            for (int i = 0; i < numberOfPlayers; i++)
-            {
-                _players.Add(new Player());
-            }
-        }
+            AddPlayers(numberOfPlayers);
+            _board = new List<Tile>();
 
         public void AddPlayers(int amount)
         {
             for (int i = 0; i < amount; i++)
             {
-                _players.Add(new Player());
+                _players.Add(new Player((Colors)i));
             }
         }
     }
