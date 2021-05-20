@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="Game.cs" />
     <Compile Include="Dice.cs" />
+    <Compile Include="LudoBoard.cs" />
     <Compile Include="MainMenu.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>

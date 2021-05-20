@@ -111,15 +111,7 @@ namespace LudoLike
             BlueNest = new Rect(Board.Left, Board.Bottom - Board.Height / 3, Board.Width / 3, Board.Height / 3);
             YellowNest = new Rect(Board.Right - Board.Width / 3, Board.Bottom - Board.Height / 3, Board.Width / 3, Board.Height / 3);
             GreenNest = new Rect(Board.Right - Board.Width / 3, Board.Top, Board.Width / 3, Board.Height / 3);
-
-
-            RedNest = new Rect(Board.Left, Board.Top, Board.Width / 3, Board.Height / 3);
-            BlueNest = new Rect(Board.Left, Board.Bottom - Board.Height / 3, Board.Width / 3, Board.Height / 3);
-            YellowNest = new Rect(Board.Right - Board.Width / 3, Board.Bottom - Board.Height / 3, Board.Width / 3, Board.Height / 3);
-            GreenNest = new Rect(Board.Right - Board.Width / 3, Board.Top, Board.Width / 3, Board.Height / 3);
-
-
-
+            
 
             args.DrawingSession.DrawImage(TransformImage(BG));
             args.DrawingSession.FillRectangle(Board, Windows.UI.Colors.White);
