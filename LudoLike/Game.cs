@@ -16,6 +16,7 @@ namespace LudoLike
             _players = new List<Player>(numberOfPlayers);
             AddPlayers(numberOfPlayers);
             _board = new List<Tile>();
+        }
 
         public void AddPlayers(int amount)
         {
