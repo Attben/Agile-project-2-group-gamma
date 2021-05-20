@@ -27,20 +27,19 @@ namespace LudoLike
             this.InitializeComponent();
         }
 
-        private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        private void SliderValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             double text = this.Slider.Value;
             string ok = "0";
             this.amountOfPlayersBox.Text = text.ToString(ok);
-            
         }
 
         private void StartGame(object sender, RoutedEventArgs e)
         {
-            Game game = new Game();
-            double text = this.Slider.Value;
             string ok = "0";
-            game.AddPlayers(int.Parse(text.ToString(ok)));
+            double text = this.Slider.Value;
+            Game game = new Game(int.Parse(text.ToString(ok)));
+            //game.AddPlayers(int.Parse(text.ToString(ok)));
 
             //switch page
             this.Frame.Navigate(typeof(MainPage));
