@@ -34,13 +34,12 @@ namespace LudoLike
     {
 
         public static CanvasBitmap BG;
-        public CanvasBitmap CurrentDieImage;
         public List<CanvasBitmap> Tiles = new List<CanvasBitmap>();
 
         public LudoBoard Board;
 
 
-        private Dice _dice = new Dice();
+        private Dice _dice;
         private Random _prng = new Random();
         private GameStateManager _gameStateManager = new GameStateManager();
 
@@ -55,7 +54,7 @@ namespace LudoLike
             Scaling.ScalingInit();
             Board = new LudoBoard();
             ControlProperties(Scaling.bWidth, Scaling.bHeight);
-            _gameStateManager.GameStateInit();
+            //_gameStateManager.GameStateInit();
         }
 
 
@@ -84,7 +83,7 @@ namespace LudoLike
                 Dice.DiceImages[n] = await CanvasBitmap.LoadAsync(sender, new Uri($"ms-appx:///Assets/Images/Die{n+1}.png"));
             }
             Dice.SpinningDieImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/SpinningDie.png"));
-            CurrentDieImage = Dice.DiceImages[2];
+            _dice = new Dice(1, 6);
 
             // Create Tiles
             for (int i = 0; i < 11; i++)
@@ -104,50 +103,15 @@ namespace LudoLike
 
         private void CanvasDraw(
             ICanvasAnimatedControl sender,
-            CanvasAnimatedDrawEventArgs args)
+            CanvasAnimatedDrawEventArgs drawArgs)
         {
-            // AVSLUTADE HÄR FORTSÄTT FIXA MED NÄSTENA
+            drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BG));
 
-            args.DrawingSession.DrawImage(Scaling.TransformImage(BG));
-            //args.DrawingSession.FillRectangle(Board.MainBoard, Windows.UI.Colors.White);
-            //args.DrawingSession.FillRectangle(Board.RedNest, Windows.UI.Colors.Red);
-            //args.DrawingSession.FillRectangle(Board.YellowNest, Windows.UI.Colors.Yellow);
-            //args.DrawingSession.FillRectangle(Board.GreenNest, Windows.UI.Colors.LawnGreen);
-            //args.DrawingSession.FillRectangle(Board.BlueNest, Windows.UI.Colors.Blue);
-
-            //args.DrawingSession.DrawText($"bWidth: {Board.MainBoard.Width}, bHeight{Board.MainBoard.Height}", 0, 0, Windows.UI.Colors.Black);
-
-            Board.Draw(args);
-
-            // Denna lösningen är så jävla dålig. Måste hitta ett bättre sätt att lösa det på
-            float x = 17;
-            float y = 18;
-            int tileNumber = 0;
-
-            //for (int i = 0; i < 11; i++)
-            //{
-            //    for (int j = 0; j < 11; j++)
-            //    {
-            //        args.DrawingSession.DrawImage(TransformImage(Tiles[tileNumber]), Xpos(x + (float)(bWidth / 2 - Board.Width / 2)), Ypos(y + (float)(bHeight / 2 - Board.Height / 2)));
-            //        x += 75;
-            //        tileNumber++;
-            //    }
-            //    x = 17;
-            //    y += 74;
-            //}
-            args.DrawingSession.DrawText($"bWidth: {Scaling.bWidth}, bHeight{Scaling.bHeight}", 0, 0, Windows.UI.Colors.Black);
+            Board.Draw(drawArgs);
+            drawArgs.DrawingSession.DrawText($"bWidth: {Scaling.bWidth}, bHeight{Scaling.bHeight}", 0, 0, Windows.UI.Colors.Black);
+            _dice.Draw(drawArgs);
             //args.DrawingSession.DrawImage(Scaling.TransformImage(BG));
-            _gameStateManager.Draw(args);
-
-            if (_dice.AnimationTimer == 0)
-            {
-                args.DrawingSession.DrawImage(CurrentDieImage, 200, 200);
-            }
-            else
-            {
-                args.DrawingSession.DrawImage(Dice.SpinningDieImage, 200, 200);
-                --_dice.AnimationTimer;
-            }
+            //_gameStateManager.Draw(args);
         }
 
         private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
@@ -177,10 +141,7 @@ namespace LudoLike
         }
         private void RollDie(object sender, RoutedEventArgs e)
         {
-            CurrentDieImage = Dice.SpinningDieImage;
-            _dice.AnimationTimer = 40;
-
-            CurrentDieImage = Dice.DiceImages[_prng.Next(0, 5)];
+            _dice.Roll();
         }
     }
 }
