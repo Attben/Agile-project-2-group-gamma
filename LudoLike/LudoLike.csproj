@@ -123,7 +123,6 @@
     <Compile Include="Classes\Dice.cs" />
     <Compile Include="Classes\GameStateManager.cs" />
     <Compile Include="Classes\LudoBoard.cs" />
-    <Compile Include="Classes\MainMenu.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
