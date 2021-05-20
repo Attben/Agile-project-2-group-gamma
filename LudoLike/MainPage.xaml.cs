@@ -32,29 +32,16 @@ namespace LudoLike
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public double bWidth = ApplicationView.GetForCurrentView().VisibleBounds.Width;
-        public double bHeight = ApplicationView.GetForCurrentView().VisibleBounds.Height;
-        public static float scaleWidth, scaleHeight;
-        public static int DesignWidth = 1920;
-        public static int DesignHeight = 1080;
-        public static int BoardHeight = 800;
-        public static int BoardWidth = 800;
 
-        public CanvasBitmap BG;
         public static CanvasBitmap BG;
         public CanvasBitmap CurrentDieImage;
         public List<CanvasBitmap> Tiles = new List<CanvasBitmap>();
-        public Rect Board;
-        public Rect RedNest;
-        public Rect BlueNest;
-        public Rect YellowNest;
-        public Rect GreenNest;
 
+        public LudoBoard Board;
 
 
         private Dice _dice = new Dice();
         private Random _prng = new Random();
-        private Scaling _scaling = new Scaling();
         private GameStateManager _gameStateManager = new GameStateManager();
 
 
@@ -62,14 +49,13 @@ namespace LudoLike
         {
             this.InitializeComponent();
             Window.Current.SizeChanged += CurrentSizeChanged;
-            _scaling.ScalingInit();
-            ControlProperties(_scaling.bWidth, _scaling.bHeight);
+            ApplicationView.PreferredLaunchViewSize = new Size(1920, 1080);
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
+
+            Scaling.ScalingInit();
+            Board = new LudoBoard();
+            ControlProperties(Scaling.bWidth, Scaling.bHeight);
             _gameStateManager.GameStateInit();
-        }
-
-        private void CreateEllipses()
-        {
-
         }
 
 
@@ -112,7 +98,7 @@ namespace LudoLike
 
         private void CurrentSizeChanged(object sender, WindowSizeChangedEventArgs e)
         {
-            Scaling.SetScale(e.Size.Width, e.Size.Height);
+            Scaling.ScalingInit(e.Size.Width, e.Size.Height);
             ControlProperties(e.Size.Width, e.Size.Height);
         }
 
@@ -122,22 +108,16 @@ namespace LudoLike
         {
             // AVSLUTADE HÄR FORTSÄTT FIXA MED NÄSTENA
 
-            Board = new Rect(Xpos((float)(bWidth / 2 - BoardWidth / 2)), Ypos((float)(bHeight / 2 - BoardHeight / 2)), Xpos(BoardWidth), Ypos(BoardHeight));
-            
-            RedNest = new Rect(Board.Left, Board.Top, Board.Width / 3, Board.Height / 3);
-            BlueNest = new Rect(Board.Left, Board.Bottom - Board.Height / 3, Board.Width / 3, Board.Height / 3);
-            YellowNest = new Rect(Board.Right - Board.Width / 3, Board.Bottom - Board.Height / 3, Board.Width / 3, Board.Height / 3);
-            GreenNest = new Rect(Board.Right - Board.Width / 3, Board.Top, Board.Width / 3, Board.Height / 3);
-            
+            args.DrawingSession.DrawImage(Scaling.TransformImage(BG));
+            //args.DrawingSession.FillRectangle(Board.MainBoard, Windows.UI.Colors.White);
+            //args.DrawingSession.FillRectangle(Board.RedNest, Windows.UI.Colors.Red);
+            //args.DrawingSession.FillRectangle(Board.YellowNest, Windows.UI.Colors.Yellow);
+            //args.DrawingSession.FillRectangle(Board.GreenNest, Windows.UI.Colors.LawnGreen);
+            //args.DrawingSession.FillRectangle(Board.BlueNest, Windows.UI.Colors.Blue);
 
-            args.DrawingSession.DrawImage(TransformImage(BG));
-            args.DrawingSession.FillRectangle(Board, Windows.UI.Colors.White);
-            args.DrawingSession.FillRectangle(RedNest, Windows.UI.Colors.Red);
-            args.DrawingSession.FillRectangle(YellowNest, Windows.UI.Colors.Yellow);
-            args.DrawingSession.FillRectangle(GreenNest, Windows.UI.Colors.LawnGreen);
-            args.DrawingSession.FillRectangle(BlueNest, Windows.UI.Colors.Blue);
+            //args.DrawingSession.DrawText($"bWidth: {Board.MainBoard.Width}, bHeight{Board.MainBoard.Height}", 0, 0, Windows.UI.Colors.Black);
 
-            args.DrawingSession.DrawText($"bWidth: {Board.Width}, bHeight{Board.Height}", 0, 0, Windows.UI.Colors.Black);
+            Board.Draw(args);
 
             // Denna lösningen är så jävla dålig. Måste hitta ett bättre sätt att lösa det på
             float x = 17;
@@ -155,7 +135,7 @@ namespace LudoLike
             //    x = 17;
             //    y += 74;
             //}
-
+            args.DrawingSession.DrawText($"bWidth: {Scaling.bWidth}, bHeight{Scaling.bHeight}", 0, 0, Windows.UI.Colors.Black);
             //args.DrawingSession.DrawImage(Scaling.TransformImage(BG));
             _gameStateManager.Draw(args);
 
