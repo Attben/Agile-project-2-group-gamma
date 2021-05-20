@@ -9,18 +9,46 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     
     <Grid>
-        <Rectangle x:Name="BoardHolder" Width="814" Height="814">
-            
-        </Rectangle>
+
         <canvas:CanvasAnimatedControl
             x:Name="Canvas"
             Draw="CanvasDraw"
             CreateResources="CanvasCreateResources"
             PointerPressed="CanvasPointerPressed"
-            Update="CanvasUpdate"
-        />
+            Update="CanvasUpdate"/>
+
         <Button Content="Roll die" Height="125" Margin="204,770,0,0" VerticalAlignment="Top" Width="738" Click="RollDie"/>
-        
+        <Grid Width="814" Height="814">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="1*"/>
+            </Grid.RowDefinitions>
+        </Grid>
     </Grid>
     
 </Page>
