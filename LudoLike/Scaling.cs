@@ -16,16 +16,18 @@ namespace LudoLike
     /// <summary>
     /// Helper class that provides methods for rescaling images when the size of the parent window changes.
     /// </summary>
-    class Scaling
+    public static class Scaling
     {
-        public double bWidth = ApplicationView.GetForCurrentView().VisibleBounds.Width;
-        public double bHeight = ApplicationView.GetForCurrentView().VisibleBounds.Height;
+        public static double bWidth = Window.Current.Bounds.Width;
+        public static double bHeight = Window.Current.Bounds.Height;
         public static float scaleWidth, scaleHeight;
         public static int DesignWidth = 1920;
         public static int DesignHeight = 1080;
 
-        public void ScalingInit()
+        public static void ScalingInit(double width = 1920, double height = 1080)
         {
+            bWidth = width;
+            bHeight = height;
             SetScale(bWidth, bHeight);
         }
 
