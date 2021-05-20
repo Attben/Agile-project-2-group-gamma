@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -22,6 +23,14 @@ namespace LudoLike
     /// </summary>
     public sealed partial class MainMenu : Page
     {
+        public MainMenu()
+        {
+            ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Maximized;
+            this.InitializeComponent();
+            var view = ApplicationView.GetForCurrentView();
+            view.TryEnterFullScreenMode();
+        }
+
         private void Play_Click(object sender, RoutedEventArgs e)
         {
             this.Frame.Navigate(typeof(PlayMenu));
