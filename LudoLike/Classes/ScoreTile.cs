@@ -10,9 +10,10 @@ namespace LudoLike
     {
         private int _amount;
 
-        public ScoreTile(int points)
+        public ScoreTile(int points, int index) : base(index)
         {
             _amount = points;
+            this.index = index;
         }
 
         public override void TileEvent()

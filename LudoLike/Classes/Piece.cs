@@ -8,7 +8,12 @@ namespace LudoLike
 {
     class Piece
     {
-        private Tile _position;
+        public Tile position;
+
+        public Piece(Tile startPostition)
+        {
+            position = startPostition;
+        }
 
         public void Move()
         {

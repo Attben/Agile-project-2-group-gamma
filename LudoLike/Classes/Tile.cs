@@ -8,6 +8,13 @@ namespace LudoLike
 {
     class Tile
     {
+        public int index;
+
+        public Tile(int index)
+        {
+            this.index = index;
+        }
+
         public virtual void TileEvent()
         {
             //Intentionally left blank in base class.
