@@ -13,12 +13,11 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
-
 namespace LudoLike
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// A page that is reached py pressing "Play" in the main menu.
+    /// Lets the user choose the amount of players and start the game.
     /// </summary>
     public sealed partial class PlayMenu : Page
     {
@@ -27,7 +26,7 @@ namespace LudoLike
             this.InitializeComponent();
         }
 
-        private void Slider_ValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        private void SliderValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
             double text = this.Slider.Value;
             string ok = "0";
@@ -43,7 +42,6 @@ namespace LudoLike
             string ok = "0";
             game.AddPlayers(int.Parse(text.ToString(ok)));
             
-
             //switch page
             this.Frame.Navigate(typeof(MainPage));
         }
