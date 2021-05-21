@@ -13,18 +13,19 @@ namespace LudoLike
         private List<Tile> _board;
         private int turn = 0;
 
-        public Game()
+        public Game(int playerAmount)
         {
             _players = new List<Player>();
             _board = new List<Tile>();
             AddTiles(42); //Placeholder amount
+            AddPlayers(playerAmount);
         }
 
         public void AddPlayers(int amount)
         {
             for (int i = 0; i < amount; i++)
             {
-                _players.Add(new Player((Colors)i, _board[i])); // assumes first four tiles are Home/Nests tiles
+                _players.Add(new Player((PlayerColors)i, _board[i])); // assumes first four tiles are Home/Nests tiles
             }
         }
 

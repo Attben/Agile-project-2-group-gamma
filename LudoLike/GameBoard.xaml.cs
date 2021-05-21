@@ -43,6 +43,9 @@ namespace LudoLike
         private Random _prng = new Random();
         private GameStateManager _gameStateManager = new GameStateManager();
 
+        private Game _game;
+        private Piece _piece;
+
 
         public MainPage()
         {
@@ -76,11 +79,11 @@ namespace LudoLike
             //Load background image
             BG = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/TestBackground.png"));
             //Board = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Spelplan.png"));
-            
+
             //Load static images belonging to the Dice class
             for (int n = 0; n < 6; ++n)
             {
-                Dice.DiceImages[n] = await CanvasBitmap.LoadAsync(sender, new Uri($"ms-appx:///Assets/Images/Die{n+1}.png"));
+                Dice.DiceImages[n] = await CanvasBitmap.LoadAsync(sender, new Uri($"ms-appx:///Assets/Images/Die{n + 1}.png"));
             }
             Dice.SpinningDieImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/SpinningDie.png"));
             _dice = new Dice(1, 6);
@@ -93,6 +96,12 @@ namespace LudoLike
                     Tiles.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/peng.png")));
                 }
             }
+
+            Piece.Red = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RedPiece.png"));
+            Piece.Blue = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BluePiece.png"));
+            Piece.Yellow = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/YellowPiece.png"));
+            Piece.Green = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/GreenPiece.png"));
+            _piece = new Piece(new Tile(0), 0);
         }
 
         private void CurrentSizeChanged(object sender, WindowSizeChangedEventArgs e)
@@ -110,6 +119,8 @@ namespace LudoLike
             Board.Draw(drawArgs);
             drawArgs.DrawingSession.DrawText($"bWidth: {Scaling.bWidth}, bHeight{Scaling.bHeight}", 0, 0, Windows.UI.Colors.Black);
             _dice.Draw(drawArgs);
+            _piece.Draw(drawArgs);
+
             //args.DrawingSession.DrawImage(Scaling.TransformImage(BG));
             //_gameStateManager.Draw(args);
         }
@@ -117,12 +128,12 @@ namespace LudoLike
         private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
         {
             var position = e.GetCurrentPoint(Canvas).Position;
-            if(_gameStateManager.CurrentGameState == GameState.NewGame)
+            if (_gameStateManager.CurrentGameState == GameState.NewGame)
             {
-                var action = Canvas.RunOnGameLoopThreadAsync( () =>
-                {
-                    _gameStateManager.CurrentGameState = GameState.Playing;
-                });
+                var action = Canvas.RunOnGameLoopThreadAsync(() =>
+               {
+                   _gameStateManager.CurrentGameState = GameState.Playing;
+               });
             }
             if (_gameStateManager.CurrentGameState == GameState.Playing)
             {

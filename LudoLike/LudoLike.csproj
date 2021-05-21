@@ -126,8 +126,8 @@
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MainPage.xaml.cs">
-      <DependentUpon>MainPage.xaml</DependentUpon>
+    <Compile Include="GameBoard.xaml.cs">
+      <DependentUpon>GameBoard.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\Minigame.cs" />
     <Compile Include="Classes\MinigameTile.cs" />
@@ -148,16 +148,20 @@
     </AppxManifest>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Images\BluePiece.png" />
     <Content Include="Assets\Images\Die1.png" />
     <Content Include="Assets\Images\Die2.png" />
     <Content Include="Assets\Images\Die3.png" />
     <Content Include="Assets\Images\Die4.png" />
     <Content Include="Assets\Images\Die5.png" />
     <Content Include="Assets\Images\Die6.png" />
+    <Content Include="Assets\Images\GreenPiece.png" />
     <Content Include="Assets\Images\peng.png" />
+    <Content Include="Assets\Images\RedPiece.png" />
     <Content Include="Assets\Images\Spelplan.png" />
     <Content Include="Assets\Images\SpinningDie.png" />
     <Content Include="Assets\Images\TestBackground.png" />
+    <Content Include="Assets\Images\YellowPiece.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -176,7 +180,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainPage.xaml">
+    <Page Include="GameBoard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
