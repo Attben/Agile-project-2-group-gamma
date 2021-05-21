@@ -34,7 +34,7 @@ namespace LudoLike
             _score += amount;
         }
 
-        public List<int> returnPiecePostitions() // return list of tiles
+        public List<int> ReturnPiecePostitions() // return list of tiles
         {
             List<int> list = new List<int>();
             foreach (Piece piece in pieces)

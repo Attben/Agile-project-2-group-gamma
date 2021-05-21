@@ -17,9 +17,8 @@ namespace LudoLike
         {
             _players = new List<Player>();
             _board = new List<Tile>();
+            AddTiles(42); //Placeholder amount
         }
-
-
 
         public void AddPlayers(int amount)
         {
@@ -43,10 +42,10 @@ namespace LudoLike
         {
             //get list of tiles
             List<int>[] list = {
-            _players[0].returnPiecePostitions(),
-            _players[1].returnPiecePostitions(),
-            _players[2].returnPiecePostitions(),
-            _players[3].returnPiecePostitions()
+            _players[0].ReturnPiecePostitions(),
+            _players[1].ReturnPiecePostitions(),
+            _players[2].ReturnPiecePostitions(),
+            _players[3].ReturnPiecePostitions()
             };
 
             //compare lists
@@ -73,7 +72,7 @@ namespace LudoLike
             }
         }
 
-        public void nextTurn()
+        public void NextTurn()
         {
             turn++;
 
@@ -90,7 +89,7 @@ namespace LudoLike
         }
 
         //for testing purposes
-        public bool test()
+        public bool Test()
         {
             AddTiles(20);
             AddPlayers(4);
