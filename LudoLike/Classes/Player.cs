@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LudoLike
 {
-    public enum Colors
+    public enum PlayerColors
     {
         red, green, blue, yellow
     }
@@ -14,10 +14,10 @@ namespace LudoLike
     class Player
     {
         private int _score;
-        public Colors color;
+        public PlayerColors color;
         public List<Piece> pieces;
 
-        public Player(Colors color, Tile board)
+        public Player(PlayerColors color, Tile board)
         {
             _score = 0;
             this.color = color;
@@ -25,7 +25,7 @@ namespace LudoLike
 
             for (int i = 0; i < 4; i++)
             {
-                pieces.Add(new Piece(board));
+                pieces.Add(new Piece(board, color));
             }
         }
 

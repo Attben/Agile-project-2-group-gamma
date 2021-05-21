@@ -12,7 +12,7 @@
 
         <TextBlock Foreground="Black" FontSize="60" FontFamily="Sylfaen" HorizontalAlignment="Center" Margin="0,100,0,0">Antal Spelare</TextBlock>
         <TextBox Height="80" Width="50" Margin="0,-450,0,0" x:Name="amountOfPlayersBox" IsReadOnly="True" Text="2" FontSize="50" BorderThickness="0"/>
-        <Slider Width="400" Height="40" Margin="550,250,550,460" Minimum="2" Maximum="4" ValueChanged="SliderValueChanged" Value="2" HorizontalAlignment="Center" x:Name="Slider"/>
+        <Slider Width="400" Height="40" Margin="550,250,550,460" Minimum="2" Maximum="4" ValueChanged="SliderValueChanged" Value="2" HorizontalAlignment="Center" x:Name="_slider"/>
         <Button Content="Ok" HorizontalAlignment="Center" Margin="0,580,0,0" VerticalAlignment="Top" Height="85" Width="252" Background="GhostWhite" BorderBrush="Black" BorderThickness="5" Foreground="Black" FontSize="40" Click="StartGame"/>
 
 

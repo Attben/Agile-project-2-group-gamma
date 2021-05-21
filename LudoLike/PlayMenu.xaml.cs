@@ -28,7 +28,7 @@ namespace LudoLike
 
         private void SliderValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            double text = this.Slider.Value;
+            double text = this._slider.Value;
             string ok = "0";
             this.amountOfPlayersBox.Text = text.ToString(ok);
 
@@ -36,9 +36,9 @@ namespace LudoLike
 
         private void StartGame(object sender, RoutedEventArgs e)
         {
-            Game game = new Game();
+            Game game = new Game((int)this._slider.Value);
             
-            double text = this.Slider.Value;
+            double text = this._slider.Value;
             string ok = "0";
             game.AddPlayers(int.Parse(text.ToString(ok)));
             
