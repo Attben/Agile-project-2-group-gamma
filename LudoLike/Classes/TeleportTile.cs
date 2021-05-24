@@ -10,10 +10,10 @@ namespace LudoLike
     {
         private Tile _destinationTile;
 
-        public TeleportTile(Tile destination, int index) : base(index)
+        public TeleportTile(Tile destination)
         {
             _destinationTile = destination;
-            this.index = index;
+            //this.index = index;
         }
 
         public override void TileEvent()

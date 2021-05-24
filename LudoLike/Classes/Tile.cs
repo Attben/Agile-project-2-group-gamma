@@ -8,11 +8,11 @@ namespace LudoLike
 {
     class Tile
     {
-        public int index;
+        //public int index;
 
-        public Tile(int index)
+        public Tile()
         {
-            this.index = index;
+            //this.index = index;
         }
 
         public virtual void TileEvent()

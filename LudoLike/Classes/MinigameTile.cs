@@ -10,10 +10,10 @@ namespace LudoLike
     {
         private Minigame _minigame;
 
-        public MinigameTile(Minigame game, int index) : base(index)
+        public MinigameTile(Minigame game)
         {
             _minigame = game;
-            this.index = index;
+            //this.index = index;
         }
 
         public override void TileEvent()

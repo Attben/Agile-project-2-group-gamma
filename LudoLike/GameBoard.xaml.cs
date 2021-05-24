@@ -101,7 +101,7 @@ namespace LudoLike
             Piece.Blue = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BluePiece.png"));
             Piece.Yellow = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/YellowPiece.png"));
             Piece.Green = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/GreenPiece.png"));
-            _piece = new Piece(new Tile(0), 0);
+            _piece = new Piece(new Tile(), 0);
         }
 
         private void CurrentSizeChanged(object sender, WindowSizeChangedEventArgs e)
