@@ -9,9 +9,6 @@ namespace LudoLike
 {
     class Tile
     {
-        public int positionX;
-        public int positionY;
-        public string ImageSource;
         public int index;
 
         public Tile(int index)

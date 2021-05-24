@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -19,7 +20,10 @@ namespace LudoLike
         public Rect BlueNest;
         public Rect YellowNest;
         public Rect GreenNest;
-        public List<Rect> TileGrid;
+        public Dictionary<Vector2, Rect> TileGrid = new Dictionary<Vector2, Rect>();
+
+        // Not used yet
+        public List<Vector2> RegularTiles = new List<Vector2>();
 
         public LudoBoard()
         {
@@ -32,7 +36,6 @@ namespace LudoLike
             BlueNest = new Rect(MainBoard.Left, MainBoard.Bottom - MainBoard.Height / 3, MainBoard.Width / 3, MainBoard.Height / 3);
             YellowNest = new Rect(MainBoard.Right - MainBoard.Width / 3, MainBoard.Bottom - MainBoard.Height / 3, MainBoard.Width / 3, MainBoard.Height / 3);
             GreenNest = new Rect(MainBoard.Right - MainBoard.Width / 3, MainBoard.Top, MainBoard.Width / 3, MainBoard.Height / 3);
-            
 
         }
 
@@ -57,29 +60,30 @@ namespace LudoLike
             args.DrawingSession.FillRectangle(GreenNest, Windows.UI.Colors.LawnGreen);
             args.DrawingSession.FillRectangle(BlueNest, Windows.UI.Colors.Blue);
             
-            //foreach (KeyValuePair<int, Rect> TileHolder in TileGrid)
-            //{
-            //    args.DrawingSession.FillRectangle(TileHolder.Value, Windows.UI.Colors.Red);
-            //}
         }
 
         private void CreateTileGrid() 
         {
-            TileGrid = new List<Rect>();
             for (int row = 0; row < 11; row++)
             {
                 if( row < 4 || row > 6)
                 {
                     for (int column = 4; column < 7; column++)
                     {
-                        TileGrid.Add(new Rect(MainBoard.X + (MainBoard.Width / 11 * column), MainBoard.Y + (MainBoard.Height / 11 * row), MainBoard.Width / 11, MainBoard.Height / 11));
+                        TileGrid[new Vector2(row, column)] = new Rect(MainBoard.X + (MainBoard.Width / 11 * column), 
+                                                                      MainBoard.Y + (MainBoard.Height / 11 * row), 
+                                                                      MainBoard.Width / 11, 
+                                                                      MainBoard.Height / 11);
                     }
                 }
                 else
                 {
                     for (int column = 0; column < 11; column++)
                     {
-                        TileGrid.Add(new Rect(MainBoard.X + (MainBoard.Width / 11 * column), MainBoard.Y + (MainBoard.Height / 11 * row), MainBoard.Width / 11, MainBoard.Height / 11));
+                        TileGrid[new Vector2(row, column)] = new Rect(MainBoard.X + (MainBoard.Width / 11 * column), 
+                                                                      MainBoard.Y + (MainBoard.Height / 11 * row), 
+                                                                      MainBoard.Width / 11, 
+                                                                      MainBoard.Height / 11);
                     }
                 }
             }
