@@ -38,6 +38,8 @@ namespace LudoLike
 
         public LudoBoard Board;
 
+        // Testning
+        public CanvasBitmap peng;
 
         private Dice _dice;
         private Random _prng = new Random();
@@ -45,7 +47,7 @@ namespace LudoLike
 
         private Game _game;
         private Piece _piece;
-
+        
 
         public MainPage()
         {
@@ -76,6 +78,9 @@ namespace LudoLike
 
         async Task CreateResourcesAsync(CanvasAnimatedControl sender)
         {
+            // Test loading peng image
+            peng = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/peng.png"));
+
             //Load background image
             BG = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/TestBackground.png"));
             //Board = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Spelplan.png"));
@@ -118,9 +123,16 @@ namespace LudoLike
 
             Board.Draw(drawArgs);
             drawArgs.DrawingSession.DrawText($"bWidth: {Scaling.bWidth}, bHeight{Scaling.bHeight}", 0, 0, Windows.UI.Colors.Black);
+            drawArgs.DrawingSession.DrawText($"Board X: {Board.MainBoard.X}, Board Y{Board.MainBoard.Y}", 50, 50, Windows.UI.Colors.Black);
             _dice.Draw(drawArgs);
             _piece.Draw(drawArgs);
 
+
+            // Test drawing pengs
+            foreach  (Rect tileHolder in Board.TileGrid)
+            {
+                drawArgs.DrawingSession.DrawImage(peng, tileHolder);
+            }
             //args.DrawingSession.DrawImage(Scaling.TransformImage(BG));
             //_gameStateManager.Draw(args);
         }

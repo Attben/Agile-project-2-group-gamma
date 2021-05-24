@@ -19,7 +19,7 @@ namespace LudoLike
         public Rect BlueNest;
         public Rect YellowNest;
         public Rect GreenNest;
-        public Dictionary<int, Rect> TileGrid;
+        public List<Rect> TileGrid;
 
         public LudoBoard()
         {
@@ -32,7 +32,7 @@ namespace LudoLike
             BlueNest = new Rect(MainBoard.Left, MainBoard.Bottom - MainBoard.Height / 3, MainBoard.Width / 3, MainBoard.Height / 3);
             YellowNest = new Rect(MainBoard.Right - MainBoard.Width / 3, MainBoard.Bottom - MainBoard.Height / 3, MainBoard.Width / 3, MainBoard.Height / 3);
             GreenNest = new Rect(MainBoard.Right - MainBoard.Width / 3, MainBoard.Top, MainBoard.Width / 3, MainBoard.Height / 3);
-            CreateTileGrid();
+            
 
         }
 
@@ -50,33 +50,62 @@ namespace LudoLike
             BlueNest = new Rect(MainBoard.Left, MainBoard.Bottom - MainBoard.Height / 11 * 4, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
             YellowNest = new Rect(MainBoard.Right - MainBoard.Width / 11 * 4, MainBoard.Bottom - MainBoard.Height / 11 * 4, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
             GreenNest = new Rect(MainBoard.Right - MainBoard.Width / 11 * 4, MainBoard.Top, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
+            CreateTileGrid();
             args.DrawingSession.FillRectangle(MainBoard, Windows.UI.Colors.White);
             args.DrawingSession.FillRectangle(RedNest, Windows.UI.Colors.Red);
             args.DrawingSession.FillRectangle(YellowNest, Windows.UI.Colors.Yellow);
             args.DrawingSession.FillRectangle(GreenNest, Windows.UI.Colors.LawnGreen);
             args.DrawingSession.FillRectangle(BlueNest, Windows.UI.Colors.Blue);
-            foreach (KeyValuePair<int, Rect> TileHolder in TileGrid)
-            {
-                args.DrawingSession.FillRectangle(TileHolder.Value, Windows.UI.Colors.Red);
-            }
+            
+            //foreach (KeyValuePair<int, Rect> TileHolder in TileGrid)
+            //{
+            //    args.DrawingSession.FillRectangle(TileHolder.Value, Windows.UI.Colors.Red);
+            //}
         }
 
         private void CreateTileGrid() 
         {
-            int x = 1;
-            for (int row = 1; row <= 11; row++)
+            TileGrid = new List<Rect>();
+            for (int row = 0; row < 11; row++)
             {
-                if (row <= 4 || row > 7 )
+                if( row < 4 || row > 6)
                 {
-                    for (int column = 5; column <= 7; column++)
+                    for (int column = 4; column < 7; column++)
                     {
-                        TileGrid.Add(x, new Rect(BoardWidth / 11 * column, BoardHeight / 11 * row, Scaling.Xpos(BoardWidth / 11), Scaling.Ypos(BoardHeight / 11)));
-                    x++;
+                        TileGrid.Add(new Rect(MainBoard.X + (MainBoard.Width / 11 * column), MainBoard.Y + (MainBoard.Height / 11 * row), MainBoard.Width / 11, MainBoard.Height / 11));
                     }
-                    
                 }
-                x++;
+                else
+                {
+                    for (int column = 0; column < 11; column++)
+                    {
+                        TileGrid.Add(new Rect(MainBoard.X + (MainBoard.Width / 11 * column), MainBoard.Y + (MainBoard.Height / 11 * row), MainBoard.Width / 11, MainBoard.Height / 11));
+                    }
+                }
             }
+            
+            
+            //int x = 1;
+            //for (int row = 1; row <= 11; row++)
+            //{
+            //    if (row <= 4 || row > 7 )
+            //    {
+            //        for (int column = 5; column <= 7; column++)
+            //        {
+            //            TileGrid.Add(x, new Rect(BoardWidth / 11 * column, BoardHeight / 11 * row, Scaling.Xpos((float)MainBoard.Width / 11), Scaling.Ypos((float)MainBoard.Height / 11)));
+            //        x++;
+            //        }
+            //    }
+            //    else
+            //    {
+            //        for (int column = 1; column <= 11; column++)
+            //        {
+            //            TileGrid.Add(x, new Rect(BoardWidth / 11 * column, BoardHeight / 11 * row, Scaling.Xpos((float)MainBoard.Width / 11), Scaling.Ypos((float)MainBoard.Height / 11)));
+            //            x++;
+            //        }
+            //    }
+            //    x++;
+            //}
         }
 
 
