@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Graphics.Canvas.UI.Xaml;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,9 @@ namespace LudoLike
 {
     class Tile
     {
+        public int positionX;
+        public int positionY;
+        public string ImageSource;
         public int index;
 
         public Tile(int index)
@@ -18,6 +22,11 @@ namespace LudoLike
         public virtual void TileEvent()
         {
             //Intentionally left blank in base class.
+        }
+
+        public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
+        {
+
         }
     }
 }

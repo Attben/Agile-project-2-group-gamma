@@ -154,5 +154,10 @@ namespace LudoLike
         {
             _dice.Roll();
         }
+
+        private void Canvas_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -19,18 +19,20 @@ namespace LudoLike
         public Rect BlueNest;
         public Rect YellowNest;
         public Rect GreenNest;
+        public Dictionary<int, Rect> TileGrid;
 
         public LudoBoard()
         {
             MainBoard = new Rect(Scaling.Xpos((float)(Scaling.bWidth / 2 - BoardWidth / 2)),
-            Scaling.Ypos((float)(Scaling.bHeight / 2 - BoardHeight / 2)),
-            Scaling.Xpos(BoardWidth),
-            Scaling.Ypos(BoardHeight));
+                                 Scaling.Ypos((float)(Scaling.bHeight / 2 - BoardHeight / 2)),
+                                 Scaling.Xpos(BoardWidth),
+                                 Scaling.Ypos(BoardHeight));
 
             RedNest = new Rect(MainBoard.Left, MainBoard.Top, MainBoard.Width / 3, MainBoard.Height / 3);
             BlueNest = new Rect(MainBoard.Left, MainBoard.Bottom - MainBoard.Height / 3, MainBoard.Width / 3, MainBoard.Height / 3);
             YellowNest = new Rect(MainBoard.Right - MainBoard.Width / 3, MainBoard.Bottom - MainBoard.Height / 3, MainBoard.Width / 3, MainBoard.Height / 3);
             GreenNest = new Rect(MainBoard.Right - MainBoard.Width / 3, MainBoard.Top, MainBoard.Width / 3, MainBoard.Height / 3);
+            CreateTileGrid();
 
         }
 
@@ -44,18 +46,39 @@ namespace LudoLike
                             Scaling.bHeight / 2 - Scaling.Ypos(BoardHeight / 2),
                             Scaling.Xpos(BoardWidth),
                             Scaling.Ypos(BoardHeight));
-            RedNest = new Rect(MainBoard.Left, MainBoard.Top, MainBoard.Width / 3, MainBoard.Height / 3);
-            BlueNest = new Rect(MainBoard.Left, MainBoard.Bottom - MainBoard.Height / 3, MainBoard.Width / 3, MainBoard.Height / 3);
-            YellowNest = new Rect(MainBoard.Right - MainBoard.Width / 3, MainBoard.Bottom - MainBoard.Height / 3, MainBoard.Width / 3, MainBoard.Height / 3);
-            GreenNest = new Rect(MainBoard.Right - MainBoard.Width / 3, MainBoard.Top, MainBoard.Width / 3, MainBoard.Height / 3);
+            RedNest = new Rect(MainBoard.Left, MainBoard.Top, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
+            BlueNest = new Rect(MainBoard.Left, MainBoard.Bottom - MainBoard.Height / 11 * 4, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
+            YellowNest = new Rect(MainBoard.Right - MainBoard.Width / 11 * 4, MainBoard.Bottom - MainBoard.Height / 11 * 4, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
+            GreenNest = new Rect(MainBoard.Right - MainBoard.Width / 11 * 4, MainBoard.Top, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
             args.DrawingSession.FillRectangle(MainBoard, Windows.UI.Colors.White);
             args.DrawingSession.FillRectangle(RedNest, Windows.UI.Colors.Red);
             args.DrawingSession.FillRectangle(YellowNest, Windows.UI.Colors.Yellow);
             args.DrawingSession.FillRectangle(GreenNest, Windows.UI.Colors.LawnGreen);
             args.DrawingSession.FillRectangle(BlueNest, Windows.UI.Colors.Blue);
-            
-
+            foreach (KeyValuePair<int, Rect> TileHolder in TileGrid)
+            {
+                args.DrawingSession.FillRectangle(TileHolder.Value, Windows.UI.Colors.Red);
+            }
         }
+
+        private void CreateTileGrid() 
+        {
+            int x = 1;
+            for (int row = 1; row <= 11; row++)
+            {
+                if (row <= 4 || row > 7 )
+                {
+                    for (int column = 5; column <= 7; column++)
+                    {
+                        TileGrid.Add(x, new Rect(BoardWidth / 11 * column, BoardHeight / 11 * row, Scaling.Xpos(BoardWidth / 11), Scaling.Ypos(BoardHeight / 11)));
+                    x++;
+                    }
+                    
+                }
+                x++;
+            }
+        }
+
 
         /// <summary>
         /// May be used later. Not working for now,
