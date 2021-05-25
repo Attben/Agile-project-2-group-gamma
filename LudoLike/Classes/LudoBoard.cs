@@ -42,7 +42,7 @@ namespace LudoLike
             { "Green", new List<Vector2>() { new Vector2(4, 10), new Vector2(5, 9), new Vector2(5, 8), new Vector2(5, 7), new Vector2(5, 6) } },
             { "Middle", new List<Vector2>() { new Vector2(5, 5) } }
         };
-        // Not used yet
+
         public List<Vector2> RedPath = new List<Vector2>() 
         {
             new Vector2(0, 4), new Vector2(1, 4), new Vector2(2, 4), new Vector2(3, 4), new Vector2(4, 4),
@@ -122,7 +122,6 @@ namespace LudoLike
             args.DrawingSession.FillRectangle(MainBoard, Windows.UI.Colors.White);
             CreateTileGrid();
             DrawNests(args);
-            DrawStaticTiles(args);
             
         }
 
@@ -138,6 +137,8 @@ namespace LudoLike
             GreenNest = new Rect(MainBoard.Right - MainBoard.Width / 11 * 4, MainBoard.Top, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
 
         }
+        
+        
         /// <summary>
         /// This was for testing that we target the right squares
         /// </summary>
@@ -180,20 +181,20 @@ namespace LudoLike
                 {
                     for (int column = 4; column < 7; column++)
                     {
-                        TileGrid[new Vector2(row, column)] = new Rect(MainBoard.X + (MainBoard.Width / 11 * column), 
-                                                                      MainBoard.Y + (MainBoard.Height / 11 * row), 
-                                                                      MainBoard.Width / 11, 
-                                                                      MainBoard.Height / 11);
+                        TileGrid[new Vector2(row, column)] = new Rect(MainBoard.X + (MainBoard.Width / 11 * column) + 2.5, 
+                                                                      MainBoard.Y + (MainBoard.Height / 11 * row) + 2.5, 
+                                                                      MainBoard.Width / 11 - 5, 
+                                                                      MainBoard.Height / 11 - 5);
                     }
                 }
                 else
                 {
                     for (int column = 0; column < 11; column++)
                     {
-                        TileGrid[new Vector2(row, column)] = new Rect(MainBoard.X + (MainBoard.Width / 11 * column), 
-                                                                      MainBoard.Y + (MainBoard.Height / 11 * row), 
-                                                                      MainBoard.Width / 11, 
-                                                                      MainBoard.Height / 11);
+                        TileGrid[new Vector2(row, column)] = new Rect(MainBoard.X + (MainBoard.Width / 11 * column) + 2.5, 
+                                                                      MainBoard.Y + (MainBoard.Height / 11 * row) + 2.5, 
+                                                                      MainBoard.Width / 11 - 5, 
+                                                                      MainBoard.Height / 11 - 5);
                     }
                 }
             }
@@ -220,40 +221,6 @@ namespace LudoLike
             //    }
             //    x++;
             //}
-        }
-
-
-        /// <summary>
-        /// May be used later. Not working for now,
-        /// </summary>
-        public void UpdateBoard()
-        {
-            UpdateRectangle(MainBoard,
-                            Scaling.Xpos((float)(Scaling.bWidth / 2 - BoardWidth / 2)),
-                            Scaling.Ypos((float)(Scaling.bHeight / 2 - BoardHeight / 2)),
-                            Scaling.Xpos(BoardWidth),
-                            Scaling.Ypos(BoardHeight));
-
-            UpdateRectangle(RedNest, (float)MainBoard.Left, (float)MainBoard.Top, (float)(MainBoard.Width / 3), (float)MainBoard.Height / 3);
-            UpdateRectangle(BlueNest, (float)MainBoard.Left, (float)(MainBoard.Bottom - MainBoard.Height / 3), (float)(MainBoard.Width / 3), (float)(MainBoard.Height / 3));
-            UpdateRectangle(YellowNest, (float)(MainBoard.Right - MainBoard.Width / 3), (float)(MainBoard.Bottom - MainBoard.Height / 3), (float)(MainBoard.Width / 3), (float)(MainBoard.Height / 3));
-            UpdateRectangle(GreenNest, (float)(MainBoard.Right - MainBoard.Width / 3), (float)MainBoard.Top, (float)(MainBoard.Width / 3), (float)(MainBoard.Height / 3));
-
-        }
-        /// <summary>
-        /// May be used later. Not Working for now.
-        /// </summary>
-        /// <param name="rectangle"></param>
-        /// <param name="width"></param>
-        /// <param name="height"></param>
-        /// <param name="xpos"></param>
-        /// <param name="ypos"></param>
-        public void UpdateRectangle(Rect rectangle, float width, float height, float xpos, float ypos)
-        {
-            rectangle.Width = width;
-            rectangle.Height = height;
-            rectangle.X = xpos;
-            rectangle.Y = ypos;
         }
 
     }

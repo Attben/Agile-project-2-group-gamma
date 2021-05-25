@@ -1,4 +1,5 @@
-﻿using Microsoft.Graphics.Canvas;
+﻿using LudoLike.Classes;
+using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI;
@@ -34,12 +35,9 @@ namespace LudoLike
     {
 
         public static CanvasBitmap BG;
-        public List<CanvasBitmap> Tiles = new List<CanvasBitmap>();
+        public List<TestTile> Tiles;
 
         public LudoBoard Board;
-
-        // Testning
-        public CanvasBitmap peng;
 
         private Dice _dice;
         private Random _prng = new Random();
@@ -78,12 +76,9 @@ namespace LudoLike
 
         async Task CreateResourcesAsync(CanvasAnimatedControl sender)
         {
-            // Test loading peng image
-            peng = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/peng.png"));
 
             //Load background image
             BG = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/TestBackground.png"));
-            //Board = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Spelplan.png"));
 
             //Load static images belonging to the Dice class
             for (int n = 0; n < 6; ++n)
@@ -93,20 +88,23 @@ namespace LudoLike
             Dice.SpinningDieImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/SpinningDie.png"));
             _dice = new Dice(1, 6);
 
-            // Create Tiles
-            for (int i = 0; i < 11; i++)
-            {
-                for (int j = 0; j < 11; j++)
-                {
-                    Tiles.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/peng.png")));
-                }
-            }
-
             Piece.Red = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RedPiece.png"));
             Piece.Blue = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BluePiece.png"));
             Piece.Yellow = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/YellowPiece.png"));
             Piece.Green = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/GreenPiece.png"));
             _piece = new Piece(new Tile(0), 0);
+
+            await LoadTileImages(sender);
+        }
+
+        async Task LoadTileImages(CanvasAnimatedControl sender)
+        {
+            TestTile.TileImages["Red"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/redtile.png"));
+            TestTile.TileImages["Blue"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/bluetile.png"));
+            TestTile.TileImages["Yellow"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/yellowtile.png"));
+            TestTile.TileImages["Green"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/greentile.png"));
+            TestTile.TileImages["Middle"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/middletile.png"));
+            TestTile.TileImages["Regular"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/regulartile.png"));
         }
 
         private void CurrentSizeChanged(object sender, WindowSizeChangedEventArgs e)
@@ -127,13 +125,18 @@ namespace LudoLike
             _dice.Draw(drawArgs);
             _piece.Draw(drawArgs);
 
-
+            Tiles = new List<TestTile>();
+            CreateStaticTiles();
+            CreateDynamicTiles();
             // Test drawing pengs
-            foreach (KeyValuePair<Vector2, Rect> tileHolder in Board.TileGrid)
+            foreach (TestTile tile in Tiles)
             {
-                drawArgs.DrawingSession.DrawText($"({tileHolder.Key.X}, {tileHolder.Key.Y})", new Vector2((float)tileHolder.Value.X, (float)tileHolder.Value.Y), Windows.UI.Colors.Black);
+                tile.Draw(drawArgs);
             }
-            //args.DrawingSession.DrawImage(Scaling.TransformImage(BG));
+            //foreach (KeyValuePair<Vector2, Rect> tileHolder in Board.TileGrid)
+            //{
+            //    drawArgs.DrawingSession.DrawText($"({tileHolder.Key.X}, {tileHolder.Key.Y})", new Vector2((float)tileHolder.Value.X, (float)tileHolder.Value.Y), Windows.UI.Colors.Black);
+            //}
             //_gameStateManager.Draw(args);
         }
 
@@ -170,6 +173,24 @@ namespace LudoLike
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
         {
 
+        }
+
+        public void CreateStaticTiles()
+        {
+            foreach (KeyValuePair<string, List<Vector2>> staticTiles in Board.StaticTiles)
+            {
+                foreach (Vector2 vector in staticTiles.Value)
+                {
+                    Tiles.Add(new TestTile(Board.TileGrid[vector], TestTile.TileImages[staticTiles.Key]));
+                }
+            }
+        }
+        public void CreateDynamicTiles()
+        {
+            foreach (Vector2 vector in Board.DynamicTiles)
+            {
+                Tiles.Add(new TestTile(Board.TileGrid[vector], TestTile.TileImages["Regular"]));
+            }
         }
     }
 }
