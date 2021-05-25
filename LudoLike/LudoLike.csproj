@@ -150,6 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Images\BluePiece.png" />
+    <Content Include="Assets\Images\bluetile.png" />
     <Content Include="Assets\Images\Die1.png" />
     <Content Include="Assets\Images\Die2.png" />
     <Content Include="Assets\Images\Die3.png" />
@@ -157,12 +158,15 @@
     <Content Include="Assets\Images\Die5.png" />
     <Content Include="Assets\Images\Die6.png" />
     <Content Include="Assets\Images\GreenPiece.png" />
+    <Content Include="Assets\Images\greentile.png" />
     <Content Include="Assets\Images\peng.png" />
     <Content Include="Assets\Images\RedPiece.png" />
+    <Content Include="Assets\Images\redtile.png" />
     <Content Include="Assets\Images\Spelplan.png" />
     <Content Include="Assets\Images\SpinningDie.png" />
     <Content Include="Assets\Images\TestBackground.png" />
     <Content Include="Assets\Images\YellowPiece.png" />
+    <Content Include="Assets\Images\yellowtile.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
