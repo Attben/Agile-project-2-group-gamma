@@ -110,7 +110,7 @@ namespace LudoLike
         }
 
         /// <summary>
-        /// Takes a canvas and draws a Ludo game board
+        /// Takes a canvas and draws a Ludo game board.
         /// </summary>
         /// <param name="args"></param>
         public void Draw(CanvasAnimatedDrawEventArgs args)
@@ -119,17 +119,57 @@ namespace LudoLike
                             Scaling.bHeight / 2 - Scaling.Ypos(BoardHeight / 2),
                             Scaling.Xpos(BoardWidth),
                             Scaling.Ypos(BoardHeight));
-            RedNest = new Rect(MainBoard.Left, MainBoard.Top, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
-            BlueNest = new Rect(MainBoard.Left, MainBoard.Bottom - MainBoard.Height / 11 * 4, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
-            YellowNest = new Rect(MainBoard.Right - MainBoard.Width / 11 * 4, MainBoard.Bottom - MainBoard.Height / 11 * 4, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
-            GreenNest = new Rect(MainBoard.Right - MainBoard.Width / 11 * 4, MainBoard.Top, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
-            CreateTileGrid();
             args.DrawingSession.FillRectangle(MainBoard, Windows.UI.Colors.White);
+            CreateTileGrid();
+            DrawNests(args);
+            DrawStaticTiles(args);
+            
+        }
+
+        public void DrawNests(CanvasAnimatedDrawEventArgs args)
+        {
             args.DrawingSession.FillRectangle(RedNest, Windows.UI.Colors.Red);
             args.DrawingSession.FillRectangle(YellowNest, Windows.UI.Colors.Yellow);
             args.DrawingSession.FillRectangle(GreenNest, Windows.UI.Colors.LawnGreen);
             args.DrawingSession.FillRectangle(BlueNest, Windows.UI.Colors.Blue);
-            
+            RedNest = new Rect(MainBoard.Left, MainBoard.Top, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
+            BlueNest = new Rect(MainBoard.Left, MainBoard.Bottom - MainBoard.Height / 11 * 4, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
+            YellowNest = new Rect(MainBoard.Right - MainBoard.Width / 11 * 4, MainBoard.Bottom - MainBoard.Height / 11 * 4, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
+            GreenNest = new Rect(MainBoard.Right - MainBoard.Width / 11 * 4, MainBoard.Top, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
+
+        }
+        /// <summary>
+        /// This was for testing that we target the right squares
+        /// </summary>
+        /// <param name="args"></param>
+        public void DrawStaticTiles(CanvasAnimatedDrawEventArgs args)
+        {
+            foreach (KeyValuePair<string, List<Vector2>> staticTile in StaticTiles)
+            {
+                foreach (Vector2 vector in staticTile.Value)
+                {
+                    switch (staticTile.Key)
+                    {
+                        case "Red":
+                            args.DrawingSession.FillRectangle(TileGrid[vector], Windows.UI.Colors.Red);
+                            break;
+                        case "Blue":
+                            args.DrawingSession.FillRectangle(TileGrid[vector], Windows.UI.Colors.Blue);
+                            break;
+                        case "Yellow":
+                            args.DrawingSession.FillRectangle(TileGrid[vector], Windows.UI.Colors.Yellow);
+                            break;
+                        case "Green":
+                            args.DrawingSession.FillRectangle(TileGrid[vector], Windows.UI.Colors.LawnGreen);
+                            break;
+                        case "Middle":
+                            args.DrawingSession.FillRectangle(TileGrid[vector], Windows.UI.Colors.Pink);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+            }
         }
 
         private void CreateTileGrid() 

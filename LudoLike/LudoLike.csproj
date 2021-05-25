@@ -163,6 +163,7 @@
     <Content Include="Assets\Images\peng.png" />
     <Content Include="Assets\Images\RedPiece.png" />
     <Content Include="Assets\Images\redtile.png" />
+    <Content Include="Assets\Images\regularetile.png" />
     <Content Include="Assets\Images\Spelplan.png" />
     <Content Include="Assets\Images\SpinningDie.png" />
     <Content Include="Assets\Images\TestBackground.png" />
