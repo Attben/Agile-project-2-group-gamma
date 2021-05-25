@@ -14,7 +14,7 @@ namespace LudoLike
     {
         public Vector2 startPosition;
         public Vector2 position;
-        private CanvasBitmap _pieceImage;
+        public CanvasBitmap _pieceImage;
 
         public static CanvasBitmap Red;
         public static CanvasBitmap Blue;
@@ -38,24 +38,25 @@ namespace LudoLike
         {
             switch (color)
             {
-                case 0:
+                case PlayerColors.red:
                     _pieceImage = Red;
                     break;
-                case (PlayerColors)1:
-                    _pieceImage = Green;
-                    break;
-                case (PlayerColors)2:
+                case PlayerColors.blue:
                     _pieceImage = Blue;
                     break;
-                case (PlayerColors)3:
+                case PlayerColors.yellow:
                     _pieceImage = Yellow;
+                    break;
+                case PlayerColors.green:
+                    _pieceImage = Green;
                     break;
             }
         }
 
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs, Rect targetRectangle)
         {
-            drawArgs.DrawingSession.DrawImage(_pieceImage, targetRectangle); //placeholder position value
+            //Rect newRect = new Rect(targetRectangle.X, targetRectangle.Y, targetRectangle.Width, targetRectangle.Height);
+            drawArgs.DrawingSession.DrawImage(this._pieceImage, targetRectangle); //placeholder position value
 
         }
     }

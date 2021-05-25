@@ -39,8 +39,6 @@ namespace LudoLike
 
             double text = this._slider.Value;
             string ok = "0";
-            
-            
             //switch page
             this.Frame.Navigate(typeof(MainPage), _slider.Value);
         }

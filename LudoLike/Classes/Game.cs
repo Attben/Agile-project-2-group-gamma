@@ -15,12 +15,12 @@ namespace LudoLike
         public List<TestTile> Tiles;
         private int turn = 0;
 
-        public Game(int playerAmount)
+        public Game()
         {
             _board = new LudoBoard();
             _players = new List<Player>();
             //AddTiles(42); //Placeholder amount
-            AddPlayers(playerAmount);
+            //AddPlayers(playerAmount);
         }
 
         public void AddPlayers(int amount)
@@ -30,16 +30,16 @@ namespace LudoLike
                 switch (i)
                 {
                     case 0:
-                        _players.Add(new Player((PlayerColors)i, _board.RedPath[0])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.red, _board.RedPath[0])); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 1:
-                        _players.Add(new Player((PlayerColors)i, _board.BluePath[0])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.blue, _board.BluePath[0])); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 2:
-                        _players.Add(new Player((PlayerColors)i, _board.YellowPath[0])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.yellow, _board.YellowPath[0])); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 3:
-                        _players.Add(new Player((PlayerColors)i, _board.GreenPath[0])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.green, _board.GreenPath[0])); // assumes first four tiles are Home/Nests tiles
                         break;
 
                 }

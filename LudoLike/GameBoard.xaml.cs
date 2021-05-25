@@ -32,18 +32,19 @@ namespace LudoLike
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public int NumberOfPlayers;
 
         public static CanvasBitmap BG;
         public List<TestTile> Tiles;
 
-        public LudoBoard Board;
+        //public LudoBoard Board;
 
         private Dice _dice;
-        private Random _prng = new Random();
+        //private Random _prng = new Random();
         private GameStateManager _gameStateManager = new GameStateManager();
 
         private Game _game;
-        private Piece _piece;
+        //private Piece _piece;
         
 
         public MainPage()
@@ -52,10 +53,9 @@ namespace LudoLike
             Window.Current.SizeChanged += CurrentSizeChanged;
             ApplicationView.PreferredLaunchViewSize = new Size(1920, 1080);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
-
             Scaling.ScalingInit();
             
-            
+
             ControlProperties(Scaling.bWidth, Scaling.bHeight);
             //_gameStateManager.GameStateInit();
         }
@@ -63,9 +63,8 @@ namespace LudoLike
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            int numberOfPlayers = int.Parse(e.Parameter.ToString());
-            _game = new Game(numberOfPlayers);
-
+            NumberOfPlayers = int.Parse(e.Parameter.ToString());
+            _game = new Game();
         }
         private void CanvasCreateResources(
             CanvasAnimatedControl sender,
@@ -82,6 +81,7 @@ namespace LudoLike
 
         async Task CreateResourcesAsync(CanvasAnimatedControl sender)
         {
+            
 
             //Load background image
             BG = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/TestBackground.png"));
@@ -123,6 +123,7 @@ namespace LudoLike
             ICanvasAnimatedControl sender,
             CanvasAnimatedDrawEventArgs drawArgs)
         {
+            _game.AddPlayers(NumberOfPlayers);
             drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BG));
 
             _game._board.Draw(drawArgs);

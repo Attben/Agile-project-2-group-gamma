@@ -198,30 +198,6 @@ namespace LudoLike
                     }
                 }
             }
-            
-            
-            //int x = 1;
-            //for (int row = 1; row <= 11; row++)
-            //{
-            //    if (row <= 4 || row > 7 )
-            //    {
-            //        for (int column = 5; column <= 7; column++)
-            //        {
-            //            TileGrid.Add(x, new Rect(BoardWidth / 11 * column, BoardHeight / 11 * row, Scaling.Xpos((float)MainBoard.Width / 11), Scaling.Ypos((float)MainBoard.Height / 11)));
-            //        x++;
-            //        }
-            //    }
-            //    else
-            //    {
-            //        for (int column = 1; column <= 11; column++)
-            //        {
-            //            TileGrid.Add(x, new Rect(BoardWidth / 11 * column, BoardHeight / 11 * row, Scaling.Xpos((float)MainBoard.Width / 11), Scaling.Ypos((float)MainBoard.Height / 11)));
-            //            x++;
-            //        }
-            //    }
-            //    x++;
-            //}
         }
-
     }
 }
