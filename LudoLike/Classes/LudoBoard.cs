@@ -23,7 +23,57 @@ namespace LudoLike
         public Dictionary<Vector2, Rect> TileGrid = new Dictionary<Vector2, Rect>();
 
         // Not used yet
-        public List<Vector2> RegularTiles = new List<Vector2>();
+        public List<Vector2> RedPath = new List<Vector2>() 
+        {
+            new Vector2(0, 4), new Vector2(1, 4), new Vector2(2, 4), new Vector2(3, 4), new Vector2(4, 4),
+            new Vector2(4, 3), new Vector2(4, 2), new Vector2(4, 1), new Vector2(4, 0), new Vector2(5, 0),
+            new Vector2(6, 0), new Vector2(6, 1), new Vector2(6, 2), new Vector2(6, 3), new Vector2(6, 4),
+            new Vector2(7, 4), new Vector2(8, 4), new Vector2(9, 4), new Vector2(10, 4), new Vector2(10, 5),
+            new Vector2(10, 6), new Vector2(9, 6), new Vector2(8, 6), new Vector2(7, 6), new Vector2(6, 6),
+            new Vector2(6, 7), new Vector2(6, 8), new Vector2(6, 9), new Vector2(6, 10), new Vector2(5, 10),
+            new Vector2(4, 10), new Vector2(4, 9), new Vector2(4, 8), new Vector2(4, 7), new Vector2(4, 6),
+            new Vector2(3, 6), new Vector2(2, 6), new Vector2(1, 6), new Vector2(0, 6), new Vector2(0, 5),
+            new Vector2(1, 5), new Vector2(2, 5), new Vector2(3, 5), new Vector2(4, 5), new Vector2(5, 5)
+        };
+
+        public List<Vector2> BluePath = new List<Vector2>()
+        {
+            new Vector2(6, 0), new Vector2(6, 1), new Vector2(6, 2), new Vector2(6, 3), new Vector2(6, 4),
+            new Vector2(7, 4), new Vector2(8, 4), new Vector2(9, 4), new Vector2(10, 4), new Vector2(10, 5),
+            new Vector2(10, 6), new Vector2(9, 6), new Vector2(8, 6), new Vector2(7, 6), new Vector2(6, 6),
+            new Vector2(6, 7), new Vector2(6, 8), new Vector2(6, 9), new Vector2(6, 10), new Vector2(5, 10),
+            new Vector2(4, 10), new Vector2(4, 9), new Vector2(4, 8), new Vector2(4, 7), new Vector2(4, 6),
+            new Vector2(3, 6), new Vector2(2, 6), new Vector2(1, 6), new Vector2(0, 6), new Vector2(0, 5),
+            new Vector2(0, 4), new Vector2(1, 4), new Vector2(2, 4), new Vector2(3, 4), new Vector2(4, 4),
+            new Vector2(4, 3), new Vector2(4, 2), new Vector2(4, 1), new Vector2(4, 0), new Vector2(5, 0),
+            new Vector2(5, 1), new Vector2(5, 2), new Vector2(5, 3), new Vector2(5, 4), new Vector2(5, 5)
+        };
+
+        public List<Vector2> YellowPath = new List<Vector2>()
+        {
+            new Vector2(10, 6), new Vector2(9, 6), new Vector2(8, 6), new Vector2(7, 6), new Vector2(6, 6),
+            new Vector2(6, 7), new Vector2(6, 8), new Vector2(6, 9), new Vector2(6, 10), new Vector2(5, 10),
+            new Vector2(4, 10), new Vector2(4, 9), new Vector2(4, 8), new Vector2(4, 7), new Vector2(4, 6),
+            new Vector2(3, 6), new Vector2(2, 6), new Vector2(1, 6), new Vector2(0, 6), new Vector2(0, 5),
+            new Vector2(0, 4), new Vector2(1, 4), new Vector2(2, 4), new Vector2(3, 4), new Vector2(4, 4),
+            new Vector2(4, 3), new Vector2(4, 2), new Vector2(4, 1), new Vector2(4, 0), new Vector2(5, 0),
+            new Vector2(6, 0), new Vector2(6, 1), new Vector2(6, 2), new Vector2(6, 3), new Vector2(6, 4),
+            new Vector2(7, 4), new Vector2(8, 4), new Vector2(9, 4), new Vector2(10, 4), new Vector2(10, 5),
+            new Vector2(9, 5), new Vector2(8, 5), new Vector2(7, 5), new Vector2(6, 5), new Vector2(5, 5)
+        };
+
+        public List<Vector2> GreenPath = new List<Vector2>()
+        {
+            new Vector2(4, 10), new Vector2(4, 9), new Vector2(4, 8), new Vector2(4, 7), new Vector2(4, 6),
+            new Vector2(3, 6), new Vector2(2, 6), new Vector2(1, 6), new Vector2(0, 6), new Vector2(0, 5),
+            new Vector2(0, 4), new Vector2(1, 4), new Vector2(2, 4), new Vector2(3, 4), new Vector2(4, 4),
+            new Vector2(4, 3), new Vector2(4, 2), new Vector2(4, 1), new Vector2(4, 0), new Vector2(5, 0),
+            new Vector2(6, 0), new Vector2(6, 1), new Vector2(6, 2), new Vector2(6, 3), new Vector2(6, 4),
+            new Vector2(7, 4), new Vector2(8, 4), new Vector2(9, 4), new Vector2(10, 4), new Vector2(10, 5),
+            new Vector2(10, 6), new Vector2(9, 6), new Vector2(8, 6), new Vector2(7, 6), new Vector2(6, 6),
+            new Vector2(6, 7), new Vector2(6, 8), new Vector2(6, 9), new Vector2(6, 10), new Vector2(5, 10),
+            new Vector2(5, 9), new Vector2(5, 8), new Vector2(5, 7), new Vector2(5, 6), new Vector2(5, 5)
+        };
 
         public LudoBoard()
         {

@@ -131,7 +131,7 @@ namespace LudoLike
             // Test drawing pengs
             foreach (KeyValuePair<Vector2, Rect> tileHolder in Board.TileGrid)
             {
-                drawArgs.DrawingSession.DrawText($"{tileHolder.Key.X}, {tileHolder.Key.Y}", new Vector2((float)tileHolder.Value.X, (float)tileHolder.Value.Y), Windows.UI.Colors.Black);
+                drawArgs.DrawingSession.DrawText($"({tileHolder.Key.X}, {tileHolder.Key.Y})", new Vector2((float)tileHolder.Value.X, (float)tileHolder.Value.Y), Windows.UI.Colors.Black);
             }
             //args.DrawingSession.DrawImage(Scaling.TransformImage(BG));
             //_gameStateManager.Draw(args);
