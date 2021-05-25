@@ -124,6 +124,7 @@
     <Compile Include="Classes\Dice.cs" />
     <Compile Include="Classes\GameStateManager.cs" />
     <Compile Include="Classes\LudoBoard.cs" />
+    <Compile Include="Classes\TestTile.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
@@ -150,7 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Images\BluePiece.png" />
-    <Content Include="Assets\Images\bluetile.png" />
+    <Content Include="Assets\Images\Tiles\bluetile.png" />
     <Content Include="Assets\Images\Die1.png" />
     <Content Include="Assets\Images\Die2.png" />
     <Content Include="Assets\Images\Die3.png" />
@@ -158,17 +159,17 @@
     <Content Include="Assets\Images\Die5.png" />
     <Content Include="Assets\Images\Die6.png" />
     <Content Include="Assets\Images\GreenPiece.png" />
-    <Content Include="Assets\Images\greentile.png" />
-    <Content Include="Assets\Images\middletile.png" />
-    <Content Include="Assets\Images\peng.png" />
+    <Content Include="Assets\Images\Tiles\greentile.png" />
+    <Content Include="Assets\Images\Tiles\middletile.png" />
+    <Content Include="Assets\Images\Tiles\peng.png" />
     <Content Include="Assets\Images\RedPiece.png" />
-    <Content Include="Assets\Images\redtile.png" />
-    <Content Include="Assets\Images\regularetile.png" />
+    <Content Include="Assets\Images\Tiles\redtile.png" />
+    <Content Include="Assets\Images\Tiles\regulartile.png" />
     <Content Include="Assets\Images\Spelplan.png" />
     <Content Include="Assets\Images\SpinningDie.png" />
     <Content Include="Assets\Images\TestBackground.png" />
     <Content Include="Assets\Images\YellowPiece.png" />
-    <Content Include="Assets\Images\yellowtile.png" />
+    <Content Include="Assets\Images\Tiles\yellowtile.png" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
