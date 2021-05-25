@@ -159,6 +159,7 @@
     <Content Include="Assets\Images\Die6.png" />
     <Content Include="Assets\Images\GreenPiece.png" />
     <Content Include="Assets\Images\greentile.png" />
+    <Content Include="Assets\Images\middletile.png" />
     <Content Include="Assets\Images\peng.png" />
     <Content Include="Assets\Images\RedPiece.png" />
     <Content Include="Assets\Images\redtile.png" />
