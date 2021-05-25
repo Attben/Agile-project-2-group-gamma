@@ -3,14 +3,17 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 
 namespace LudoLike
 {
-    class Piece
+    public class Piece
     {
-        public Tile position;
+        public Vector2 startPosition;
+        public Vector2 position;
         private CanvasBitmap _pieceImage;
 
         public static CanvasBitmap Red;
@@ -19,9 +22,10 @@ namespace LudoLike
         public static CanvasBitmap Green;
 
 
-        public Piece(Tile startPostition, PlayerColors colors)
+        public Piece(Vector2 startPostition, PlayerColors colors)
         {
-            position = startPostition;
+            startPosition = startPostition;
+            position = startPosition;
             PieceColor(colors);
         }
 
@@ -49,9 +53,9 @@ namespace LudoLike
             }
         }
 
-        public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
+        public void Draw(CanvasAnimatedDrawEventArgs drawArgs, Rect targetRectangle)
         {
-            drawArgs.DrawingSession.DrawImage(_pieceImage, 20, 20); //placeholder position value
+            drawArgs.DrawingSession.DrawImage(_pieceImage, targetRectangle); //placeholder position value
 
         }
     }

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
 
-namespace LudoLike.Classes
+namespace LudoLike
 {
     public class TestTile
     {

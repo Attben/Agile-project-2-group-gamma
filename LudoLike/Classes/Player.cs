@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -8,16 +9,16 @@ namespace LudoLike
 {
     public enum PlayerColors
     {
-        red, green, blue, yellow
+        red, blue, yellow, green
     }
 
-    class Player
+    public class Player
     {
         private int _score;
         public PlayerColors color;
         public List<Piece> pieces;
 
-        public Player(PlayerColors color, Tile board)
+        public Player(PlayerColors color, Vector2 position)
         {
             _score = 0;
             this.color = color;
@@ -25,7 +26,7 @@ namespace LudoLike
 
             for (int i = 0; i < 4; i++)
             {
-                pieces.Add(new Piece(board, color));
+                pieces.Add(new Piece(position, color));
             }
         }
 
@@ -34,12 +35,12 @@ namespace LudoLike
             _score += amount;
         }
 
-        public List<int> ReturnPiecePostitions() // return list of tiles
+        public List<Vector2> ReturnPiecePostitions() // return list of tiles
         {
-            List<int> list = new List<int>();
+            List<Vector2> list = new List<Vector2>();
             foreach (Piece piece in pieces)
             {
-                list.Add(piece.position.index);
+                list.Add(piece.position);
             }
 
             return list;

@@ -1,5 +1,4 @@
-﻿using LudoLike.Classes;
-using Microsoft.Graphics.Canvas;
+﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI;
@@ -55,12 +54,19 @@ namespace LudoLike
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
 
             Scaling.ScalingInit();
-            Board = new LudoBoard();
+            
+            
             ControlProperties(Scaling.bWidth, Scaling.bHeight);
             //_gameStateManager.GameStateInit();
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            int numberOfPlayers = int.Parse(e.Parameter.ToString());
+            _game = new Game(numberOfPlayers);
 
+        }
         private void CanvasCreateResources(
             CanvasAnimatedControl sender,
             CanvasCreateResourcesEventArgs args)
@@ -92,7 +98,7 @@ namespace LudoLike
             Piece.Blue = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BluePiece.png"));
             Piece.Yellow = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/YellowPiece.png"));
             Piece.Green = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/GreenPiece.png"));
-            _piece = new Piece(new Tile(0), 0);
+            //_piece = new Piece(new Vector2 (0, 5), 0);
 
             await LoadTileImages(sender);
         }
@@ -119,19 +125,27 @@ namespace LudoLike
         {
             drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BG));
 
-            Board.Draw(drawArgs);
+            _game._board.Draw(drawArgs);
             drawArgs.DrawingSession.DrawText($"bWidth: {Scaling.bWidth}, bHeight{Scaling.bHeight}", 0, 0, Windows.UI.Colors.Black);
-            drawArgs.DrawingSession.DrawText($"Board X: {Board.MainBoard.X}, Board Y{Board.MainBoard.Y}", 50, 50, Windows.UI.Colors.Black);
+            drawArgs.DrawingSession.DrawText($"Board X: {_game._board.MainBoard.X}, Board Y{_game._board.MainBoard.Y}", 50, 50, Windows.UI.Colors.Black);
             _dice.Draw(drawArgs);
-            _piece.Draw(drawArgs);
+            //_piece.Draw(drawArgs);
 
-            Tiles = new List<TestTile>();
+            _game.Tiles = new List<TestTile>();
             CreateStaticTiles();
             CreateDynamicTiles();
             // Test drawing pengs
-            foreach (TestTile tile in Tiles)
+            foreach (TestTile tile in _game.Tiles)
             {
                 tile.Draw(drawArgs);
+            }
+
+            foreach (Player player in _game._players)
+            {
+                foreach (Piece piece in player.pieces)
+                {
+                    piece.Draw(drawArgs, _game._board.TileGrid[piece.position]);
+                }
             }
             //foreach (KeyValuePair<Vector2, Rect> tileHolder in Board.TileGrid)
             //{
@@ -177,19 +191,19 @@ namespace LudoLike
 
         public void CreateStaticTiles()
         {
-            foreach (KeyValuePair<string, List<Vector2>> staticTiles in Board.StaticTiles)
+            foreach (KeyValuePair<string, List<Vector2>> staticTiles in _game._board.StaticTiles)
             {
                 foreach (Vector2 vector in staticTiles.Value)
                 {
-                    Tiles.Add(new TestTile(Board.TileGrid[vector], TestTile.TileImages[staticTiles.Key]));
+                    _game.Tiles.Add(new TestTile(_game._board.TileGrid[vector], TestTile.TileImages[staticTiles.Key]));
                 }
             }
         }
         public void CreateDynamicTiles()
         {
-            foreach (Vector2 vector in Board.DynamicTiles)
+            foreach (Vector2 vector in _game._board.DynamicTiles)
             {
-                Tiles.Add(new TestTile(Board.TileGrid[vector], TestTile.TileImages["Regular"]));
+                _game.Tiles.Add(new TestTile(_game._board.TileGrid[vector], TestTile.TileImages["Regular"]));
             }
         }
     }
