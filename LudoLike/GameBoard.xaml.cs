@@ -1,4 +1,4 @@
-﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI;
@@ -58,6 +58,7 @@ namespace LudoLike
 
             ControlProperties(Scaling.bWidth, Scaling.bHeight);
             //_gameStateManager.GameStateInit();
+            //Canvas.IsFixedTimeStep = true;
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -185,6 +186,10 @@ namespace LudoLike
         {
             _dice.Roll();
         }
+
+        private void TestMovePiece(object sender, RoutedEventArgs e)
+        {
+            _piece.Move(100f, 100f);
 
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
         {
