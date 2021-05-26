@@ -22,6 +22,7 @@ namespace LudoLike
         {
             _board = new LudoBoard();
             _players = new List<Player>();
+            Tiles = new List<Tile>();
             //AddTiles(42); //Placeholder amount
             //AddPlayers(playerAmount);
         }
@@ -158,39 +159,56 @@ namespace LudoLike
                 }
             }
         }
+
         public void CreateDynamicTiles()
         {
+            Random rng = new Random();
             foreach (Vector2 vector in _board.DynamicTiles)
             {
-                Tiles.Add(new Tile(_board.TileGrid[vector], Tile.TileImages["Regular"]));
+                double tileType = rng.NextDouble();
+                if (tileType < 0.10)
+                {
+                    Tiles.Add(new TeleportTile(_board.TileGrid[vector], _board.TileGrid[vector]));
+                }
+                else if (tileType < 0.20)
+                {
+                    Tiles.Add(new MinigameTile(_board.TileGrid[vector], new Minigame()));
+                }
+                else if (tileType < 0.5)
+                {
+                    Tiles.Add(new ScoreTile(_board.TileGrid[vector], 100));
+                }
+                else
+                {
+                    Tiles.Add(new Tile(_board.TileGrid[vector], Tile.TileImages["Regular"]));
+                }
             }
         }
-
-        //public void TileToNormal(int index)
-        //{
-        //    _board[index] = new Tile(index);
-        //    _players[turn].pieces[**piece above**].position = _board[index]; //100 is a placeholder //idk how to get right piece
-        //}
-
-        //for testing purposes
-        //public bool Test()
-        //{
-        //    AddTiles(20);
-        //    AddPlayers(4);
-        //    //10
-        //    _players[0].pieces[0].position = _board[10];
-        //    _players[1].pieces[0].position = _board[10];
-
-        //    CheckTiles();
-
-        //    if (_players[1].pieces[0].position == _board[10])
-        //    {
-        //        return false;
-        //    }
-
-        //    return true;
-        //}
     }
 
+    //public void TileToNormal(int index)
+    //{
+    //    _board[index] = new Tile(index);
+    //    _players[turn].pieces[**piece above**].position = _board[index]; //100 is a placeholder //idk how to get right piece
+    //}
 
+    //for testing purposes
+    //public bool Test()
+    //{
+    //    AddTiles(20);
+    //    AddPlayers(4);
+    //    //10
+    //    _players[0].pieces[0].position = _board[10];
+    //    _players[1].pieces[0].position = _board[10];
+
+    //    CheckTiles();
+
+    //    if (_players[1].pieces[0].position == _board[10])
+    //    {
+    //        return false;
+    //    }
+
+    //    return true;
+    //}
 }
+

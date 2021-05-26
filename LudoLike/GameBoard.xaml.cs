@@ -67,6 +67,7 @@ namespace LudoLike
             NumberOfPlayers = int.Parse(e.Parameter.ToString());
             _game = new Game();
         }
+
         private void CanvasCreateResources(
             CanvasAnimatedControl sender,
             CanvasCreateResourcesEventArgs args)
@@ -99,10 +100,12 @@ namespace LudoLike
             Piece.Blue = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BluePiece.png"));
             Piece.Yellow = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/YellowPiece.png"));
             Piece.Green = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/GreenPiece.png"));
-            _game.AddPlayers(NumberOfPlayers);
-            //_piece = new Piece(new Vector2 (0, 5), 0);
-
             await LoadTileImages(sender);
+            
+            _game.AddPlayers(NumberOfPlayers);
+            _game.CreateStaticTiles();
+            _game.CreateDynamicTiles();
+
         }
 
         async Task LoadTileImages(CanvasAnimatedControl sender)
@@ -113,6 +116,9 @@ namespace LudoLike
             Tile.TileImages["Green"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/greentile.png"));
             Tile.TileImages["Middle"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/middletile.png"));
             Tile.TileImages["Regular"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/regulartile.png"));
+            Tile.TileImages["Teleport"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/teleporttile.png"));
+            Tile.TileImages["MiniGame"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/gametile.png"));
+            Tile.TileImages["Score"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/peng.png"));
         }
 
         private void CurrentSizeChanged(object sender, WindowSizeChangedEventArgs e)
@@ -125,6 +131,7 @@ namespace LudoLike
             ICanvasAnimatedControl sender,
             CanvasAnimatedDrawEventArgs drawArgs)
         {
+            
             drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BG));
 
             _game._board.Draw(drawArgs);
@@ -133,10 +140,7 @@ namespace LudoLike
             _dice.Draw(drawArgs);
             //_piece.Draw(drawArgs);
 
-            _game.Tiles = new List<Tile>();
-            _game.CreateStaticTiles();
-            _game.CreateDynamicTiles();
-
+            
             // Test drawing pengs
             foreach (Tile tile in _game.Tiles)
             {
