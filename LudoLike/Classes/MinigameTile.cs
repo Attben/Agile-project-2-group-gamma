@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Graphics.Canvas;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 
 namespace LudoLike
 {
@@ -10,10 +12,9 @@ namespace LudoLike
     {
         private Minigame _minigame;
 
-        public MinigameTile(Minigame game, int index) : base(index)
+        public MinigameTile(Rect targetRectangle, CanvasBitmap tileImage, Minigame game) : base(targetRectangle, tileImage)
         {
             _minigame = game;
-            this.index = index;
         }
 
         public override void TileEvent()

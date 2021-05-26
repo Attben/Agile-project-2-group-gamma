@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.Graphics.Canvas;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 
 namespace LudoLike
 {
@@ -10,10 +12,9 @@ namespace LudoLike
     {
         private int _amount;
 
-        public ScoreTile(int points, int index) : base(index)
+        public ScoreTile(Rect targetRectangle, CanvasBitmap tileImage, int points) : base(targetRectangle, tileImage)
         {
             _amount = points;
-            this.index = index;
         }
 
         public override void TileEvent()

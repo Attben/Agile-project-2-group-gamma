@@ -36,14 +36,11 @@ namespace LudoLike
 
         private void StartGame(object sender, RoutedEventArgs e)
         {
-            Game game = new Game((int)this._slider.Value);
-            
+
             double text = this._slider.Value;
             string ok = "0";
-            game.AddPlayers(int.Parse(text.ToString(ok)));
-            
             //switch page
-            this.Frame.Navigate(typeof(MainPage));
+            this.Frame.Navigate(typeof(MainPage), _slider.Value);
         }
     }
 }
