@@ -29,6 +29,7 @@ namespace LudoLike
 
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
         {
+
             if (_animationTimer == 0)
             {
                 drawArgs.DrawingSession.DrawImage(CurrentDieImage, 200, 200);
