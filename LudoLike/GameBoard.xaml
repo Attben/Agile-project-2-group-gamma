@@ -1,4 +1,4 @@
-﻿<Page
+<Page
     x:Class="LudoLike.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
@@ -17,7 +17,8 @@
             PointerPressed="CanvasPointerPressed"
             Update="CanvasUpdate" Loaded="Canvas_Loaded"/>
 
-        <Button Content="Roll die" Height="200" Width="200" Margin="1150,650,0,0" Click="RollDie" VerticalAlignment="Top"  HorizontalAlignment="left"/>
+        <Button Content="Roll die" Height="125" Margin="204,770,0,0" VerticalAlignment="Top" Width="738" Click="RollDie"/>
+        <Button Content="Move" Height="125" Margin="1072,770,0,0" VerticalAlignment="Top" Width="165" Click="TestMovePiece"/>
     </Grid>
 
 </Page>

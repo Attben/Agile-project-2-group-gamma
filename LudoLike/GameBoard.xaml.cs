@@ -1,4 +1,4 @@
-﻿using LudoLike.Classes;
+using LudoLike.Classes;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Effects;
@@ -58,6 +58,7 @@ namespace LudoLike
             Board = new LudoBoard();
             ControlProperties(Scaling.bWidth, Scaling.bHeight);
             //_gameStateManager.GameStateInit();
+            //Canvas.IsFixedTimeStep = true;
         }
 
 
@@ -170,6 +171,10 @@ namespace LudoLike
             _dice.Roll();
         }
 
+        private void TestMovePiece(object sender, RoutedEventArgs e)
+        {
+            _piece.Move(100f, 100f);
+
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -185,6 +190,7 @@ namespace LudoLike
                 }
             }
         }
+        
         public void CreateDynamicTiles()
         {
             foreach (Vector2 vector in Board.DynamicTiles)
