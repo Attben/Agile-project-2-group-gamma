@@ -18,6 +18,9 @@ namespace LudoLike
         public static CanvasBitmap Yellow;
         public static CanvasBitmap Green;
 
+        private float xpos = 20.0f;
+        private float ypos = 20.0f;
+
 
         public Piece(Tile startPostition, PlayerColors colors)
         {
@@ -25,9 +28,15 @@ namespace LudoLike
             PieceColor(colors);
         }
 
-        public void Move()
+        public void Move(float targetX, float targetY)
         {
-            //NYI
+            float xDiff = targetX - xpos;
+            float yDiff = targetY - ypos;
+            for (float i = xDiff; i > 0.0f; i--)
+            {
+                xpos += 1f;
+                ypos += 1f;
+            }
         }
 
         public void PieceColor(PlayerColors color)
@@ -51,7 +60,7 @@ namespace LudoLike
 
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
         {
-            drawArgs.DrawingSession.DrawImage(_pieceImage, 20, 20); //placeholder position value
+            drawArgs.DrawingSession.DrawImage(_pieceImage, xpos, ypos); //placeholder position value
 
         }
     }

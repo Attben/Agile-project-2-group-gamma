@@ -58,6 +58,7 @@ namespace LudoLike
             Board = new LudoBoard();
             ControlProperties(Scaling.bWidth, Scaling.bHeight);
             //_gameStateManager.GameStateInit();
+            //Canvas.IsFixedTimeStep = true;
         }
 
 
@@ -153,6 +154,10 @@ namespace LudoLike
         private void RollDie(object sender, RoutedEventArgs e)
         {
             _dice.Roll();
+        }
+        private void TestMovePiece(object sender, RoutedEventArgs e)
+        {
+            _piece.Move(100f, 100f);
         }
     }
 }
