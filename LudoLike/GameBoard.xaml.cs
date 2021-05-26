@@ -191,9 +191,17 @@ namespace LudoLike
 
         private void TestMovePiece(object sender, RoutedEventArgs e)
         {
+            int nextPosition = 0;
             // Detta måste anpassas till den nya tilegridlogiken
             //_piece.Move(100f, 100f);
-            _game._players[0].pieces[0].Move(_game._board.RedPath[2]);
+            foreach (Vector2 tile in _game._board.RedPath)
+            {
+                if (_game._players[0].pieces[0].position == tile)
+                {
+                    nextPosition = _game._board.RedPath.IndexOf(tile);
+                }
+            }
+            _game._players[0].pieces[0].Move(_game._board.RedPath[nextPosition + 1]);
         }
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
         {
