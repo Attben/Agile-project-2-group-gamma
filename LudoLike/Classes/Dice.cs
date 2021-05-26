@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 
 namespace LudoLike
 {
@@ -14,6 +15,9 @@ namespace LudoLike
         private int _min, _max; //Range of possible values when rolling this die.
         private CanvasBitmap CurrentDieImage;
         private Random _prng;
+        private float _diceWidth = 200;
+        private float _diceHeight = 200;
+        private Rect _diceHolder;
 
         //Possible improvement: Support rendering of arbitrary values (currently only works with 1-6).
         public static readonly CanvasBitmap[] DiceImages = new CanvasBitmap[6];
@@ -29,14 +33,14 @@ namespace LudoLike
 
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
         {
-
+            _diceHolder = new Rect(Scaling.bWidth - Scaling.Xpos(_diceWidth * 2), Scaling.bHeight - Scaling.Ypos(_diceHeight * 4), Scaling.Xpos(200), Scaling.Ypos(200));
             if (_animationTimer == 0)
             {
-                drawArgs.DrawingSession.DrawImage(CurrentDieImage, 200, 200);
+                drawArgs.DrawingSession.DrawImage(CurrentDieImage, _diceHolder);
             }
             else
             {
-                drawArgs.DrawingSession.DrawImage(Dice.SpinningDieImage, 200, 200);
+                drawArgs.DrawingSession.DrawImage(Dice.SpinningDieImage, _diceHolder);
                 --_animationTimer;
             }
         }
