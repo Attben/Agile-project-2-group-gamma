@@ -99,6 +99,7 @@ namespace LudoLike
             Piece.Blue = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BluePiece.png"));
             Piece.Yellow = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/YellowPiece.png"));
             Piece.Green = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/GreenPiece.png"));
+            _game.AddPlayers(NumberOfPlayers);
             //_piece = new Piece(new Vector2 (0, 5), 0);
 
             await LoadTileImages(sender);
@@ -124,7 +125,6 @@ namespace LudoLike
             ICanvasAnimatedControl sender,
             CanvasAnimatedDrawEventArgs drawArgs)
         {
-            _game.AddPlayers(NumberOfPlayers);
             drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BG));
 
             _game._board.Draw(drawArgs);
@@ -191,6 +191,7 @@ namespace LudoLike
         {
             // Detta måste anpassas till den nya tilegridlogiken
             //_piece.Move(100f, 100f);
+            _game._players[0].pieces[0].Move(_game._board.RedPath[2]);
         }
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
         {
