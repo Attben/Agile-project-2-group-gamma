@@ -189,8 +189,9 @@ namespace LudoLike
 
         private void TestMovePiece(object sender, RoutedEventArgs e)
         {
-            _piece.Move(100f, 100f);
-
+            // Detta måste anpassas till den nya tilegridlogiken
+            //_piece.Move(100f, 100f);
+        }
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
         {
 
