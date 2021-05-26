@@ -33,16 +33,16 @@ namespace LudoLike
                 switch (i)
                 {
                     case 0:
-                        _players.Add(new Player(PlayerColors.red, _board.NestTiles["Red"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Red, _board.NestTiles["Red"])); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 1:
-                        _players.Add(new Player(PlayerColors.blue, _board.NestTiles["Blue"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Blue, _board.NestTiles["Blue"])); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 2:
-                        _players.Add(new Player(PlayerColors.yellow, _board.NestTiles["Yellow"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Yellow, _board.NestTiles["Yellow"])); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 3:
-                        _players.Add(new Player(PlayerColors.green, _board.NestTiles["Green"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Green, _board.NestTiles["Green"])); // assumes first four tiles are Home/Nests tiles
                         break;
 
                 }
