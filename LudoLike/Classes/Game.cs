@@ -101,6 +101,24 @@ namespace LudoLike
             //method to change color and visuals/ maybe
         }
 
+        public void CreateStaticTiles()
+        {
+            foreach (KeyValuePair<string, List<Vector2>> staticTiles in _board.StaticTiles)
+            {
+                foreach (Vector2 vector in staticTiles.Value)
+                {
+                    Tiles.Add(new Tile(_board.TileGrid[vector], Tile.TileImages[staticTiles.Key]));
+                }
+            }
+        }
+        public void CreateDynamicTiles()
+        {
+            foreach (Vector2 vector in _board.DynamicTiles)
+            {
+                Tiles.Add(new Tile(_board.TileGrid[vector], Tile.TileImages["Regular"]));
+            }
+        }
+
         //public void TileToNormal(int index)
         //{
         //    _board[index] = new Tile(index);

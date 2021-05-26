@@ -133,8 +133,8 @@ namespace LudoLike
             //_piece.Draw(drawArgs);
 
             _game.Tiles = new List<Tile>();
-            CreateStaticTiles();
-            CreateDynamicTiles();
+            _game.CreateStaticTiles();
+            _game.CreateDynamicTiles();
 
             // Test drawing pengs
             foreach (Tile tile in _game.Tiles)
@@ -191,22 +191,6 @@ namespace LudoLike
 
         }
 
-        public void CreateStaticTiles()
-        {
-            foreach (KeyValuePair<string, List<Vector2>> staticTiles in _game._board.StaticTiles)
-            {
-                foreach (Vector2 vector in staticTiles.Value)
-                {
-                    _game.Tiles.Add(new Tile(_game._board.TileGrid[vector], Tile.TileImages[staticTiles.Key]));
-                }
-            }
-        }
-        public void CreateDynamicTiles()
-        {
-            foreach (Vector2 vector in _game._board.DynamicTiles)
-            {
-                _game.Tiles.Add(new Tile(_game._board.TileGrid[vector], Tile.TileImages["Regular"]));
-            }
-        }
+
     }
 }
