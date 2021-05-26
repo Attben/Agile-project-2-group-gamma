@@ -20,7 +20,7 @@ namespace LudoLike
         public Windows.UI.Color UIcolor;
         public List<Piece> pieces;
 
-        public Player(PlayerColors color, Vector2 position)
+        public Player(PlayerColors color, List<Vector2> startPositions)
         {
             Score = 0;
             this.PlayerColor = color;
@@ -45,7 +45,7 @@ namespace LudoLike
 
             for (int i = 0; i < 4; i++)
             {
-                pieces.Add(new Piece(position, color));
+                pieces.Add(new Piece(startPositions[i], color));
             }
         }
 

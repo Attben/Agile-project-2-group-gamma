@@ -9,7 +9,7 @@ using Windows.Foundation;
 
 namespace LudoLike
 {
-    
+
     public class LudoBoard
     {
         public float BoardWidth = 800;
@@ -20,6 +20,15 @@ namespace LudoLike
         public Rect BlueNest;
         public Rect YellowNest;
         public Rect GreenNest;
+
+        public Dictionary<string, List<Vector2>> NestTiles = new Dictionary<string, List<Vector2>>() 
+        {
+            { "Red", new List<Vector2>() { new Vector2(0,0), new Vector2(0,1), new Vector2(1,0), new Vector2(1,1) } },
+            { "Blue", new List<Vector2>() { new Vector2(10, 0), new Vector2(10, 1), new Vector2(9, 0), new Vector2(9, 1) } },
+            { "Yellow", new List<Vector2>() { new Vector2(10, 10), new Vector2(10, 9), new Vector2(9, 10), new Vector2(9, 9) } },
+            { "Green",  new List<Vector2>() { new Vector2(0, 10), new Vector2(0, 9), new Vector2(1, 10), new Vector2(1, 9) } }
+        };
+
         public Dictionary<Vector2, Rect> TileGrid = new Dictionary<Vector2, Rect>();
 
         public List<Vector2> DynamicTiles = new List<Vector2>()
@@ -177,25 +186,12 @@ namespace LudoLike
         {
             for (int row = 0; row < 11; row++)
             {
-                if( row < 4 || row > 6)
+                for (int column = 0; column < 11; column++)
                 {
-                    for (int column = 4; column < 7; column++)
-                    {
-                        TileGrid[new Vector2(row, column)] = new Rect(MainBoard.X + (MainBoard.Width / 11 * column) + 2.5, 
-                                                                      MainBoard.Y + (MainBoard.Height / 11 * row) + 2.5, 
-                                                                      MainBoard.Width / 11 - 5, 
-                                                                      MainBoard.Height / 11 - 5);
-                    }
-                }
-                else
-                {
-                    for (int column = 0; column < 11; column++)
-                    {
-                        TileGrid[new Vector2(row, column)] = new Rect(MainBoard.X + (MainBoard.Width / 11 * column) + 2.5, 
-                                                                      MainBoard.Y + (MainBoard.Height / 11 * row) + 2.5, 
-                                                                      MainBoard.Width / 11 - 5, 
-                                                                      MainBoard.Height / 11 - 5);
-                    }
+                    TileGrid[new Vector2(row, column)] = new Rect(MainBoard.X + (MainBoard.Width / 11 * column) + 2.5, 
+                                                                    MainBoard.Y + (MainBoard.Height / 11 * row) + 2.5, 
+                                                                    MainBoard.Width / 11 - 5, 
+                                                                    MainBoard.Height / 11 - 5);
                 }
             }
         }

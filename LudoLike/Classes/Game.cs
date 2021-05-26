@@ -33,16 +33,16 @@ namespace LudoLike
                 switch (i)
                 {
                     case 0:
-                        _players.Add(new Player(PlayerColors.Red, _board.RedPath[0])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.red, _board.NestTiles["Red"])); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 1:
-                        _players.Add(new Player(PlayerColors.Blue, _board.BluePath[0])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.blue, _board.NestTiles["Blue"])); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 2:
-                        _players.Add(new Player(PlayerColors.Yellow, _board.YellowPath[0])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.yellow, _board.NestTiles["Yellow"])); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 3:
-                        _players.Add(new Player(PlayerColors.Green, _board.GreenPath[0])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.green, _board.NestTiles["Green"])); // assumes first four tiles are Home/Nests tiles
                         break;
 
                 }
@@ -88,7 +88,7 @@ namespace LudoLike
                             if (piece.position == same[0])
                             {
                                 //moves piece to nest/home
-                                piece.position = piece.startPosition; // might wanna use the move method of piece when implemented
+                                piece.position = piece.StartPosition; // might wanna use the move method of piece when implemented
                                 _players[turn].ChangeScore(100); //100 points is placeholder
                                 _players[i].ChangeScore(-100);
                             }

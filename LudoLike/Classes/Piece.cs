@@ -12,7 +12,7 @@ namespace LudoLike
 {
     public class Piece
     {
-        public Vector2 startPosition;
+        public Vector2 StartPosition;
         public Vector2 position;
         public CanvasBitmap _pieceImage;
 
@@ -25,8 +25,8 @@ namespace LudoLike
 
         public Piece(Vector2 startPostition, PlayerColors colors)
         {
-            startPosition = startPostition;
-            position = startPosition;
+            StartPosition = startPostition;
+            position = startPostition;
             PieceColor(colors);
         }
 
