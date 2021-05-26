@@ -143,6 +143,8 @@ namespace LudoLike
                 tile.Draw(drawArgs);
             }
 
+            _game.Draw(drawArgs);
+
             foreach (Player player in _game._players)
             {
                 foreach (Piece piece in player.pieces)

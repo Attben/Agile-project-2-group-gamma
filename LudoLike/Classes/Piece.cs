@@ -39,16 +39,16 @@ namespace LudoLike
         {
             switch (color)
             {
-                case PlayerColors.red:
+                case PlayerColors.Red:
                     _pieceImage = Red;
                     break;
-                case PlayerColors.blue:
+                case PlayerColors.Blue:
                     _pieceImage = Blue;
                     break;
-                case PlayerColors.yellow:
+                case PlayerColors.Yellow:
                     _pieceImage = Yellow;
                     break;
-                case PlayerColors.green:
+                case PlayerColors.Green:
                     _pieceImage = Green;
                     break;
             }
