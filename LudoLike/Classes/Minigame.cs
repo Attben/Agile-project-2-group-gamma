@@ -8,5 +8,9 @@ namespace LudoLike
 {
     class Minigame
     {
+        public Minigame()
+        {
+
+        }
     }
 }

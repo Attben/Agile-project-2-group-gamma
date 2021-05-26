@@ -1,4 +1,5 @@
 ﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,14 +14,21 @@ namespace LudoLike
     {
         private Rect _destinationTile;
 
-        public TeleportTile(Rect targetRectangle, CanvasBitmap tileImage, Rect destination) : base(targetRectangle, tileImage)
+        public TeleportTile(Rect targetRectangle, Rect destination) : base(targetRectangle)
         {
             _destinationTile = destination;
+            TileImage = TileImages["Teleport"];
         }
 
         public override void TileEvent()
         {
             //Do something to transport a Player to _destinationTile.
+        }
+
+        public override void Draw(CanvasAnimatedDrawEventArgs drawArgs)
+        {
+            base.Draw(drawArgs);
+            drawArgs.DrawingSession.DrawImage(TileImage, TargetRectangle);
         }
     }
 }

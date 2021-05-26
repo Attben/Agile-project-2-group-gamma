@@ -21,14 +21,19 @@ namespace LudoLike
             TargetRectangle = targetRectangle;
         }
 
+        public Tile(Rect targetRectangle)
+        {
+            TargetRectangle = targetRectangle;
+        }
+
         public virtual void TileEvent()
         {
             //Intentionally left blank in base class.
         }
 
-        public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
+        public virtual void Draw(CanvasAnimatedDrawEventArgs drawArgs)
         {
-            drawArgs.DrawingSession.DrawImage(TileImage, TargetRectangle);
+            drawArgs.DrawingSession.DrawImage(TileImages["Regular"], TargetRectangle);
         }
     }
 }

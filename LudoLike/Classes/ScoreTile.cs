@@ -1,4 +1,5 @@
 ﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,9 +13,10 @@ namespace LudoLike
     {
         private int _amount;
 
-        public ScoreTile(Rect targetRectangle, CanvasBitmap tileImage, int points) : base(targetRectangle, tileImage)
+        public ScoreTile(Rect targetRectangle, int points) : base(targetRectangle)
         {
             _amount = points;
+            TileImage = TileImages["Score"];
         }
 
         public override void TileEvent()
@@ -26,6 +28,12 @@ namespace LudoLike
         {
             //Do something with _amount
             player.ChangeScore(_amount);
+        }
+
+        public override void Draw(CanvasAnimatedDrawEventArgs drawArgs)
+        {
+            base.Draw(drawArgs);
+            drawArgs.DrawingSession.DrawImage(TileImage, TargetRectangle);
         }
     }
 }

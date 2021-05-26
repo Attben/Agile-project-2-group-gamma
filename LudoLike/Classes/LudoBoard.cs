@@ -115,7 +115,7 @@ namespace LudoLike
             BlueNest = new Rect(MainBoard.Left, MainBoard.Bottom - MainBoard.Height / 11 * 4, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
             YellowNest = new Rect(MainBoard.Right - MainBoard.Width / 11 * 4, MainBoard.Bottom - MainBoard.Height / 11 * 4, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
             GreenNest = new Rect(MainBoard.Right - MainBoard.Width / 11 * 4, MainBoard.Top, MainBoard.Width / 11 * 4, MainBoard.Height / 11 * 4);
-
+            CreateTileGrid();
         }
 
         /// <summary>
@@ -129,7 +129,6 @@ namespace LudoLike
                             Scaling.Xpos(BoardWidth),
                             Scaling.Ypos(BoardHeight));
             args.DrawingSession.FillRectangle(MainBoard, Windows.UI.Colors.White);
-            CreateTileGrid();
             DrawNests(args);
             
         }

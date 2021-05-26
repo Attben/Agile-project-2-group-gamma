@@ -1,4 +1,5 @@
 ﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace LudoLike
     {
         private Minigame _minigame;
 
-        public MinigameTile(Rect targetRectangle, CanvasBitmap tileImage, Minigame game) : base(targetRectangle, tileImage)
+        public MinigameTile(Rect targetRectangle, Minigame game) : base(targetRectangle)
         {
             _minigame = game;
         }
@@ -20,6 +21,12 @@ namespace LudoLike
         public override void TileEvent()
         {
             //Do something to start the _minigame.
+        }
+
+        public override void Draw(CanvasAnimatedDrawEventArgs drawArgs)
+        {
+            base.Draw(drawArgs);
+            drawArgs.DrawingSession.DrawImage(TileImages["MiniGame"], TargetRectangle);
         }
     }
 }
