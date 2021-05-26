@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Graphics.Canvas.UI.Xaml;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -9,19 +10,37 @@ namespace LudoLike
 {
     public enum PlayerColors
     {
-        red, blue, yellow, green
+        Red, Blue, Yellow, Green
     }
 
     public class Player
     {
-        private int _score;
-        public PlayerColors color;
+        public int Score { get; private set; }
+        public PlayerColors PlayerColor;
+        public Windows.UI.Color UIcolor;
         public List<Piece> pieces;
 
         public Player(PlayerColors color, List<Vector2> startPositions)
         {
-            _score = 0;
-            this.color = color;
+            Score = 0;
+            this.PlayerColor = color;
+
+            switch (color)
+            {
+                case PlayerColors.Red:
+                    UIcolor = Windows.UI.Colors.Red;
+                    break;
+                case PlayerColors.Green:
+                    UIcolor = Windows.UI.Colors.LawnGreen;
+                    break;
+                case PlayerColors.Blue:
+                    UIcolor = Windows.UI.Colors.Blue;
+                    break;
+                case PlayerColors.Yellow:
+                    UIcolor = Windows.UI.Colors.Yellow;
+                    break;
+            }
+
             pieces = new List<Piece>();
 
             for (int i = 0; i < 4; i++)
@@ -32,7 +51,12 @@ namespace LudoLike
 
         public void ChangeScore(int amount)
         {
-            _score += amount;
+            Score += amount;
+        }
+
+        public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
+        {
+            //TODO: Move player drawing here.
         }
 
         public List<Vector2> ReturnPiecePostitions() // return list of tiles

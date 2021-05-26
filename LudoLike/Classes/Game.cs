@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using System.Numerics;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using Microsoft.Graphics.Canvas.Text;
+using Windows.Foundation;
 
 namespace LudoLike
 {
@@ -95,6 +98,44 @@ namespace LudoLike
             }
         }
 
+        public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
+        {
+            DrawScore(drawArgs);
+            foreach (Player player in _players)
+            {
+                player.Draw(drawArgs);
+            }
+        }
+
+        private void DrawScore(CanvasAnimatedDrawEventArgs drawArgs)
+        {
+            //todo: Initialize ScoreBox and formatting _once_ instead of on every update.
+            var textFormat = new CanvasTextFormat()
+            {
+                FontFamily = "Helvetica",
+                FontSize = 30,
+                FontWeight = Windows.UI.Text.FontWeights.Bold
+            };
+            Rect ScoreBox = new Rect
+            {
+                //Arbitrary values. Todo: Scale with window size.
+                X = 30,
+                Y = 30,
+                Width = 175,
+                Height = 6 * textFormat.FontSize
+            };
+
+            drawArgs.DrawingSession.FillRoundedRectangle(
+                ScoreBox, 10, 10, Windows.UI.Colors.DarkGray); //10, 10 are x- and y-radii for rounded corners
+            for (int n = 0; n < _players.Count; ++n)
+            {
+                drawArgs.DrawingSession.DrawText(
+                    $"{_players[n].PlayerColor}: {_players[n].Score}",
+                    (float)ScoreBox.X + 30f,
+                    (float)ScoreBox.Y + textFormat.FontSize * (n + 1),
+                    _players[n].UIcolor);
+            }
+        }
 
         public void NextTurn()
         {

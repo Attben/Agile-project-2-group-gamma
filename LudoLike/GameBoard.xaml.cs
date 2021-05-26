@@ -93,7 +93,7 @@ namespace LudoLike
                 Dice.DiceImages[n] = await CanvasBitmap.LoadAsync(sender, new Uri($"ms-appx:///Assets/Images/Die{n + 1}.png"));
             }
             Dice.SpinningDieImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/SpinningDie.png"));
-            _dice = new Dice(1, 6);
+            _dice = new Dice(0, 6);
 
             Piece.Red = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RedPiece.png"));
             Piece.Blue = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BluePiece.png"));
@@ -142,6 +142,8 @@ namespace LudoLike
             {
                 tile.Draw(drawArgs);
             }
+
+            _game.Draw(drawArgs);
 
             foreach (Player player in _game._players)
             {
