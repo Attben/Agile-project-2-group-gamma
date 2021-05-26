@@ -12,7 +12,7 @@ namespace LudoLike
     {
         public List<Player> _players;
         public LudoBoard _board;
-        public List<TestTile> Tiles;
+        public List<Tile> Tiles;
         private int turn = 0;
 
         public Game()

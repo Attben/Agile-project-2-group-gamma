@@ -1,19 +1,24 @@
-﻿using Microsoft.Graphics.Canvas.UI.Xaml;
+﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 
 namespace LudoLike
 {
-    class Tile
+    public class Tile
     {
-        public int index;
+        public static Dictionary<string, CanvasBitmap> TileImages = new Dictionary<string, CanvasBitmap>();
+        public CanvasBitmap TileImage;
+        public Rect TargetRectangle;
 
-        public Tile(int index)
+        public Tile(Rect targetRectangle, CanvasBitmap tileImage)
         {
-            this.index = index;
+            TileImage = tileImage;
+            TargetRectangle = targetRectangle;
         }
 
         public virtual void TileEvent()
@@ -23,7 +28,7 @@ namespace LudoLike
 
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
         {
-
+            drawArgs.DrawingSession.DrawImage(TileImage, TargetRectangle);
         }
     }
 }

@@ -1,19 +1,21 @@
-﻿using System;
+﻿using Microsoft.Graphics.Canvas;
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Foundation;
 
 namespace LudoLike
 {
     class TeleportTile : Tile
     {
-        private Tile _destinationTile;
+        private Rect _destinationTile;
 
-        public TeleportTile(Tile destination, int index) : base(index)
+        public TeleportTile(Rect targetRectangle, CanvasBitmap tileImage, Rect destination) : base(targetRectangle, tileImage)
         {
             _destinationTile = destination;
-            this.index = index;
         }
 
         public override void TileEvent()

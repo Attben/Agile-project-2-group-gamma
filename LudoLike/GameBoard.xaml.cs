@@ -35,7 +35,7 @@ namespace LudoLike
         public int NumberOfPlayers;
 
         public static CanvasBitmap BG;
-        public List<TestTile> Tiles;
+        public List<Tile> Tiles;
 
         //public LudoBoard Board;
 
@@ -105,12 +105,12 @@ namespace LudoLike
 
         async Task LoadTileImages(CanvasAnimatedControl sender)
         {
-            TestTile.TileImages["Red"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/redtile.png"));
-            TestTile.TileImages["Blue"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/bluetile.png"));
-            TestTile.TileImages["Yellow"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/yellowtile.png"));
-            TestTile.TileImages["Green"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/greentile.png"));
-            TestTile.TileImages["Middle"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/middletile.png"));
-            TestTile.TileImages["Regular"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/regulartile.png"));
+            Tile.TileImages["Red"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/redtile.png"));
+            Tile.TileImages["Blue"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/bluetile.png"));
+            Tile.TileImages["Yellow"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/yellowtile.png"));
+            Tile.TileImages["Green"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/greentile.png"));
+            Tile.TileImages["Middle"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/middletile.png"));
+            Tile.TileImages["Regular"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/regulartile.png"));
         }
 
         private void CurrentSizeChanged(object sender, WindowSizeChangedEventArgs e)
@@ -132,11 +132,12 @@ namespace LudoLike
             _dice.Draw(drawArgs);
             //_piece.Draw(drawArgs);
 
-            _game.Tiles = new List<TestTile>();
+            _game.Tiles = new List<Tile>();
             CreateStaticTiles();
             CreateDynamicTiles();
+
             // Test drawing pengs
-            foreach (TestTile tile in _game.Tiles)
+            foreach (Tile tile in _game.Tiles)
             {
                 tile.Draw(drawArgs);
             }
@@ -196,7 +197,7 @@ namespace LudoLike
             {
                 foreach (Vector2 vector in staticTiles.Value)
                 {
-                    _game.Tiles.Add(new TestTile(_game._board.TileGrid[vector], TestTile.TileImages[staticTiles.Key]));
+                    _game.Tiles.Add(new Tile(_game._board.TileGrid[vector], Tile.TileImages[staticTiles.Key]));
                 }
             }
         }
@@ -204,7 +205,7 @@ namespace LudoLike
         {
             foreach (Vector2 vector in _game._board.DynamicTiles)
             {
-                _game.Tiles.Add(new TestTile(_game._board.TileGrid[vector], TestTile.TileImages["Regular"]));
+                _game.Tiles.Add(new Tile(_game._board.TileGrid[vector], Tile.TileImages["Regular"]));
             }
         }
     }

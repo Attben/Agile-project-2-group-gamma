@@ -124,7 +124,7 @@
     <Compile Include="Classes\Dice.cs" />
     <Compile Include="Classes\GameStateManager.cs" />
     <Compile Include="Classes\LudoBoard.cs" />
-    <Compile Include="Classes\TestTile.cs" />
+    <Compile Include="Classes\Tile.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
     </Compile>
@@ -142,7 +142,6 @@
     <Compile Include="Classes\Scaling.cs" />
     <Compile Include="Classes\ScoreTile.cs" />
     <Compile Include="Classes\TeleportTile.cs" />
-    <Compile Include="Classes\Tile.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
