@@ -23,7 +23,7 @@ namespace LudoLike
         public static readonly CanvasBitmap[] DiceImages = new CanvasBitmap[6];
         public static CanvasBitmap SpinningDieImage;
 
-        public Dice(int min = 1, int max = 6)
+        public Dice(int min = 0, int max = 6)
         {
             _min = min;
             _max = max;
