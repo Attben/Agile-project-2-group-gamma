@@ -17,7 +17,7 @@
             PointerPressed="CanvasPointerPressed"
             Update="CanvasUpdate" Loaded="Canvas_Loaded"/>
 
-        <Button Content="Roll die" Height="125" Margin="204,770,0,0" VerticalAlignment="Top" Width="738" Click="RollDie"/>
+        <Button Content="Roll die" Height="200" Margin="0, 0, 200, 200" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="200" Click="RollDie"/>
         <Button Content="Move" Height="125" Margin="1072,770,0,0" VerticalAlignment="Top" Width="165" Click="TestMovePiece"/>
     </Grid>
 
