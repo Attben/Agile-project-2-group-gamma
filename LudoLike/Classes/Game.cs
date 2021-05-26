@@ -70,25 +70,31 @@ namespace LudoLike
             //take this turns player pieces locations and comapre to others
             //List<Tile> same = list[0].Union(list[1]).ToList(); - checks if same vlaues exists in both lists, returns said values into same list // loop to check each piece to send to nest/home
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < _players.Count; i++)
             {
                 if (i != turn)
                 {
+                    //creates i list of tiles that two pieces share
                     List<Vector2> same = list[turn].Intersect(list[i]).ToList();
-
+                    //checks if current player is in same position as another
                     if (same.Count != 0)
                     {
+                        //looks for piece of another player to send back to home/nest
                         foreach (Piece piece in _players[i].pieces)
                         {
                             if (piece.position == same[0])
                             {
-                                piece.position = piece.startPosition;
+                                //moves piece to nest/home
+                                piece.position = piece.startPosition; // might wanna use the move method of piece when implemented
+                                _players[turn].ChangeScore(100); //100 points is placeholder
+                                _players[i].ChangeScore(-100);
                             }
                         }
                     }
                 }
             }
         }
+
 
         public void NextTurn()
         {
@@ -122,6 +128,7 @@ namespace LudoLike
         //public void TileToNormal(int index)
         //{
         //    _board[index] = new Tile(index);
+        //    _players[turn].pieces[**piece above**].position = _board[index]; //100 is a placeholder //idk how to get right piece
         //}
 
         //for testing purposes
@@ -143,4 +150,6 @@ namespace LudoLike
         //    return true;
         //}
     }
+
+
 }
