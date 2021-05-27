@@ -83,7 +83,7 @@ namespace LudoLike
 
         async Task CreateResourcesAsync(CanvasAnimatedControl sender)
         {
-            
+
 
             //Load background image
             BG = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/TestBackground.png"));
@@ -100,12 +100,22 @@ namespace LudoLike
             Piece.Blue = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BluePiece.png"));
             Piece.Yellow = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/YellowPiece.png"));
             Piece.Green = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/GreenPiece.png"));
+
+            await LoadGlowEffects(sender);
             await LoadTileImages(sender);
             
             _game.AddPlayers(NumberOfPlayers);
             _game.CreateStaticTiles();
             _game.CreateDynamicTiles();
 
+        }
+
+        async Task LoadGlowEffects(CanvasAnimatedControl sender)
+        {
+            Dice.GlowEffects.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/glowred.png")));
+            Dice.GlowEffects.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/glowblue.png")));
+            Dice.GlowEffects.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/glowyellow.png")));
+            Dice.GlowEffects.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/glowgreen.png")));
         }
 
         async Task LoadTileImages(CanvasAnimatedControl sender)
@@ -125,6 +135,12 @@ namespace LudoLike
         {
             Scaling.ScalingInit(e.Size.Width, e.Size.Height);
             ControlProperties(e.Size.Width, e.Size.Height);
+            UpdateButtonSizeAndPosition();
+        }
+
+        private void UpdateButtonSizeAndPosition()
+        {
+            
         }
 
         private void CanvasDraw(
@@ -137,11 +153,15 @@ namespace LudoLike
             _game._board.Draw(drawArgs);
             drawArgs.DrawingSession.DrawText($"bWidth: {Scaling.bWidth}, bHeight{Scaling.bHeight}", 0, 0, Windows.UI.Colors.Black);
             drawArgs.DrawingSession.DrawText($"Board X: {_game._board.MainBoard.X}, Board Y{_game._board.MainBoard.Y}", 50, 50, Windows.UI.Colors.Black);
-            _dice.Draw(drawArgs);
+            drawArgs.DrawingSession.DrawText($"PLayer turn: {_game.turn}",  (float)Scaling.bWidth / 2, 50, Windows.UI.Colors.Black);
+            
+            _dice.Draw(drawArgs, _game.turn);
             //_piece.Draw(drawArgs);
 
-            
-            // Test drawing pengs
+
+
+            // Draw all tiles
+            _game.UpdateTilePositions();
             foreach (Tile tile in _game.Tiles)
             {
                 tile.Draw(drawArgs);
@@ -191,6 +211,7 @@ namespace LudoLike
         private void RollDie(object sender, RoutedEventArgs e)
         {
             _dice.Roll();
+            _game.NextTurn();
         }
 
         private void TestMovePiece(object sender, RoutedEventArgs e)
@@ -209,9 +230,17 @@ namespace LudoLike
         }
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
         {
-
+            
         }
 
+        private void ChangePointerHand(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
+        }
+        private void ChangePointerRegular(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
+        }
 
     }
 }

@@ -142,6 +142,7 @@
     <Compile Include="Classes\Scaling.cs" />
     <Compile Include="Classes\ScoreTile.cs" />
     <Compile Include="Classes\TeleportTile.cs" />
+    <Compile Include="Classes\StaticTile.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -150,6 +151,10 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Images\BluePiece.png" />
+    <Content Include="Assets\Images\glowblue.png" />
+    <Content Include="Assets\Images\glowgreen.png" />
+    <Content Include="Assets\Images\glowred.png" />
+    <Content Include="Assets\Images\glowyellow.png" />
     <Content Include="Assets\Images\Tiles\bluetile.png" />
     <Content Include="Assets\Images\Die1.png" />
     <Content Include="Assets\Images\Die2.png" />
