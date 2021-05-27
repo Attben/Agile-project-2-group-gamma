@@ -3,6 +3,7 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -13,7 +14,7 @@ namespace LudoLike
     {
         private int _amount;
 
-        public ScoreTile(Rect targetRectangle, int points) : base(targetRectangle)
+        public ScoreTile(Rect targetRectangle, int points, Vector2 gridPosition) : base(targetRectangle, gridPosition)
         {
             _amount = points;
             TileImage = TileImages["Score"];
