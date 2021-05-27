@@ -76,7 +76,14 @@ namespace LudoLike
                         nextPosition = path.IndexOf(tile);
                     }
                 }
-                _pieces[0].Move(path[nextPosition + 1]);
+                try
+                {
+                    _pieces[0].Move(path[nextPosition + 1]);
+                }
+                catch (ArgumentOutOfRangeException)
+                {
+                    _pieces[0].Move(path[44]);
+                }
             }
 
             // Detta måste anpassas till den nya tilegridlogiken
