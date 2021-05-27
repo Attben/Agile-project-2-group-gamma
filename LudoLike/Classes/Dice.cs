@@ -12,7 +12,7 @@ namespace LudoLike
     class Dice
     {
         private int _animationTimer = 0;
-        private int _min, _max; //Range of possible values when rolling this die.
+        private readonly int _min, _max; //Range of possible values when rolling this die.
         private CanvasBitmap CurrentDieImage;
         private Random _prng;
         private float _diceWidth = 200;

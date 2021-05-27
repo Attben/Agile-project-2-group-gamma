@@ -23,12 +23,10 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
 namespace LudoLike
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// The main page where a Game is displayed.
     /// </summary>
     public sealed partial class MainPage : Page
     {
@@ -43,9 +41,7 @@ namespace LudoLike
         //private Random _prng = new Random();
         private GameStateManager _gameStateManager = new GameStateManager();
 
-        private Game _game;
-        //private Piece _piece;
-        
+        private Game _game;        
 
         public MainPage()
         {
@@ -171,7 +167,7 @@ namespace LudoLike
 
             foreach (Player player in _game._players)
             {
-                foreach (Piece piece in player.pieces)
+                foreach (Piece piece in player._pieces)
                 {
                     piece.Draw(drawArgs, _game._board.TileGrid[piece.position]);
                 }
@@ -210,24 +206,9 @@ namespace LudoLike
         }
         private void RollDie(object sender, RoutedEventArgs e)
         {
-            _dice.Roll();
-            _game.NextTurn();
+            _game.TakeTurn(_dice.Roll() + 1);
         }
 
-        private void TestMovePiece(object sender, RoutedEventArgs e)
-        {
-            int nextPosition = 0;
-            // Detta måste anpassas till den nya tilegridlogiken
-            //_piece.Move(100f, 100f);
-            foreach (Vector2 tile in _game._board.RedPath)
-            {
-                if (_game._players[0].pieces[0].position == tile)
-                {
-                    nextPosition = _game._board.RedPath.IndexOf(tile);
-                }
-            }
-            _game._players[0].pieces[0].Move(_game._board.RedPath[nextPosition + 1]);
-        }
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
         {
             
