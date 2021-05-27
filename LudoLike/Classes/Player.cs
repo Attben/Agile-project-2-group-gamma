@@ -18,7 +18,7 @@ namespace LudoLike
         public int Score { get; private set; }
         public PlayerColors PlayerColor;
         public Windows.UI.Color UIcolor;
-        public List<Piece> pieces;
+        public List<Piece> _pieces;
 
         public Player(PlayerColors color, List<Vector2> startPositions)
         {
@@ -41,11 +41,11 @@ namespace LudoLike
                     break;
             }
 
-            pieces = new List<Piece>();
+            _pieces = new List<Piece>();
 
             for (int i = 0; i < 4; i++)
             {
-                pieces.Add(new Piece(startPositions[i], color));
+                _pieces.Add(new Piece(startPositions[i], color));
             }
         }
 
@@ -56,13 +56,37 @@ namespace LudoLike
 
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
         {
-            //TODO: Move player drawing here.
+            foreach(Piece p in _pieces)
+            {
+                p.Draw(drawArgs, new Windows.Foundation.Rect());
+            }
+        }
+
+        public void MovePiece(int diceRoll)
+        {
+            int nextPosition;
+            var path = LudoBoard.PlayerPaths[(int)PlayerColor];
+            for (int i = 0; i < diceRoll; i++)
+            {
+                nextPosition = 0;
+                foreach (Vector2 tile in path)
+                {
+                    if (_pieces[0].position == tile)
+                    {
+                        nextPosition = path.IndexOf(tile);
+                    }
+                }
+                _pieces[0].Move(path[nextPosition + 1]);
+            }
+
+            // Detta måste anpassas till den nya tilegridlogiken
+            //_piece.Move(100f, 100f);
         }
 
         public List<Vector2> ReturnPiecePostitions() // return list of tiles
         {
             List<Vector2> list = new List<Vector2>();
-            foreach (Piece piece in pieces)
+            foreach (Piece piece in _pieces)
             {
                 list.Add(piece.position);
             }

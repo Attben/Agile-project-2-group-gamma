@@ -43,10 +43,7 @@ namespace LudoLike
         //private Random _prng = new Random();
         private GameStateManager _gameStateManager = new GameStateManager();
 
-        private Game _game;
-        //private Piece _piece;
-        private int _diceVal;
-        
+        private Game _game;        
 
         public MainPage()
         {
@@ -152,7 +149,7 @@ namespace LudoLike
 
             foreach (Player player in _game._players)
             {
-                foreach (Piece piece in player.pieces)
+                foreach (Piece piece in player._pieces)
                 {
                     piece.Draw(drawArgs, _game._board.TileGrid[piece.position]);
                 }
@@ -191,28 +188,10 @@ namespace LudoLike
         }
         private void RollDie(object sender, RoutedEventArgs e)
         {
-            _diceVal = _dice.Roll();
+            //MovePiece(_dice.Roll() + 1);
+            _game.TakeTurn(_dice.Roll() + 1);
         }
 
-        private void MovePiece(object sender, RoutedEventArgs e)
-        {
-            int nextPosition;
-            for (int i = 0; i < _diceVal + 1; i++)
-            {
-                nextPosition = 0;
-                foreach (Vector2 tile in _game._board.RedPath)
-                {
-                    if (_game._players[0].pieces[0].position == tile)
-                    {
-                        nextPosition = _game._board.RedPath.IndexOf(tile);
-                    }
-                }
-                _game._players[0].pieces[0].Move(_game._board.RedPath[nextPosition + 1]);
-            }
-            
-            // Detta måste anpassas till den nya tilegridlogiken
-            //_piece.Move(100f, 100f);
-        }
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
         {
 
