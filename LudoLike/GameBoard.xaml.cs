@@ -23,12 +23,10 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 
-// The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
-
 namespace LudoLike
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// The main page where a Game is displayed.
     /// </summary>
     public sealed partial class MainPage : Page
     {
@@ -188,7 +186,6 @@ namespace LudoLike
         }
         private void RollDie(object sender, RoutedEventArgs e)
         {
-            //MovePiece(_dice.Roll() + 1);
             _game.TakeTurn(_dice.Roll() + 1);
         }
 

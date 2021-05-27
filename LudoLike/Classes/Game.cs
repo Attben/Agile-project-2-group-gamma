@@ -27,8 +27,6 @@ namespace LudoLike
             _board = new LudoBoard();
             _players = new List<Player>();
             Tiles = new List<Tile>();
-            //AddTiles(42); //Placeholder amount
-            //AddPlayers(playerAmount);
             
             _textFormat = new CanvasTextFormat()
             {
@@ -68,15 +66,6 @@ namespace LudoLike
                 }
             }
         }
-
-        //need to be used before AddPlayers()
-        //public void AddTiles(int amount)
-        //{
-        //    for (int i = 0; i < amount; i++)
-        //    {
-        //        _board.Add(new Tile(i));
-        //    }
-        //}
 
         //does not adapt to only 2 or 3 players 
         public void CheckTiles()
@@ -199,29 +188,4 @@ namespace LudoLike
             CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
         }
     }
-
-    //public void TileToNormal(int index)
-    //{
-    //    _board[index] = new Tile(index);
-    //    _players[turn].pieces[**piece above**].position = _board[index]; //100 is a placeholder //idk how to get right piece
-    //}
-
-    //for testing purposes
-    //public bool Test()
-    //{
-    //    AddTiles(20);
-    //    AddPlayers(4);
-    //    //10
-    //    _players[0].pieces[0].position = _board[10];
-    //    _players[1].pieces[0].position = _board[10];
-
-    //    CheckTiles();
-
-    //    if (_players[1].pieces[0].position == _board[10])
-    //    {
-    //        return false;
-    //    }
-
-    //    return true;
-    //}
 }
