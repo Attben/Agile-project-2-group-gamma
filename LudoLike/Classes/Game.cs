@@ -16,15 +16,32 @@ namespace LudoLike
         public List<Player> _players;
         public LudoBoard _board;
         public List<Tile> Tiles;
-        private int turn = 0;
+        public int CurrentPlayerTurn { get; private set; }
+
+        //Used for displaying the current score
+        private readonly CanvasTextFormat _textFormat;
+        private Rect _scoreBox;
 
         public Game()
         {
             _board = new LudoBoard();
             _players = new List<Player>();
             Tiles = new List<Tile>();
-            //AddTiles(42); //Placeholder amount
-            //AddPlayers(playerAmount);
+            
+            _textFormat = new CanvasTextFormat()
+            {
+                FontFamily = "Helvetica",
+                FontSize = 30,
+                FontWeight = Windows.UI.Text.FontWeights.Bold
+            };
+            _scoreBox = new Rect
+            {
+                //Arbitrary values. Todo: Scale with window size.
+                X = 30,
+                Y = 30,
+                Width = 175,
+                Height = 6 * _textFormat.FontSize
+            };
         }
 
         public void AddPlayers(int amount)
@@ -50,15 +67,6 @@ namespace LudoLike
             }
         }
 
-        //need to be used before AddPlayers()
-        //public void AddTiles(int amount)
-        //{
-        //    for (int i = 0; i < amount; i++)
-        //    {
-        //        _board.Add(new Tile(i));
-        //    }
-        //}
-
         //does not adapt to only 2 or 3 players 
         public void CheckTiles()
         {
@@ -76,21 +84,21 @@ namespace LudoLike
 
             for (int i = 0; i < _players.Count; i++)
             {
-                if (i != turn)
+                if (i != CurrentPlayerTurn)
                 {
                     //creates i list of tiles that two pieces share
-                    List<Vector2> same = list[turn].Intersect(list[i]).ToList();
+                    List<Vector2> same = list[CurrentPlayerTurn].Intersect(list[i]).ToList();
                     //checks if current player is in same position as another
                     if (same.Count != 0)
                     {
                         //looks for piece of another player to send back to home/nest
-                        foreach (Piece piece in _players[i].pieces)
+                        foreach (Piece piece in _players[i]._pieces)
                         {
                             if (piece.position == same[0])
                             {
                                 //moves piece to nest/home
                                 piece.position = piece.StartPosition; // might wanna use the move method of piece when implemented
-                                _players[turn].ChangeScore(100); //100 points is placeholder
+                                _players[CurrentPlayerTurn].ChangeScore(100); //100 points is placeholder
                                 _players[i].ChangeScore(-100);
                             }
                         }
@@ -106,45 +114,32 @@ namespace LudoLike
             {
                 player.Draw(drawArgs);
             }
+            drawArgs.DrawingSession.DrawText($"Current player: {(PlayerColors)CurrentPlayerTurn}", 
+                500, 20,
+                _players[CurrentPlayerTurn].UIcolor);
         }
 
         private void DrawScore(CanvasAnimatedDrawEventArgs drawArgs)
         {
-            //todo: Initialize ScoreBox and formatting _once_ instead of on every update.
-            var textFormat = new CanvasTextFormat()
-            {
-                FontFamily = "Helvetica",
-                FontSize = 30,
-                FontWeight = Windows.UI.Text.FontWeights.Bold
-            };
-            Rect ScoreBox = new Rect
-            {
-                //Arbitrary values. Todo: Scale with window size.
-                X = 30,
-                Y = 30,
-                Width = 175,
-                Height = 6 * textFormat.FontSize
-            };
-
             drawArgs.DrawingSession.FillRoundedRectangle(
-                ScoreBox, 10, 10, Windows.UI.Colors.DarkGray); //10, 10 are x- and y-radii for rounded corners
+                _scoreBox, 10, 10, Windows.UI.Colors.DarkGray); //10, 10 are x- and y-radii for rounded corners
             for (int n = 0; n < _players.Count; ++n)
             {
                 drawArgs.DrawingSession.DrawText(
                     $"{_players[n].PlayerColor}: {_players[n].Score}",
-                    (float)ScoreBox.X + 30f,
-                    (float)ScoreBox.Y + textFormat.FontSize * (n + 1),
+                    (float)_scoreBox.X + 30f,
+                    (float)_scoreBox.Y + _textFormat.FontSize * (n + 1),
                     _players[n].UIcolor);
             }
         }
 
         public void NextTurn()
         {
-            turn++;
+            CurrentPlayerTurn++;
 
-            if (turn == 4)
+            if (CurrentPlayerTurn == 4)
             {
-                turn = 0;
+                CurrentPlayerTurn = 0;
             }
             //method to change color and visuals/ maybe
         }
@@ -184,31 +179,13 @@ namespace LudoLike
                 }
             }
         }
+
+        public void TakeTurn(int diceRoll)
+        {
+            _players[CurrentPlayerTurn].MovePiece(diceRoll);
+
+            //Pass control to the next player
+            CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
+        }
     }
-
-    //public void TileToNormal(int index)
-    //{
-    //    _board[index] = new Tile(index);
-    //    _players[turn].pieces[**piece above**].position = _board[index]; //100 is a placeholder //idk how to get right piece
-    //}
-
-    //for testing purposes
-    //public bool Test()
-    //{
-    //    AddTiles(20);
-    //    AddPlayers(4);
-    //    //10
-    //    _players[0].pieces[0].position = _board[10];
-    //    _players[1].pieces[0].position = _board[10];
-
-    //    CheckTiles();
-
-    //    if (_players[1].pieces[0].position == _board[10])
-    //    {
-    //        return false;
-    //    }
-
-    //    return true;
-    //}
 }
-

@@ -28,7 +28,7 @@ namespace LudoLike
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Maximized;
             this.InitializeComponent();
             var view = ApplicationView.GetForCurrentView();
-            view.TryEnterFullScreenMode();
+            //view.TryEnterFullScreenMode();
         }
 
         private void Play_Click(object sender, RoutedEventArgs e)
