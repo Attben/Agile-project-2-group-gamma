@@ -149,9 +149,9 @@ namespace LudoLike
             _game._board.Draw(drawArgs);
             drawArgs.DrawingSession.DrawText($"bWidth: {Scaling.bWidth}, bHeight{Scaling.bHeight}", 0, 0, Windows.UI.Colors.Black);
             drawArgs.DrawingSession.DrawText($"Board X: {_game._board.MainBoard.X}, Board Y{_game._board.MainBoard.Y}", 50, 50, Windows.UI.Colors.Black);
-            drawArgs.DrawingSession.DrawText($"PLayer turn: {_game.turn}",  (float)Scaling.bWidth / 2, 50, Windows.UI.Colors.Black);
+            drawArgs.DrawingSession.DrawText($"PLayer turn: {_game.CurrentPlayerTurn}",  (float)Scaling.bWidth / 2, 50, Windows.UI.Colors.Black);
             
-            _dice.Draw(drawArgs, _game.turn);
+            _dice.Draw(drawArgs, _game.CurrentPlayerTurn);
             //_piece.Draw(drawArgs);
 
 
