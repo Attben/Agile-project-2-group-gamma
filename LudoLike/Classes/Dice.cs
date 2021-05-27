@@ -18,6 +18,8 @@ namespace LudoLike
         private float _diceWidth = 200;
         private float _diceHeight = 200;
         private Rect _diceHolder;
+        private Rect _glowHolder;
+        public static List<CanvasBitmap> GlowEffects = new List<CanvasBitmap>();
 
         //Possible improvement: Support rendering of arbitrary values (currently only works with 1-6).
         public static readonly CanvasBitmap[] DiceImages = new CanvasBitmap[6];
@@ -31,15 +33,18 @@ namespace LudoLike
             CurrentDieImage = Dice.DiceImages[2];
         }
 
-        public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
+        public void Draw(CanvasAnimatedDrawEventArgs drawArgs, int playerTurn)
         {
-            _diceHolder = new Rect(Scaling.bWidth - Scaling.Xpos(_diceWidth * 2), Scaling.bHeight - Scaling.Ypos(_diceHeight * 4), Scaling.Xpos(200), Scaling.Ypos(200));
+            _diceHolder = new Rect(Scaling.bWidth - Scaling.Xpos(_diceWidth * 2), Scaling.bHeight - Scaling.Ypos(_diceHeight * 2), Scaling.Xpos(200), Scaling.Ypos(200));
+            _glowHolder = new Rect(Scaling.bWidth - Scaling.Xpos(_diceWidth * 2) - Scaling.Xpos(_diceWidth / 2), Scaling.bHeight - Scaling.Ypos(_diceHeight * 2) - Scaling.Ypos(_diceHeight / 2), Scaling.Xpos(_diceHeight*2), Scaling.Ypos(_diceHeight*2));
             if (_animationTimer == 0)
             {
+                drawArgs.DrawingSession.DrawImage(GlowEffects[playerTurn], _glowHolder);
                 drawArgs.DrawingSession.DrawImage(CurrentDieImage, _diceHolder);
             }
             else
             {
+                drawArgs.DrawingSession.DrawImage(GlowEffects[playerTurn], _glowHolder);
                 drawArgs.DrawingSession.DrawImage(Dice.SpinningDieImage, _diceHolder);
                 --_animationTimer;
             }

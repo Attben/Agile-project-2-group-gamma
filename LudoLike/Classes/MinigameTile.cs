@@ -3,6 +3,7 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -13,7 +14,7 @@ namespace LudoLike
     {
         private Minigame _minigame;
 
-        public MinigameTile(Rect targetRectangle, Minigame game) : base(targetRectangle)
+        public MinigameTile(Rect targetRectangle, Minigame game, Vector2 gridPosition) : base(targetRectangle, gridPosition)
         {
             _minigame = game;
         }

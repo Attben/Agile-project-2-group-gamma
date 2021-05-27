@@ -135,7 +135,7 @@ namespace LudoLike
                             Scaling.Ypos(BoardHeight));
             args.DrawingSession.FillRectangle(MainBoard, Windows.UI.Colors.White);
             DrawNests(args);
-            
+            CreateTileGrid();
         }
 
         public void DrawNests(CanvasAnimatedDrawEventArgs args)

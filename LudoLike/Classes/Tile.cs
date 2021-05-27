@@ -3,6 +3,7 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -14,16 +15,19 @@ namespace LudoLike
         public static Dictionary<string, CanvasBitmap> TileImages = new Dictionary<string, CanvasBitmap>();
         public CanvasBitmap TileImage;
         public Rect TargetRectangle;
+        public Vector2 GridPosition;
 
-        public Tile(Rect targetRectangle, CanvasBitmap tileImage)
+        public Tile(Rect targetRectangle, CanvasBitmap tileImage, Vector2 gridPosition)
         {
             TileImage = tileImage;
             TargetRectangle = targetRectangle;
+            GridPosition = gridPosition;
         }
 
-        public Tile(Rect targetRectangle)
+        public Tile(Rect targetRectangle, Vector2 gridPosition)
         {
             TargetRectangle = targetRectangle;
+            GridPosition = gridPosition;
         }
 
         public virtual void TileEvent()

@@ -150,7 +150,7 @@ namespace LudoLike
             {
                 foreach (Vector2 vector in staticTiles.Value)
                 {
-                    Tiles.Add(new Tile(_board.TileGrid[vector], Tile.TileImages[staticTiles.Key]));
+                    Tiles.Add(new StaticTile(_board.TileGrid[vector], staticTiles.Key, vector));
                 }
             }
         }
@@ -163,20 +163,27 @@ namespace LudoLike
                 double tileType = rng.NextDouble();
                 if (tileType < 0.10)
                 {
-                    Tiles.Add(new TeleportTile(_board.TileGrid[vector], _board.TileGrid[vector]));
+                    Tiles.Add(new TeleportTile(_board.TileGrid[vector], _board.TileGrid[vector], vector));
                 }
                 else if (tileType < 0.20)
                 {
-                    Tiles.Add(new MinigameTile(_board.TileGrid[vector], new Minigame()));
+                    Tiles.Add(new MinigameTile(_board.TileGrid[vector], new Minigame(), vector));
                 }
                 else if (tileType < 0.5)
                 {
-                    Tiles.Add(new ScoreTile(_board.TileGrid[vector], 100));
+                    Tiles.Add(new ScoreTile(_board.TileGrid[vector], 100, vector));
                 }
                 else
                 {
-                    Tiles.Add(new Tile(_board.TileGrid[vector], Tile.TileImages["Regular"]));
+                    Tiles.Add(new Tile(_board.TileGrid[vector], Tile.TileImages["Regular"], vector));
                 }
+            }
+        }
+        public void UpdateTilePositions()
+        {
+            foreach(Tile tile in Tiles)
+            {
+                tile.TargetRectangle = _board.TileGrid[tile.GridPosition];
             }
         }
 
