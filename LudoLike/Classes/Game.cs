@@ -6,6 +6,7 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Graphics.Canvas.Text;
 using Windows.Foundation;
 using Windows.Media.Core;
+using LudoLike.Classes;
 
 namespace LudoLike
 {
@@ -77,7 +78,7 @@ namespace LudoLike
 
         //does not adapt to only 2 or 3 players
         // TODO: Test this method and integrate the functionality to to the game
-        public void CheckTiles()
+        public void CheckTilesForCollisions()
         {
             //get list of tiles
 
@@ -108,6 +109,7 @@ namespace LudoLike
                                 piece.position = piece.StartPosition; // might wanna use the move method of piece when implemented
                                 _players[CurrentPlayerTurn].ChangeScore(100); //100 points is placeholder
                                 _players[i].ChangeScore(-100);
+                                SoundMixer.PlaySound(Player.PieceCollisionSounds[new Random().Next(Player.PieceCollisionSounds.Count)]);
                             }
                         }
                     }
@@ -189,7 +191,7 @@ namespace LudoLike
         {
             _players[CurrentPlayerTurn].MovePiece(diceRoll);
 
-            CheckTiles();
+            CheckTilesForCollisions();
 
             //Pass control to the next player
             CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;

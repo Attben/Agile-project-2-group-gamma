@@ -37,7 +37,7 @@ namespace LudoLike
         private Dice _dice;
         private GameStateManager _gameStateManager = new GameStateManager();
 
-        private Game _game;        
+        private Game _game;
 
         public GameBoard()
         {
@@ -148,6 +148,8 @@ namespace LudoLike
         private void LoadSounds()
         {
             Game.BackgroundMusic = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/bass jam.mp3"));
+            Player.PieceCollisionSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Slap1.wav")));
+            Player.PieceCollisionSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Slap2.wav")));
             Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap1.wav")));
             Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap2.wav")));
             Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap3.wav")));

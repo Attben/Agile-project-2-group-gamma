@@ -22,7 +22,8 @@ namespace LudoLike
         public Windows.UI.Color UIcolor;
         public List<Piece> _pieces;
 
-        public static List<MediaSource> PieceMovingSounds = new List<MediaSource>(); 
+        public static List<MediaSource> PieceCollisionSounds = new List<MediaSource>();
+        public static List<MediaSource> PieceMovingSounds = new List<MediaSource>();
 
         public Player(PlayerColors color, List<Vector2> startPositions)
         {
