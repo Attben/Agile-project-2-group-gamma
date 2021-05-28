@@ -54,11 +54,11 @@ namespace LudoLike
             Score += amount;
         }
 
-        public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
+        public void DrawPieces(CanvasAnimatedDrawEventArgs drawArgs)
         {
-            foreach(Piece p in _pieces)
+            foreach (Piece p in _pieces)
             {
-                p.Draw(drawArgs, new Windows.Foundation.Rect());
+                p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position]);
             }
         }
 
