@@ -1,10 +1,12 @@
-﻿using Microsoft.Graphics.Canvas.UI.Xaml;
+﻿using LudoLike.Classes;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Media.Core;
 
 namespace LudoLike
 {
@@ -19,6 +21,8 @@ namespace LudoLike
         public PlayerColors PlayerColor;
         public Windows.UI.Color UIcolor;
         public List<Piece> _pieces;
+
+        public static List<MediaSource> PieceMovingSounds = new List<MediaSource>(); 
 
         public Player(PlayerColors color, List<Vector2> startPositions)
         {
@@ -86,6 +90,7 @@ namespace LudoLike
                 }
             }
 
+            SoundMixer.PlaySound(PieceMovingSounds[new Random().Next(PieceMovingSounds.Count)]);
             // Detta måste anpassas till den nya tilegridlogiken
             //_piece.Move(100f, 100f);
         }

@@ -1,3 +1,4 @@
+using LudoLike.Classes;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Effects;
@@ -12,6 +13,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Media.Core;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -91,11 +93,14 @@ namespace LudoLike
             await LoadPlayerPieceImages(sender);
             await LoadGlowEffects(sender);
             await LoadTileImages(sender);
+            LoadSounds();
             
             _dice = new Dice(0, 6);
             _game.AddPlayers(NumberOfPlayers);
             _game.CreateStaticTiles();
             _game.CreateDynamicTiles();
+
+            SoundMixer.PlaySound(Game.BackgroundMusic, SoundChannels.music);
         }
 
         /// <summary>
@@ -135,6 +140,17 @@ namespace LudoLike
             Dice.GlowEffects.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/glowblue.png")));
             Dice.GlowEffects.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/glowyellow.png")));
             Dice.GlowEffects.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/glowgreen.png")));
+        }
+
+        /// <summary>
+        /// Loads music and sound effects
+        /// </summary>
+        private void LoadSounds()
+        {
+            Game.BackgroundMusic = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/bass jam.mp3"));
+            Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap1.wav")));
+            Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap2.wav")));
+            Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap3.wav")));
         }
 
         /// <summary>

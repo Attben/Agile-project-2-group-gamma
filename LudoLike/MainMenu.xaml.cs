@@ -28,6 +28,8 @@ namespace LudoLike
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Maximized;
             this.InitializeComponent();
             var view = ApplicationView.GetForCurrentView();
+            ElementSoundPlayer.State = ElementSoundPlayerState.On;
+            ElementSoundPlayer.SpatialAudioMode = ElementSpatialAudioMode.Off;
             //view.TryEnterFullScreenMode();
         }
 
