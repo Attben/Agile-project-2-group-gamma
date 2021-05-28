@@ -11,20 +11,21 @@ using Windows.Foundation;
 
 namespace LudoLike
 {
+    /// <summary>
+    /// Represents an instance of a Ludo game.
+    /// </summary>
     public class Game
     {
-        public List<Player> _players;
-        public LudoBoard _board;
+        private List<Player> _players;
+        public LudoBoard Board;
         public List<Tile> Tiles;
         public int CurrentPlayerTurn { get; private set; }
-
-        //Used for displaying the current score
         private readonly CanvasTextFormat _textFormat;
         private Rect _scoreBox;
 
         public Game()
         {
-            _board = new LudoBoard();
+            Board = new LudoBoard();
             _players = new List<Player>();
             Tiles = new List<Tile>();
             
@@ -44,6 +45,10 @@ namespace LudoLike
             };
         }
 
+        /// <summary>
+        /// Adds players to the game according to the chosen slider value.
+        /// </summary>
+        /// <param name="amount"></param>
         public void AddPlayers(int amount)
         {
             for (int i = 0; i < amount; i++)
@@ -51,23 +56,24 @@ namespace LudoLike
                 switch (i)
                 {
                     case 0:
-                        _players.Add(new Player(PlayerColors.Red, _board.NestTiles["Red"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Red, LudoBoard.NestTilesPositions["Red"])); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 1:
-                        _players.Add(new Player(PlayerColors.Blue, _board.NestTiles["Blue"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Blue, LudoBoard.NestTilesPositions["Blue"])); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 2:
-                        _players.Add(new Player(PlayerColors.Yellow, _board.NestTiles["Yellow"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Yellow, LudoBoard.NestTilesPositions["Yellow"])); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 3:
-                        _players.Add(new Player(PlayerColors.Green, _board.NestTiles["Green"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Green, LudoBoard.NestTilesPositions["Green"])); // assumes first four tiles are Home/Nests tiles
                         break;
 
                 }
             }
         }
 
-        //does not adapt to only 2 or 3 players 
+        //does not adapt to only 2 or 3 players
+        // TODO: Test this method and integrate the functionality to to the game
         public void CheckTiles()
         {
             //get list of tiles
@@ -107,18 +113,104 @@ namespace LudoLike
             }
         }
 
-        public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
+
+        // TODO: Test this method and integrate the functionality to the game
+        public void NextTurn()
         {
-            DrawScore(drawArgs);
-            foreach (Player player in _players)
+            CurrentPlayerTurn++;
+
+            if (CurrentPlayerTurn == 4)
             {
-                player.Draw(drawArgs);
+                CurrentPlayerTurn = 0;
             }
-            drawArgs.DrawingSession.DrawText($"Current player: {(PlayerColors)CurrentPlayerTurn}", 
-                500, 20,
-                _players[CurrentPlayerTurn].UIcolor);
+            //method to change color and visuals/ maybe
         }
 
+        /// <summary>
+        /// Creates static tiles on the board.
+        /// </summary>
+        public void CreateStaticTiles()
+        {
+            foreach (KeyValuePair<string, List<Vector2>> staticTiles in LudoBoard.StaticTilesPositions)
+            {
+                foreach (Vector2 vector in staticTiles.Value)
+                {
+                    Tiles.Add(new StaticTile(LudoBoard.TileGridPositions[vector], staticTiles.Key, vector));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Creates dynamic tiles on the board via randomization.
+        /// </summary>
+        public void CreateDynamicTiles()
+        {
+            Random rng = new Random();
+            foreach (Vector2 vector in LudoBoard.DynamicTilesPositions)
+            {
+                double tileType = rng.NextDouble();
+                if (tileType < 0.10)
+                {
+                    Tiles.Add(new TeleportTile(LudoBoard.TileGridPositions[vector], LudoBoard.TileGridPositions[vector], vector));
+                }
+                else if (tileType < 0.20)
+                {
+                    Tiles.Add(new MinigameTile(LudoBoard.TileGridPositions[vector], new Minigame(), vector));
+                }
+                else if (tileType < 0.5)
+                {
+                    Tiles.Add(new ScoreTile(LudoBoard.TileGridPositions[vector], 100, vector));
+                }
+                else
+                {
+                    Tiles.Add(new Tile(LudoBoard.TileGridPositions[vector], Tile.TileImages["Regular"], vector));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Updates the tiles target rectangles to new scaling of window.
+        /// </summary>
+        private void UpdateTilePositions()
+        {
+            foreach(Tile tile in Tiles)
+            {
+                tile.TargetRectangle = LudoBoard.TileGridPositions[tile.GridPosition];
+            }
+        }
+
+        /// <summary>
+        /// Passes the control to the next player.
+        /// </summary>
+        /// <param name="diceRoll"></param>
+        public void TakeTurn(int diceRoll)
+        {
+            _players[CurrentPlayerTurn].MovePiece(diceRoll);
+
+            //Pass control to the next player
+            CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
+        }
+
+        /// <summary>
+        /// Draws the current score along with each players pieces on the board.
+        /// </summary>
+        /// <param name="drawArgs"></param>
+        public void DrawMainContent(CanvasAnimatedDrawEventArgs drawArgs)
+        {
+            Board.Draw(drawArgs);
+            DrawScore(drawArgs);
+            DrawTiles(drawArgs);
+            foreach (Player player in _players)
+            {
+                player.DrawPieces(drawArgs);
+            }
+        }
+
+        /// <summary>
+        /// Draws the score board on the given canvas.
+        /// </summary>
+        /// <param name="drawArgs"></param>
+        /// 
         private void DrawScore(CanvasAnimatedDrawEventArgs drawArgs)
         {
             drawArgs.DrawingSession.FillRoundedRectangle(
@@ -133,66 +225,18 @@ namespace LudoLike
             }
         }
 
-        public void NextTurn()
+        /// <summary>
+        /// Draws the tiles on the given canvas.
+        /// </summary>
+        /// <param name="drawArgs"></param>
+        private void DrawTiles(CanvasAnimatedDrawEventArgs drawArgs)
         {
-            CurrentPlayerTurn++;
-
-            if (CurrentPlayerTurn == 4)
+            UpdateTilePositions();
+            foreach (Tile tile in Tiles)
             {
-                CurrentPlayerTurn = 0;
-            }
-            //method to change color and visuals/ maybe
-        }
-
-        public void CreateStaticTiles()
-        {
-            foreach (KeyValuePair<string, List<Vector2>> staticTiles in _board.StaticTiles)
-            {
-                foreach (Vector2 vector in staticTiles.Value)
-                {
-                    Tiles.Add(new StaticTile(_board.TileGrid[vector], staticTiles.Key, vector));
-                }
+                tile.Draw(drawArgs);
             }
         }
-
-        public void CreateDynamicTiles()
-        {
-            Random rng = new Random();
-            foreach (Vector2 vector in _board.DynamicTiles)
-            {
-                double tileType = rng.NextDouble();
-                if (tileType < 0.10)
-                {
-                    Tiles.Add(new TeleportTile(_board.TileGrid[vector], _board.TileGrid[vector], vector));
-                }
-                else if (tileType < 0.20)
-                {
-                    Tiles.Add(new MinigameTile(_board.TileGrid[vector], new Minigame(), vector));
-                }
-                else if (tileType < 0.5)
-                {
-                    Tiles.Add(new ScoreTile(_board.TileGrid[vector], 100, vector));
-                }
-                else
-                {
-                    Tiles.Add(new Tile(_board.TileGrid[vector], Tile.TileImages["Regular"], vector));
-                }
-            }
-        }
-        public void UpdateTilePositions()
-        {
-            foreach(Tile tile in Tiles)
-            {
-                tile.TargetRectangle = _board.TileGrid[tile.GridPosition];
-            }
-        }
-
-        public void TakeTurn(int diceRoll)
-        {
-            _players[CurrentPlayerTurn].MovePiece(diceRoll);
-
-            //Pass control to the next player
-            CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
-        }
+    // Might have to make another drawmethod for drawing minigame 
     }
 }
