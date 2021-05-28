@@ -23,15 +23,15 @@ namespace LudoLike
         public Rect YellowNest;
         public Rect GreenNest;
 
-        public Dictionary<Vector2, Rect> TileGrid = new Dictionary<Vector2, Rect>();
-        public Dictionary<string, List<Vector2>> NestTiles = new Dictionary<string, List<Vector2>>() 
+        public static Dictionary<Vector2, Rect> TileGridPositions = new Dictionary<Vector2, Rect>();
+        public static Dictionary<string, List<Vector2>> NestTilesPositions = new Dictionary<string, List<Vector2>>() 
         {
             { "Red", new List<Vector2>() { new Vector2(0,0), new Vector2(0,1), new Vector2(1,0), new Vector2(1,1) } },
             { "Blue", new List<Vector2>() { new Vector2(10, 0), new Vector2(10, 1), new Vector2(9, 0), new Vector2(9, 1) } },
             { "Yellow", new List<Vector2>() { new Vector2(10, 10), new Vector2(10, 9), new Vector2(9, 10), new Vector2(9, 9) } },
             { "Green",  new List<Vector2>() { new Vector2(0, 10), new Vector2(0, 9), new Vector2(1, 10), new Vector2(1, 9) } }
         };
-        public Dictionary<string, List<Vector2>> StaticTiles = new Dictionary<string, List<Vector2>>()
+        public static Dictionary<string, List<Vector2>> StaticTilesPositions = new Dictionary<string, List<Vector2>>()
         {
             { "Red", new List<Vector2>() { new Vector2(0, 4), new Vector2(1, 5), new Vector2(2, 5), new Vector2(3, 5), new Vector2(4, 5) } },
             { "Blue", new List<Vector2>() { new Vector2(6, 0), new Vector2(5, 1), new Vector2(5, 2), new Vector2(5, 3), new Vector2(5, 4) } },
@@ -39,7 +39,7 @@ namespace LudoLike
             { "Green", new List<Vector2>() { new Vector2(4, 10), new Vector2(5, 9), new Vector2(5, 8), new Vector2(5, 7), new Vector2(5, 6) } },
             { "Middle", new List<Vector2>() { new Vector2(5, 5) } }
         };
-        public List<Vector2> DynamicTiles = new List<Vector2>()
+        public static List<Vector2> DynamicTilesPositions = new List<Vector2>()
         {
             new Vector2(1, 4), new Vector2(2, 4), new Vector2(3, 4), new Vector2(4, 4),
             new Vector2(4, 3), new Vector2(4, 2), new Vector2(4, 1), new Vector2(4, 0), new Vector2(5, 0),
@@ -107,7 +107,7 @@ namespace LudoLike
         public LudoBoard()
         {
             ScaleBoard();
-            TileGrid = CreateTileGrid();
+            LudoBoard.TileGridPositions = CreateTileGrid();
         }
 
         /// <summary>
@@ -149,7 +149,7 @@ namespace LudoLike
                                 MainBoard.Top, 
                                 MainBoard.Width / 11 * 4, 
                                 MainBoard.Height / 11 * 4);
-            TileGrid = CreateTileGrid();
+            TileGridPositions = CreateTileGrid();
 
         }
 
