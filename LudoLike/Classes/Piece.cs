@@ -21,8 +21,6 @@ namespace LudoLike
         public static CanvasBitmap Yellow;
         public static CanvasBitmap Green;
 
-        //private Vector2 _pos;
-
         public Piece(Vector2 startPostition, PlayerColors colors)
         {
             StartPosition = startPostition;
@@ -56,11 +54,7 @@ namespace LudoLike
 
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs, Rect targetRectangle)
         {
-            //Rect newRect = new Rect(targetRectangle.X, targetRectangle.Y, targetRectangle.Width, targetRectangle.Height);
-            //position.X = (float)targetRectangle.X;
-            //position.Y = (float)targetRectangle.Y;
-            drawArgs.DrawingSession.DrawImage(this._pieceImage, targetRectangle); //placeholder position value
-
+            drawArgs.DrawingSession.DrawImage(this._pieceImage, targetRectangle);
         }
     }
 }
