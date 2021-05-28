@@ -77,13 +77,13 @@ namespace LudoLike
         public void CheckTiles()
         {
             //get list of tiles
+
             List<Vector2>[] list = {
             _players[0].ReturnPiecePostitions(),
             _players[1].ReturnPiecePostitions(),
             _players[2].ReturnPiecePostitions(),
             _players[3].ReturnPiecePostitions()
             };
-
             //compare lists
             //take this turns player pieces locations and comapre to others
             //List<Tile> same = list[0].Union(list[1]).ToList(); - checks if same vlaues exists in both lists, returns said values into same list // loop to check each piece to send to nest/home
@@ -100,7 +100,7 @@ namespace LudoLike
                         //looks for piece of another player to send back to home/nest
                         foreach (Piece piece in _players[i]._pieces)
                         {
-                            if (piece.position == same[0])
+                            if (piece.position == same[0] && piece.position != LudoBoard.RedPath[44])
                             {
                                 //moves piece to nest/home
                                 piece.position = piece.StartPosition; // might wanna use the move method of piece when implemented
@@ -186,6 +186,8 @@ namespace LudoLike
         public void TakeTurn(int diceRoll)
         {
             _players[CurrentPlayerTurn].MovePiece(diceRoll);
+
+            CheckTiles();
 
             //Pass control to the next player
             CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
