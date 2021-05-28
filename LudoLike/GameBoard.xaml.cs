@@ -142,40 +142,10 @@ namespace LudoLike
             ICanvasAnimatedControl sender,
             CanvasAnimatedDrawEventArgs drawArgs)
         {
-            
             drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BG));
-
-            _game._board.Draw(drawArgs);
-            drawArgs.DrawingSession.DrawText($"bWidth: {Scaling.bWidth}, bHeight{Scaling.bHeight}", 0, 0, Windows.UI.Colors.Black);
-            drawArgs.DrawingSession.DrawText($"Board X: {_game._board.MainBoard.X}, Board Y{_game._board.MainBoard.Y}", 50, 50, Windows.UI.Colors.Black);
-            drawArgs.DrawingSession.DrawText($"PLayer turn: {_game.CurrentPlayerTurn}",  (float)Scaling.bWidth / 2, 50, Windows.UI.Colors.Black);
-            
             _dice.Draw(drawArgs, _game.CurrentPlayerTurn);
-            //_piece.Draw(drawArgs);
+            _game.DrawMainContent(drawArgs);
 
-
-
-            // Draw all tiles
-            _game.UpdateTilePositions();
-            foreach (Tile tile in _game.Tiles)
-            {
-                tile.Draw(drawArgs);
-            }
-
-            _game.Draw(drawArgs);
-
-            foreach (Player player in _game._players)
-            {
-                foreach (Piece piece in player._pieces)
-                {
-                    piece.Draw(drawArgs, _game._board.TileGrid[piece.position]);
-                }
-            }
-            //foreach (KeyValuePair<Vector2, Rect> tileHolder in Board.TileGrid)
-            //{
-            //    drawArgs.DrawingSession.DrawText($"({tileHolder.Key.X}, {tileHolder.Key.Y})", new Vector2((float)tileHolder.Value.X, (float)tileHolder.Value.Y), Windows.UI.Colors.Black);
-            //}
-            //_gameStateManager.Draw(args);
         }
 
         private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
