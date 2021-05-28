@@ -28,35 +28,29 @@ namespace LudoLike
     /// <summary>
     /// The main page where a Game is displayed.
     /// </summary>
-    public sealed partial class MainPage : Page
+    public sealed partial class GameBoard : Page
     {
         public int NumberOfPlayers;
-
-        public static CanvasBitmap BG;
-        public List<Tile> Tiles;
-
-        //public LudoBoard Board;
-
+        public static CanvasBitmap BackGround;
         private Dice _dice;
-        //private Random _prng = new Random();
         private GameStateManager _gameStateManager = new GameStateManager();
 
         private Game _game;        
 
-        public MainPage()
+        public GameBoard()
         {
             this.InitializeComponent();
             Window.Current.SizeChanged += CurrentSizeChanged;
             ApplicationView.PreferredLaunchViewSize = new Size(1920, 1080);
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             Scaling.ScalingInit();
-            
-
             ControlProperties(Scaling.bWidth, Scaling.bHeight);
-            //_gameStateManager.GameStateInit();
-            //Canvas.IsFixedTimeStep = true;
         }
 
+        /// <summary>
+        /// Creates a game instance and saves slider value of players from play menu.
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -71,40 +65,70 @@ namespace LudoLike
             args.TrackAsyncAction(CreateResourcesAsync(sender).AsAsyncAction());
         }
 
+        /// <summary>
+        /// Sets the hight and width of the canvas.
+        /// </summary>
+        /// <param name="width"></param>
+        /// <param name="height"></param>
         public void ControlProperties(double width, double height)
         {
             Canvas.Width = width;
             Canvas.Height = height;
         }
 
+        /// <summary>
+        /// Loads all neccessary images that will be used in the game.
+        /// <para></para>
+        /// Also adds players, static and dynamic tiles to the board which must be added after loading images.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns></returns>
         async Task CreateResourcesAsync(CanvasAnimatedControl sender)
         {
+            BackGround = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/TestBackground.png"));
 
-
-            //Load background image
-            BG = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/TestBackground.png"));
-
-            //Load static images belonging to the Dice class
-            for (int n = 0; n < 6; ++n)
-            {
-                Dice.DiceImages[n] = await CanvasBitmap.LoadAsync(sender, new Uri($"ms-appx:///Assets/Images/Die{n + 1}.png"));
-            }
-            Dice.SpinningDieImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/SpinningDie.png"));
-            _dice = new Dice(0, 6);
-
-            Piece.Red = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RedPiece.png"));
-            Piece.Blue = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BluePiece.png"));
-            Piece.Yellow = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/YellowPiece.png"));
-            Piece.Green = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/GreenPiece.png"));
-
+            await LoadDiceImages(sender);
+            await LoadPlayerPieceImages(sender);
             await LoadGlowEffects(sender);
             await LoadTileImages(sender);
             
+            _dice = new Dice(0, 6);
             _game.AddPlayers(NumberOfPlayers);
             _game.CreateStaticTiles();
             _game.CreateDynamicTiles();
         }
 
+        /// <summary>
+        /// Loads dice images.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns></returns>
+        async Task LoadDiceImages(CanvasAnimatedControl sender)
+        {
+            for (int n = 0; n < 6; ++n)
+            {
+                Dice.DiceImages[n] = await CanvasBitmap.LoadAsync(sender, new Uri($"ms-appx:///Assets/Images/Die{n + 1}.png"));
+            }
+            Dice.SpinningDieImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/SpinningDie.png"));
+        }
+        /// <summary>
+        /// Loads Player piece images.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns></returns>
+        async Task LoadPlayerPieceImages(CanvasAnimatedControl sender) 
+        {
+            Piece.Red = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RedPiece.png"));
+            Piece.Blue = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BluePiece.png"));
+            Piece.Yellow = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/YellowPiece.png"));
+            Piece.Green = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/GreenPiece.png"));
+        }
+
+        /// <summary>
+        /// Loads glow effects for the die.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns></returns>
         async Task LoadGlowEffects(CanvasAnimatedControl sender)
         {
             Dice.GlowEffects.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/glowred.png")));
@@ -113,6 +137,11 @@ namespace LudoLike
             Dice.GlowEffects.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/glowgreen.png")));
         }
 
+        /// <summary>
+        /// Loads tile images.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns></returns>
         async Task LoadTileImages(CanvasAnimatedControl sender)
         {
             Tile.TileImages["Red"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/redtile.png"));
@@ -126,6 +155,11 @@ namespace LudoLike
             Tile.TileImages["Score"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/peng.png"));
         }
 
+        /// <summary>
+        /// Sets the scaling variables according to the new window size.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CurrentSizeChanged(object sender, WindowSizeChangedEventArgs e)
         {
             Scaling.ScalingInit(e.Size.Width, e.Size.Height);
@@ -138,11 +172,16 @@ namespace LudoLike
             
         }
 
+        /// <summary>
+        /// Updates and draws what is to be displayed on the canvas.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="drawArgs"></param>
         private void CanvasDraw(
             ICanvasAnimatedControl sender,
             CanvasAnimatedDrawEventArgs drawArgs)
         {
-            drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BG));
+            drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BackGround));
             _dice.Draw(drawArgs, _game.CurrentPlayerTurn);
             _game.DrawMainContent(drawArgs);
 
@@ -173,6 +212,12 @@ namespace LudoLike
         {
             _gameStateManager.Update();
         }
+
+        /// <summary>
+        /// Event for clicking the die to roll.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RollDie(object sender, RoutedEventArgs e)
         {
             _game.TakeTurn(_dice.Roll() + 1);
@@ -182,11 +227,21 @@ namespace LudoLike
         {
             
         }
-
+        /// <summary>
+        /// Changes cursor to hand when hovering the die.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ChangePointerHand(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
         }
+
+        /// <summary>
+        /// Changes cursor to pointer when un-hovering the die.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void ChangePointerRegular(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
