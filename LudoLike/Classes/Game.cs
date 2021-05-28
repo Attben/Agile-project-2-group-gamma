@@ -1,13 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Diagnostics;
 using System.Numerics;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Microsoft.Graphics.Canvas.Text;
 using Windows.Foundation;
+using Windows.Media.Core;
 
 namespace LudoLike
 {
@@ -20,6 +18,11 @@ namespace LudoLike
         public LudoBoard Board;
         public List<Tile> Tiles;
         public int CurrentPlayerTurn { get; private set; }
+
+        //Audio
+        public static MediaSource BackgroundMusic;
+
+        //Used for displaying the current score
         private readonly CanvasTextFormat _textFormat;
         private Rect _scoreBox;
 

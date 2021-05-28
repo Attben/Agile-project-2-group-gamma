@@ -124,6 +124,7 @@
     <Compile Include="Classes\Dice.cs" />
     <Compile Include="Classes\GameStateManager.cs" />
     <Compile Include="Classes\LudoBoard.cs" />
+    <Compile Include="Classes\SoundMixer.cs" />
     <Compile Include="Classes\Tile.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
@@ -151,10 +152,13 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Images\BluePiece.png" />
+    <Content Include="Assets\Images\BTurn.png" />
     <Content Include="Assets\Images\glowblue.png" />
     <Content Include="Assets\Images\glowgreen.png" />
     <Content Include="Assets\Images\glowred.png" />
     <Content Include="Assets\Images\glowyellow.png" />
+    <Content Include="Assets\Images\GTurn.png" />
+    <Content Include="Assets\Images\RTurn.png" />
     <Content Include="Assets\Images\Tiles\bluetile.png" />
     <Content Include="Assets\Images\Die1.png" />
     <Content Include="Assets\Images\Die2.png" />
@@ -176,6 +180,19 @@
     <Content Include="Assets\Images\Tiles\teleporttile.png" />
     <Content Include="Assets\Images\YellowPiece.png" />
     <Content Include="Assets\Images\Tiles\yellowtile.png" />
+    <Content Include="Assets\Images\YTurn.png" />
+    <Content Include="Assets\Sounds\bass jam.mp3" />
+    <Content Include="Assets\Sounds\Challenge.wav" />
+    <Content Include="Assets\Sounds\MoneyShake.wav" />
+    <Content Include="Assets\Sounds\PlasticTap1.wav" />
+    <Content Include="Assets\Sounds\PlasticTap2.wav" />
+    <Content Include="Assets\Sounds\PlasticTap3.wav" />
+    <Content Include="Assets\Sounds\Slap1.wav" />
+    <Content Include="Assets\Sounds\Slap2.wav" />
+    <Content Include="Assets\Sounds\Teleport.wav" />
+    <Content Include="Assets\Sounds\WoodenTap1.wav" />
+    <Content Include="Assets\Sounds\WoodenTap2.wav" />
+    <Content Include="Assets\Sounds\WoodenTap3.wav" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
