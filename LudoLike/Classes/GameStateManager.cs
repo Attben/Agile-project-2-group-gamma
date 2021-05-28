@@ -39,12 +39,12 @@ namespace LudoLike
         {
             if (CurrentGameState == GameState.NewGame)
             {
-                args.DrawingSession.DrawImage(Scaling.TransformImage(MainPage.BG));
+                args.DrawingSession.DrawImage(Scaling.TransformImage(GameBoard.BackGround));
                 args.DrawingSession.DrawText(CurrentGameState.ToString(), 20, 20, Windows.UI.Colors.White);
             }
             if (CurrentGameState == GameState.Playing)
             {
-                args.DrawingSession.DrawImage(Scaling.TransformImage(MainPage.BG));
+                args.DrawingSession.DrawImage(Scaling.TransformImage(GameBoard.BackGround));
                 args.DrawingSession.DrawText(CurrentGameState.ToString(), 20, 20, Windows.UI.Colors.White);
             }
             if (CurrentGameState == GameState.Paused)
