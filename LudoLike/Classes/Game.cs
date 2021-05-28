@@ -78,12 +78,11 @@ namespace LudoLike
         {
             //get list of tiles
 
-            List<Vector2>[] list = {
-            _players[0].ReturnPiecePostitions(),
-            _players[1].ReturnPiecePostitions(),
-            _players[2].ReturnPiecePostitions(),
-            _players[3].ReturnPiecePostitions()
-            };
+            List<List<Vector2>> list = new List<List<Vector2>>();
+            for (int i = 0; i < _players.Count; i++)
+            {
+                list.Add(_players[i].ReturnPiecePostitions());
+            }
             //compare lists
             //take this turns player pieces locations and comapre to others
             //List<Tile> same = list[0].Union(list[1]).ToList(); - checks if same vlaues exists in both lists, returns said values into same list // loop to check each piece to send to nest/home
