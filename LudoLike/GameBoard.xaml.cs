@@ -103,7 +103,6 @@ namespace LudoLike
             _game.AddPlayers(NumberOfPlayers);
             _game.CreateStaticTiles();
             _game.CreateDynamicTiles();
-
         }
 
         async Task LoadGlowEffects(CanvasAnimatedControl sender)

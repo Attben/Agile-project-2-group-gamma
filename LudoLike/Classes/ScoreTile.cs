@@ -10,22 +10,27 @@ using Windows.Foundation;
 
 namespace LudoLike
 {
+    /// <summary>
+    /// Represents a Tile which hold score for the player to gain when stepped on.
+    /// </summary>
     class ScoreTile : Tile
     {
         private int _amount;
 
+        /// <summary>
+        /// Creates a Tile on the rectangle. Points represents the points to gain when stepped on.
+        /// </summary>
+        /// <param name="targetRectangle"></param>
+        /// <param name="points"></param>
+        /// <param name="gridPosition"></param>
         public ScoreTile(Rect targetRectangle, int points, Vector2 gridPosition) : base(targetRectangle, gridPosition)
         {
             _amount = points;
             TileImage = TileImages["Score"];
         }
 
-        public override void TileEvent()
-        {
-            //Do something with _amount
-        }
 
-        public void TileEvent(Player player)
+        public override void TileEvent(Player player)
         {
             //Do something with _amount
             player.ChangeScore(_amount);

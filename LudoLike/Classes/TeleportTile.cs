@@ -10,10 +10,19 @@ using Windows.Foundation;
 
 namespace LudoLike
 {
+    /// <summary>
+    /// Represents a tile on which a player piece is teleported to or from.
+    /// </summary>
     class TeleportTile : Tile
     {
         private Rect _destinationTile;
 
+        /// <summary>
+        /// Creates a Tile on a grid position, connected to the destination Tile.
+        /// </summary>
+        /// <param name="targetRectangle"></param>
+        /// <param name="destination"></param>
+        /// <param name="gridPosition"></param>
         public TeleportTile(Rect targetRectangle, Rect destination, Vector2 gridPosition) : base(targetRectangle, gridPosition)
         {
             _destinationTile = destination;
