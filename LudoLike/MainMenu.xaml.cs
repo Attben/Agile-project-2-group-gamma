@@ -41,7 +41,7 @@ namespace LudoLike
         private void Scores_Click(object sender, RoutedEventArgs e)
         {
             //switch page
-            //this.Frame.Navigate(typeof(@pagenamehere@));
+            this.Frame.Navigate(typeof(Classes.Highscore));
         }
 
         private void Settings_Click(object sender, RoutedEventArgs e)
