@@ -25,11 +25,6 @@ namespace LudoLike
             TileImage = TileImages[color];
         }
 
-        public override void TileEvent()
-        {
-            //Do something to transport a Player to _destinationTile.
-        }
-
         public override void Draw(CanvasAnimatedDrawEventArgs drawArgs)
         {
             drawArgs.DrawingSession.DrawImage(TileImage, TargetRectangle);

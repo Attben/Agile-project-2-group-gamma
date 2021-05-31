@@ -40,16 +40,29 @@ namespace LudoLike
         }
 
         /// <summary>
-        /// Activates the function of the tile.
+        /// Activates the function of the tile. 
         /// </summary>
-        public virtual void TileEvent()
+        /// <returns>
+        /// true if the tile is supposed to disappear when activated.
+        /// false if the tile is supposed to be kept on the board.
+        /// </returns>
+        public virtual bool TileEvent()
         {
             //Intentionally left blank in base class.
+            return false;
         }
 
-        public virtual void TileEvent(Player player)
+        /// <summary>
+        /// Activates the function of the tile. 
+        /// </summary>
+        /// <returns>
+        /// <code>true</code> if the tile is supposed to disappear when activated.
+        /// <code>false</code> if the tile is supposed to be kept on the board.
+        /// </returns>
+        public virtual bool TileEvent(Player player)
         {
             //Intentionally left blank in base class.
+            return false;
         }
 
 

@@ -28,9 +28,10 @@ namespace LudoLike
             _minigame = game;
         }
 
-        public override void TileEvent()
+        public override bool TileEvent(Player player)
         {
             //Do something to start the _minigame.
+            return false;
         }
 
         public override void Draw(CanvasAnimatedDrawEventArgs drawArgs)

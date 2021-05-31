@@ -15,7 +15,7 @@ namespace LudoLike
     /// </summary>
     class TeleportTile : Tile
     {
-        private Rect _destinationTile;
+        private Vector2 _destinationTile;
 
         /// <summary>
         /// Creates a Tile on a grid position, connected to the destination Tile.
@@ -23,15 +23,17 @@ namespace LudoLike
         /// <param name="targetRectangle"></param>
         /// <param name="destination"></param>
         /// <param name="gridPosition"></param>
-        public TeleportTile(Rect targetRectangle, Rect destination, Vector2 gridPosition) : base(targetRectangle, gridPosition)
+        public TeleportTile(Rect targetRectangle, Vector2 destination, Vector2 gridPosition) : base(targetRectangle, gridPosition)
         {
             _destinationTile = destination;
             TileImage = TileImages["Teleport"];
         }
 
-        public override void TileEvent()
+        public override bool TileEvent(Player player)
         {
             //Do something to transport a Player to _destinationTile.
+            player._pieces[0].Move(_destinationTile);
+            return false;
         }
 
         public override void Draw(CanvasAnimatedDrawEventArgs drawArgs)
