@@ -125,6 +125,7 @@
     <Compile Include="Classes\GameStateManager.cs" />
     <Compile Include="Classes\LudoBoard.cs" />
     <Compile Include="Classes\SoundMixer.cs" />
+    <Compile Include="Classes\StenMiniGame.cs" />
     <Compile Include="Classes\Tile.cs" />
     <Compile Include="MainMenu.xaml.cs">
       <DependentUpon>MainMenu.xaml</DependentUpon>
