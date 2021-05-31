@@ -184,7 +184,7 @@ namespace LudoLike
                         {
                             int targetPosition = rng.Next(LudoBoard.DynamicTilesPositions.IndexOf(vector), LudoBoard.DynamicTilesPositions.Count());
                             Vector2 targetVector = LudoBoard.DynamicTilesPositions[targetPosition];
-                            if (!usedVectors.Contains(targetVector))
+                            if (!usedVectors.Contains(targetVector) && targetVector != vector)
                             {
                                 Tiles.Add(new TeleportTile(LudoBoard.TileGridPositions[vector], targetVector, vector));
                                 Tiles.Add(new TeleportTile(LudoBoard.TileGridPositions[targetVector], vector, targetVector));
