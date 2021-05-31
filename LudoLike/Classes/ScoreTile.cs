@@ -30,10 +30,11 @@ namespace LudoLike
         }
 
 
-        public override void TileEvent(Player player)
+        public override bool TileEvent(Player player)
         {
             //Do something with _amount
             player.ChangeScore(_amount);
+            return true;
         }
 
         public override void Draw(CanvasAnimatedDrawEventArgs drawArgs)

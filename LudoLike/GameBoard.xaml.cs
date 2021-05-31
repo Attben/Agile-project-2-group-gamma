@@ -100,6 +100,7 @@ namespace LudoLike
             _game.CreateStaticTiles();
             _game.CreateDynamicTiles();
 
+
             SoundMixer.PlaySound(Game.BackgroundMusic, SoundChannels.music);
         }
 

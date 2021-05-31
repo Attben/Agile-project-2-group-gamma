@@ -117,7 +117,28 @@ namespace LudoLike
             }
         }
 
-
+        public void CheckSpecialTile()
+        {
+            for (int i = 0; i < Tiles.Count(); i++)
+            {
+                if (_players[CurrentPlayerTurn].ReturnPiecePostitions()[0] == Tiles[i].GridPosition)
+                {
+                    if (Tiles[i].GetType() != (typeof(StaticTile)))
+                    {
+                        if (Tiles[i].TileEvent(_players[CurrentPlayerTurn])) 
+                        {
+                            StaticTile newTile = new StaticTile(Tiles[i].TargetRectangle, "Regular", Tiles[i].GridPosition);
+                            Tiles[i] = newTile;
+                            break;
+                        }
+                        else
+                        {
+                            break;
+                        }
+                    }
+                }
+            }
+        }
         // TODO: Test this method and integrate the functionality to the game
         public void NextTurn()
         {
@@ -150,24 +171,43 @@ namespace LudoLike
         public void CreateDynamicTiles()
         {
             Random rng = new Random();
+            List<Vector2> usedVectors = new List<Vector2>();
+
             foreach (Vector2 vector in LudoBoard.DynamicTilesPositions)
             {
-                double tileType = rng.NextDouble();
-                if (tileType < 0.10)
+                if (!usedVectors.Contains(vector))
                 {
-                    Tiles.Add(new TeleportTile(LudoBoard.TileGridPositions[vector], LudoBoard.TileGridPositions[vector], vector));
-                }
-                else if (tileType < 0.20)
-                {
-                    Tiles.Add(new MinigameTile(LudoBoard.TileGridPositions[vector], new Minigame(), vector));
-                }
-                else if (tileType < 0.5)
-                {
-                    Tiles.Add(new ScoreTile(LudoBoard.TileGridPositions[vector], 100, vector));
-                }
-                else
-                {
-                    Tiles.Add(new Tile(LudoBoard.TileGridPositions[vector], Tile.TileImages["Regular"], vector));
+                    double tileType = rng.NextDouble();
+                    if (tileType < 0.10 && LudoBoard.DynamicTilesPositions.IndexOf(vector) < (LudoBoard.DynamicTilesPositions.Count() - 1))
+                    {
+                        while (true)
+                        {
+                            int targetPosition = rng.Next(LudoBoard.DynamicTilesPositions.IndexOf(vector), LudoBoard.DynamicTilesPositions.Count());
+                            Vector2 targetVector = LudoBoard.DynamicTilesPositions[targetPosition];
+                            if (!usedVectors.Contains(targetVector))
+                            {
+                                Tiles.Add(new TeleportTile(LudoBoard.TileGridPositions[vector], targetVector, vector));
+                                Tiles.Add(new TeleportTile(LudoBoard.TileGridPositions[targetVector], vector, targetVector));
+                                usedVectors.Add(targetVector);
+                                break;
+                            }
+
+                        }
+                    
+                    }
+                    else if (tileType < 0.2)
+                    {
+                        Tiles.Add(new MinigameTile(LudoBoard.TileGridPositions[vector], new Minigame(), vector));
+                    }
+                    else if (tileType < 0.5)
+                    {
+                        Tiles.Add(new ScoreTile(LudoBoard.TileGridPositions[vector], 100, vector));
+                    }
+                    else
+                    {
+                        Tiles.Add(new StaticTile(LudoBoard.TileGridPositions[vector], "Regular", vector));
+                    }
+                    usedVectors.Add(vector);
                 }
             }
         }
@@ -192,7 +232,7 @@ namespace LudoLike
             _players[CurrentPlayerTurn].MovePiece(diceRoll);
 
             CheckTilesForCollisions();
-
+            CheckSpecialTile();
             //Pass control to the next player
             CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
         }
