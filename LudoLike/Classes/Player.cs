@@ -78,12 +78,12 @@ namespace LudoLike
                 {
                     if (_pieces[0].position == tile)
                     {
-                        nextPosition = path.IndexOf(tile);
+                        nextPosition = path.IndexOf(tile) + 1;
                     }
                 }
                 try
                 {
-                    _pieces[0].Move(path[nextPosition + 1]);
+                    _pieces[0].Move(path[nextPosition]);
                 }
                 catch (ArgumentOutOfRangeException)
                 {
