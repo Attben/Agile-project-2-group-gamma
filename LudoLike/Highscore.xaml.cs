@@ -82,7 +82,6 @@ namespace LudoLike.Classes
             try
             {
                 //Read current highscores
-                //string[] highscoreLines = System.IO.File.ReadAllLines(location);
                 IList<string> lines = await FileIO.ReadLinesAsync(HighscoreFile);
                 var nameScorePairs = new List<Tuple<string, int>>();
                 for (int n = 0; n < lines.Count; n += 2)
@@ -133,29 +132,6 @@ namespace LudoLike.Classes
                     outputText.AppendLine(nameScorePairs[n].Item2.ToString());
                 }
                 await FileIO.WriteTextAsync(HighscoreFile, outputText.ToString());
-
-                //using (var fileStream = await HighscoreFile.OpenAsync(FileAccessMode.ReadWrite))
-                //using (var outputStream = fileStream.GetOutputStreamAt(0))
-                //using (var dataWriter = new Windows.Storage.Streams.DataWriter(outputStream))
-                //{
-                //    for (int n = 0; n < nameScorePairs.Count && n < 10; ++n)
-                //    {
-                //        dataWriter.WriteString(nameScorePairs[n].Item1);
-                //        dataWriter.WriteString(nameScorePairs[n].Item2.ToString());
-                //    }
-                //    await dataWriter.StoreAsync();
-                //    await outputStream.FlushAsync();
-                //}
-
-                //using (StreamWriter sw = new StreamWriter(HighscoreFileLocation))
-                //{
-                //    for (int n = 0; n < 10; ++n)
-                //    {
-                //        //Write name, then score, on separate lines.
-                //        sw.WriteLine(nameScorePairs[n].Item1);
-                //        sw.WriteLine(nameScorePairs[n].Item2);
-                //    }
-                //}
             }
             catch (IOException e)
             {
