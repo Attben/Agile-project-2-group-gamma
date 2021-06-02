@@ -31,6 +31,9 @@ namespace LudoLike
     {
         private CanvasBitmap _backGround;
         private CanvasTextFormat _textFormat = new CanvasTextFormat();
+        private List<CanvasBitmap> _rightHandImages = new List<CanvasBitmap>();
+        private List<CanvasBitmap> _leftHandImages = new List<CanvasBitmap>();
+        private Random _rngImage = new Random();
         private int _p1Hand;
         private int _p2Hand;
         private int _drawSessions;
@@ -55,26 +58,37 @@ namespace LudoLike
         async Task CreateResourcesAsync(CanvasAnimatedControl sender)
         {
             _backGround = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/TestBackground.png"));
+            _rightHandImages.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RPS/rockright.png")));
+            _rightHandImages.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RPS/paperright.png")));
+            _rightHandImages.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RPS/scissorright.png")));
+            _leftHandImages.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RPS/rockleft.png")));
+            _leftHandImages.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RPS/paperleft.png")));
+            _leftHandImages.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RPS/scissorleft.png")));
         }
-
-        private void CanvasUpdate(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
+        private void DrawControls(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
+            Rect p1ControlHolder = new Rect(sender.Size.Width / 5, sender.Size.Height / 3, sender.Size.Width / 5, sender.Size.Height / 7);
+            args.DrawingSession.DrawImage(_leftHandImages[0], new Rect(p1ControlHolder.X, p1ControlHolder.Y - p1ControlHolder.Height/2, p1ControlHolder.Width/3, p1ControlHolder.Height/2));
+            args.DrawingSession.DrawImage(_leftHandImages[1], new Rect(p1ControlHolder.X + p1ControlHolder.Width/3, p1ControlHolder.Y - p1ControlHolder.Height / 2, p1ControlHolder.Width / 3, p1ControlHolder.Height / 2));
+            args.DrawingSession.DrawImage(_leftHandImages[2], new Rect(p1ControlHolder.X + p1ControlHolder.Width/3*2, p1ControlHolder.Y - p1ControlHolder.Height / 2, p1ControlHolder.Width / 3, p1ControlHolder.Height / 2));
+            args.DrawingSession.DrawText("1", new Rect(p1ControlHolder.X, p1ControlHolder.Y, p1ControlHolder.Width / 3, p1ControlHolder.Height / 2), Windows.UI.Colors.Black, _textFormat);
+            args.DrawingSession.DrawText("2", new Rect(p1ControlHolder.X + p1ControlHolder.Width / 3, p1ControlHolder.Y, p1ControlHolder.Width / 3, p1ControlHolder.Height / 2), Windows.UI.Colors.Black, _textFormat);
+            args.DrawingSession.DrawText("3", new Rect(p1ControlHolder.X + p1ControlHolder.Width / 3 * 2, p1ControlHolder.Y, p1ControlHolder.Width / 3, p1ControlHolder.Height / 2), Windows.UI.Colors.Black, _textFormat);
 
+
+            Rect p2ControlHolder = new Rect(sender.Size.Width / 5 * 3, sender.Size.Height / 3, sender.Size.Width / 5, sender.Size.Height / 7);
+            args.DrawingSession.DrawImage(_rightHandImages[0], new Rect(p2ControlHolder.X, p2ControlHolder.Y - p2ControlHolder.Height / 2, p2ControlHolder.Width / 3, p2ControlHolder.Height / 2));
+            args.DrawingSession.DrawImage(_rightHandImages[1], new Rect(p2ControlHolder.X + p2ControlHolder.Width / 3, p2ControlHolder.Y - p2ControlHolder.Height / 2, p2ControlHolder.Width / 3, p2ControlHolder.Height / 2));
+            args.DrawingSession.DrawImage(_rightHandImages[2], new Rect(p2ControlHolder.X + p2ControlHolder.Width / 3 * 2, p2ControlHolder.Y - p2ControlHolder.Height / 2, p2ControlHolder.Width / 3, p2ControlHolder.Height / 2));
+            args.DrawingSession.DrawText("7", new Rect(p2ControlHolder.X, p2ControlHolder.Y, p2ControlHolder.Width / 3, p2ControlHolder.Height / 2), Windows.UI.Colors.Black, _textFormat);
+            args.DrawingSession.DrawText("8", new Rect(p2ControlHolder.X + p2ControlHolder.Width / 3, p2ControlHolder.Y, p2ControlHolder.Width / 3, p2ControlHolder.Height / 2), Windows.UI.Colors.Black, _textFormat);
+            args.DrawingSession.DrawText("9", new Rect(p2ControlHolder.X + p2ControlHolder.Width / 3 * 2, p2ControlHolder.Y, p2ControlHolder.Width / 3, p2ControlHolder.Height / 2), Windows.UI.Colors.Black, _textFormat);
         }
-
-        private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
-        {
-
-        }
-
-        private void Canvas_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void CanvasDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
             args.DrawingSession.DrawImage(_backGround, new Rect(0, 0, sender.Size.Width, sender.Size.Height));
+            DrawControls(sender, args);
+
             if (_countDrawingSessions == true)
             {
                 _drawSessions += 1;
@@ -82,23 +96,38 @@ namespace LudoLike
             }
             if (_drawSessions <= 360)
             {
-                Rect p1Hand = new Rect(sender.Size.Width / 5, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
-                args.DrawingSession.DrawRectangle(p1Hand, Windows.UI.Colors.Red);
-                args.DrawingSession.DrawText($"{_p1Hand}", (float)(p1Hand.X + p1Hand.Width / 2 - _textFormat.FontSize), (float)(p1Hand.Y + p1Hand.Height / 2 - _textFormat.FontSize), Windows.UI.Colors.Black, _textFormat);
 
-                Rect p2Hand = new Rect(sender.Size.Width / 5 * 3, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
-                args.DrawingSession.DrawText($"{_p2Hand}", (float)(p2Hand.X + p2Hand.Width / 2 - _textFormat.FontSize), (float)(p2Hand.Y + p2Hand.Height / 2 - _textFormat.FontSize), Windows.UI.Colors.Black, _textFormat);
-                args.DrawingSession.DrawRectangle(p2Hand, Windows.UI.Colors.Blue);
+                Rect p1HandHolder = new Rect(sender.Size.Width / 5, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
+                args.DrawingSession.DrawImage(_leftHandImages[0], p1HandHolder);
 
-                args.DrawingSession.DrawText($"iterations Time: {Math.Floor((decimal)_drawSessions/60)}", (float)sender.Size.Width/2 - 25, (float)sender.Size.Height/3, Windows.UI.Colors.Black);
+                Rect p2HandHolder = new Rect(sender.Size.Width / 5 * 3, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
+                args.DrawingSession.DrawImage(_rightHandImages[0], p2HandHolder);
+
+                args.DrawingSession.DrawText($"iterations Time: {Math.Floor((decimal)_drawSessions / 60)}", (float)sender.Size.Width / 2 - 25, (float)sender.Size.Height / 3, Windows.UI.Colors.Black);
 
             }
-            else if(_drawSessions == 361)
+            else if (_drawSessions > 360 && _drawSessions <= 420)
             {
+                Rect p1HandHolder = new Rect(sender.Size.Width / 5, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
+                args.DrawingSession.DrawImage(_leftHandImages[_rngImage.Next(0,2)], p1HandHolder);
+
+                Rect p2HandHolder = new Rect(sender.Size.Width / 5 * 3, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
+                args.DrawingSession.DrawImage(_rightHandImages[_rngImage.Next(0, 2)], p2HandHolder);
+
+            } 
+            else if (_drawSessions == 421)
+            {
+
                 _winner = CheckWinner();
             }
             else
             {
+                Rect p1HandHolder = new Rect(sender.Size.Width / 5, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
+                args.DrawingSession.DrawImage(_leftHandImages[_p1Hand], p1HandHolder);
+
+                Rect p2HandHolder = new Rect(sender.Size.Width / 5 * 3, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
+                args.DrawingSession.DrawImage(_rightHandImages[_p2Hand], p2HandHolder);
+
                 args.DrawingSession.DrawText($"Game Over", (float)sender.Size.Width / 2, (float)sender.Size.Height / 2, Windows.UI.Colors.Black);
                 args.DrawingSession.DrawText($"{_winner}", (float)sender.Size.Width / 2, (float)sender.Size.Height / 2 + 50, Windows.UI.Colors.Black);
             }
@@ -150,6 +179,27 @@ namespace LudoLike
                     break;
             }
 
+        }
+
+        private void CanvasUpdate(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
+        {
+
+        }
+
+        private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+
+        }
+
+        private void Canvas_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            MiniGame1Canvas.RemoveFromVisualTree();
+            MiniGame1Canvas = null;
         }
     }
 }
