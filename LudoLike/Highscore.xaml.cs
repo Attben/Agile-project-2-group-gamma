@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -22,8 +23,7 @@ namespace LudoLike.Classes
     /// </summary>
     public sealed partial class Highscore : Page
     {
-        private string[] _linesFromHighscoreFile;
-        public const string HighscoreFileLocation = @"Data\Highscores.txt";
+        public static StorageFile HighscoreFile;
 
         public Highscore()
         {
@@ -33,19 +33,20 @@ namespace LudoLike.Classes
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            ReadHighscoresFromFile(HighscoreFileLocation);
+            ReadHighscoresFromFile();
         }
 
-        private void ReadHighscoresFromFile(string location)
+        private async void ReadHighscoresFromFile()
         {
             try
             {
-                _linesFromHighscoreFile = System.IO.File.ReadAllLines(location);
+                //_linesFromHighscoreFile = System.IO.File.ReadAllLines(location);
+                IList<string> linesFromHighscoreFile = await FileIO.ReadLinesAsync(HighscoreFile);
 
                 //TODO: Improve text formatting
                 StringBuilder names = new StringBuilder();
                 StringBuilder scores = new StringBuilder();
-                for (int n = 0; n < _linesFromHighscoreFile.Length; n += 2)
+                for (int n = 0; n < linesFromHighscoreFile.Count; n += 2)
                 {
                     string placement;
                     switch (n / 2)
@@ -64,8 +65,8 @@ namespace LudoLike.Classes
                             break;
                     }
                     names.Append(placement);
-                    names.Append(_linesFromHighscoreFile[n] + "\n");
-                    scores.Append(_linesFromHighscoreFile[n + 1] + "\n");
+                    names.Append(linesFromHighscoreFile[n] + "\n");
+                    scores.Append(linesFromHighscoreFile[n + 1] + "\n");
                 }
                 HighscoreNames.Text = names.ToString();
                 HighscoreScores.Text = scores.ToString();
@@ -76,20 +77,17 @@ namespace LudoLike.Classes
             }
         }
 
-        public static async void AddHighscores(string location, List<Player> players)
+        public static async void AddHighscores(List<Player> players)
         {
             try
             {
                 //Read current highscores
                 //string[] highscoreLines = System.IO.File.ReadAllLines(location);
+                IList<string> lines = await FileIO.ReadLinesAsync(HighscoreFile);
                 var nameScorePairs = new List<Tuple<string, int>>();
-                using (StreamReader sr = new StreamReader(HighscoreFileLocation))
+                for (int n = 0; n < lines.Count; n += 2)
                 {
-                    string line;
-                    while ((line = sr.ReadLine()) != null)
-                    {
-                        nameScorePairs.Add(new Tuple<string, int>(line, int.Parse(sr.ReadLine())));
-                    }
+                    nameScorePairs.Add(new Tuple<string, int>(lines[n], int.Parse(lines[n + 1])));
                 }
 
                 //Compare incoming player scores to current highscores
@@ -97,35 +95,67 @@ namespace LudoLike.Classes
                 //Add()ing directly to NameScorePair in the loop crashes the program because of
                 //some async shenanigans. Using temp storage as a workaround.
                 var newHighscoreTempStorage = new List<Tuple<string, int>>();
+
                 foreach (Player p in players)
                 {
-                    foreach (Tuple<string, int> nameScorePair in nameScorePairs)
+                    //Highscore list will be top 10 scores.
+                    if (nameScorePairs.Count + newHighscoreTempStorage.Count < 10)
                     {
-                        if (p.Score > nameScorePair.Item2)
+                        newHighscoreTempStorage.Add(new Tuple<string, int>(await NameEntryDialog(p), p.Score));
+                    }
+                    else
+                    {
+                        foreach (Tuple<string, int> nameScorePair in nameScorePairs)
                         {
-                            //The player's score was higher than an entry in the highscore list, so we save it.
-                            newHighscoreTempStorage.Add(new Tuple<string, int>(await NameEntryDialog(p), p.Score));
-                            break;
+                            if (p.Score > nameScorePair.Item2)
+                            {
+                                //The player's score was higher than an entry in the highscore list, so we save it.
+                                newHighscoreTempStorage.Add(new Tuple<string, int>(await NameEntryDialog(p), p.Score));
+                                break;
+                            }
                         }
                     }
                 }
                 //Add temp values to highscore list
-                foreach(var nameScorePair in newHighscoreTempStorage)
+                foreach (var nameScorePair in newHighscoreTempStorage)
                 {
                     nameScorePairs.Add(nameScorePair);
                 }
-                //Sort the list by Item2 (score)
-                nameScorePairs.Sort((lhs, rhs) => lhs.Item2.CompareTo(rhs.Item2));
-                //Write top 10 to highscore file
-                using (StreamWriter sw = new StreamWriter(HighscoreFileLocation))
+
+                //Sort the list by Item2 (score), descending.
+                nameScorePairs.Sort((lhs, rhs) => rhs.Item2.CompareTo(lhs.Item2));
+
+                //Write top 10 to highscore
+                StringBuilder outputText = new StringBuilder();
+                for(int n = 0; n < nameScorePairs.Count && n < 10; ++n)
                 {
-                    for (int n = 0; n < 10; ++n)
-                    {
-                        //Write name, then score, on separate lines.
-                        sw.WriteLine(nameScorePairs[n].Item1);
-                        sw.WriteLine(nameScorePairs[n].Item2);
-                    }
+                    outputText.AppendLine(nameScorePairs[n].Item1);
+                    outputText.AppendLine(nameScorePairs[n].Item2.ToString());
                 }
+                await FileIO.WriteTextAsync(HighscoreFile, outputText.ToString());
+
+                //using (var fileStream = await HighscoreFile.OpenAsync(FileAccessMode.ReadWrite))
+                //using (var outputStream = fileStream.GetOutputStreamAt(0))
+                //using (var dataWriter = new Windows.Storage.Streams.DataWriter(outputStream))
+                //{
+                //    for (int n = 0; n < nameScorePairs.Count && n < 10; ++n)
+                //    {
+                //        dataWriter.WriteString(nameScorePairs[n].Item1);
+                //        dataWriter.WriteString(nameScorePairs[n].Item2.ToString());
+                //    }
+                //    await dataWriter.StoreAsync();
+                //    await outputStream.FlushAsync();
+                //}
+
+                //using (StreamWriter sw = new StreamWriter(HighscoreFileLocation))
+                //{
+                //    for (int n = 0; n < 10; ++n)
+                //    {
+                //        //Write name, then score, on separate lines.
+                //        sw.WriteLine(nameScorePairs[n].Item1);
+                //        sw.WriteLine(nameScorePairs[n].Item2);
+                //    }
+                //}
             }
             catch (IOException e)
             {
