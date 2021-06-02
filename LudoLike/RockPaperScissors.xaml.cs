@@ -27,8 +27,10 @@ namespace LudoLike
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MiniGame1Page : Page
+    public sealed partial class RockPaperScissors : Page
     {
+        private Player _player1;
+        private Player _player2;
         private CanvasBitmap _backGround;
         private CanvasTextFormat _textFormat = new CanvasTextFormat();
         private List<CanvasBitmap> _rightHandImages = new List<CanvasBitmap>();
@@ -39,10 +41,15 @@ namespace LudoLike
         private int _drawSessions;
         private bool _countDrawingSessions = false;
         private string _winner;
-        public MiniGame1Page()
+        public RockPaperScissors()
         {
             this.InitializeComponent();
 
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
         }
         private void CanvasCreateResources(CanvasAnimatedControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
         {
@@ -150,7 +157,7 @@ namespace LudoLike
             }
         }
 
-        private void MiniGame1Grid_KeyDown(object sender, KeyRoutedEventArgs e)
+        private void RockPaperScissorsGrid_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             switch (e.Key)
             {
@@ -173,7 +180,10 @@ namespace LudoLike
                     _p2Hand = 2;
                     break;
                 case VirtualKey.Space:
-                    _countDrawingSessions = true;
+                    if (_countDrawingSessions == false)
+                    {
+                        _countDrawingSessions = true;
+                    }
                     break;
                 default:
                     break;
@@ -198,8 +208,8 @@ namespace LudoLike
 
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
-            MiniGame1Canvas.RemoveFromVisualTree();
-            MiniGame1Canvas = null;
+            RockPaperscissorsCanvas.RemoveFromVisualTree();
+            RockPaperscissorsCanvas = null;
         }
     }
 }

@@ -34,6 +34,9 @@ namespace LudoLike
     /// </summary>
     public sealed partial class GameBoard : Page
     {
+        public delegate void MiniGameDelegate(Player invokingPlayer);
+        public static event MiniGameDelegate MiniGameEvent;
+
         public int NumberOfPlayers;
         public static CanvasBitmap BackGround;
         private Dice _dice;
@@ -49,7 +52,9 @@ namespace LudoLike
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.PreferredLaunchViewSize;
             Scaling.ScalingInit();
             ControlProperties(Scaling.bWidth, Scaling.bHeight);
+            MiniGameEvent += StartMiniGame;
         }
+
 
         /// <summary>
         /// Creates a game instance and saves slider value of players from play menu.
@@ -268,11 +273,24 @@ namespace LudoLike
             Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
         }
 
-        private async void OpenMinigame(object sender, RoutedEventArgs e)
+        private void OpenMinigame(object sender, RoutedEventArgs e)
         {
+            MiniGameEvent.Invoke(_game._players[0]);
+        }
+
+        public static void InvokeMiniGameEvent(Player player)
+        {
+            MiniGameEvent.Invoke(player);
+        }
+
+        public async void StartMiniGame(Player invokingPlayer)
+        {
+            MiniGameNavigationParams navParams = new MiniGameNavigationParams();
+            navParams.InvokingPlayer = invokingPlayer;
+            navParams.OtherPlayers = _game._players.Where(player => player != invokingPlayer).ToList();
             AppWindow appWindow = await AppWindow.TryCreateAsync();
             Frame appWindowContentFrame = new Frame();
-            appWindowContentFrame.Navigate(typeof(MiniGamePage));
+            appWindowContentFrame.Navigate(typeof(MiniGamePage), navParams);
             ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
             await appWindow.TryShowAsync();
         }

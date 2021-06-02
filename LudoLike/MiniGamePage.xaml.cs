@@ -22,14 +22,24 @@ namespace LudoLike
     /// </summary>
     public sealed partial class MiniGamePage : Page
     {
+        private MiniGameNavigationParams _navParams;
+
+
         public MiniGamePage()
         {
             this.InitializeComponent();
         }
 
-        private void MiniGameButton1_Click(object sender, RoutedEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
-            this.Frame.Navigate(typeof(MiniGame1Page));
+            base.OnNavigatedTo(e);
+            _navParams = (MiniGameNavigationParams)e.Parameter;
+        }
+
+        private void RockPaperScissorsButton_Click(object sender, RoutedEventArgs e)
+        {
+            _navParams.PlayersToChallenge = 1;
+            Frame.Navigate(typeof(MiniGameChallengePlayersPage), _navParams);
         }
     }
 }

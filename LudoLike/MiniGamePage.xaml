@@ -10,8 +10,8 @@
 
     <Grid>
         <RelativePanel Height="350" Width="270" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10">
-            <Button x:Name="MiniGameButton1"  Content="Sten, sax påse" Margin="0, 0, 0, 0" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center" Click="MiniGameButton1_Click"/>
-            <Button x:Name="MiniGameButton2" RelativePanel.Below="MiniGameButton1" Margin="0, 15, 0, 0" Content="MiniGame2" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center"/>
+            <Button x:Name="RockPaperScissorsButton"  Content="Sten, sax påse" Margin="0, 0, 0, 0" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center" Click="RockPaperScissorsButton_Click"/>
+            <Button x:Name="MiniGameButton2" RelativePanel.Below="RockPaperScissorsButton" Margin="0, 15, 0, 0" Content="MiniGame2" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center"/>
             <Button x:Name="MiniGameButton3" RelativePanel.Below="MiniGameButton2" Margin="0, 15, 0, 0" Content="MiniGame3" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center"/>
         </RelativePanel>
 
