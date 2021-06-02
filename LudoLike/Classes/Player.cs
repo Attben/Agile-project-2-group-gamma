@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Windows.Media.Core;
 
@@ -84,14 +85,13 @@ namespace LudoLike
                 try
                 {
                     _pieces[0].Move(path[nextPosition]);
+                    SoundMixer.PlaySound(PieceMovingSounds[new Random().Next(PieceMovingSounds.Count)]);
                 }
                 catch (ArgumentOutOfRangeException)
                 {
                     _pieces[0].Move(path[44]);
                 }
             }
-
-            SoundMixer.PlaySound(PieceMovingSounds[new Random().Next(PieceMovingSounds.Count)]);
             // Detta måste anpassas till den nya tilegridlogiken
             //_piece.Move(100f, 100f);
         }
