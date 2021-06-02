@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Storage;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -30,7 +31,18 @@ namespace LudoLike
             var view = ApplicationView.GetForCurrentView();
             ElementSoundPlayer.State = ElementSoundPlayerState.On;
             ElementSoundPlayer.SpatialAudioMode = ElementSpatialAudioMode.Off;
+            LoadHighscoreLocation();
             //view.TryEnterFullScreenMode();
+        }
+
+        public async void LoadHighscoreLocation()
+        {
+            StorageFolder AppDataFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(
+                "LudoLike",
+                CreationCollisionOption.OpenIfExists);
+            Classes.Highscore.HighscoreFile = await AppDataFolder.CreateFileAsync(
+                "Highscores.txt",
+                CreationCollisionOption.OpenIfExists);
         }
 
         private void Play_Click(object sender, RoutedEventArgs e)
