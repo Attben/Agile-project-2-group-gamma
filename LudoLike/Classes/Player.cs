@@ -90,6 +90,7 @@ namespace LudoLike
                 catch (ArgumentOutOfRangeException)
                 {
                     _pieces[0].Move(path[44]);
+                    break;
                 }
             }
             // Detta måste anpassas till den nya tilegridlogiken
