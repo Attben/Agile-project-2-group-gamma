@@ -238,6 +238,7 @@ namespace LudoLike
         }
 
 
+        // Source: https://stackoverflow.com/questions/58908845/keydown-event-doesnt-trigger-from-selected-grid-in-uwp
         private async void MainGrid_OnPointerReleased(object sender, PointerRoutedEventArgs e)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { KeyDownControl.Focus(FocusState.Keyboard); });
