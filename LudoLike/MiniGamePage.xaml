@@ -1,0 +1,19 @@
+﻿<Page
+    x:Class="LudoLike.MiniGamePage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:LudoLike"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid>
+        <RelativePanel Height="350" Width="270" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10">
+            <Button x:Name="RockPaperScissorsButton"  Content="Sten, sax påse" Margin="0, 0, 0, 0" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center" Click="RockPaperScissorsButton_Click"/>
+            <Button x:Name="MiniGameButton2" RelativePanel.Below="RockPaperScissorsButton" Margin="0, 15, 0, 0" Content="MiniGame2" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center"/>
+            <Button x:Name="MiniGameButton3" RelativePanel.Below="MiniGameButton2" Margin="0, 15, 0, 0" Content="MiniGame3" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center"/>
+        </RelativePanel>
+
+    </Grid>
+</Page>

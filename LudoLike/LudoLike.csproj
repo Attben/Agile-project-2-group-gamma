@@ -123,6 +123,8 @@
     <Compile Include="Classes\Game.cs" />
     <Compile Include="Classes\Dice.cs" />
     <Compile Include="Classes\GameStateManager.cs" />
+    <Compile Include="Classes\KeyDownControl.cs" />
+    <Compile Include="Classes\MiniGameNavigationParams.cs" />
     <Compile Include="Highscore.xaml.cs">
       <DependentUpon>Highscore.xaml</DependentUpon>
     </Compile>
@@ -139,6 +141,15 @@
     <Compile Include="Classes\MinigameTile.cs" />
     <Compile Include="Classes\Piece.cs" />
     <Compile Include="Classes\Player.cs" />
+    <Compile Include="MiniGameChallengePlayersPage.xaml.cs">
+      <DependentUpon>MiniGameChallengePlayersPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="RockPaperScissors.xaml.cs">
+      <DependentUpon>RockPaperScissors.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MiniGamePage.xaml.cs">
+      <DependentUpon>MiniGamePage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PlayMenu.xaml.cs">
       <DependentUpon>PlayMenu.xaml</DependentUpon>
     </Compile>
@@ -161,6 +172,12 @@
     <Content Include="Assets\Images\glowred.png" />
     <Content Include="Assets\Images\glowyellow.png" />
     <Content Include="Assets\Images\GTurn.png" />
+    <Content Include="Assets\Images\RPS\paperleft.png" />
+    <Content Include="Assets\Images\RPS\paperright.png" />
+    <Content Include="Assets\Images\RPS\rockleft.png" />
+    <Content Include="Assets\Images\RPS\rockright.png" />
+    <Content Include="Assets\Images\RPS\scissorleft.png" />
+    <Content Include="Assets\Images\RPS\scissorright.png" />
     <Content Include="Assets\Images\RTurn.png" />
     <Content Include="Assets\Images\Tiles\bluetile.png" />
     <Content Include="Assets\Images\Die1.png" />
@@ -221,6 +238,18 @@
     <Page Include="GameBoard.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MiniGameChallengePlayersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="RockPaperScissors.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="MiniGamePage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PlayMenu.xaml">
       <SubType>Designer</SubType>

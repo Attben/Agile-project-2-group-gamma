@@ -68,7 +68,6 @@
     </Page.Resources>
 
     <Grid>
-
         <canvas:CanvasAnimatedControl
             x:Name="Canvas"
             Draw="CanvasDraw"

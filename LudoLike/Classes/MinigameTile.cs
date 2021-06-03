@@ -30,6 +30,7 @@ namespace LudoLike
 
         public override bool TileEvent(Player player)
         {
+            GameBoard.InvokeMiniGameEvent(player);
             //Do something to start the _minigame.
             return false;
         }
