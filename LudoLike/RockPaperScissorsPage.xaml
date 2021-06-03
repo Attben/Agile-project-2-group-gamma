@@ -17,6 +17,6 @@
             CreateResources="CanvasCreateResources"
             Update="CanvasUpdate" Loaded="Canvas_Loaded"/>
         <local:KeyDownControl x:Name="KeyDownControl"/>
-
+        
     </Grid>
 </Page>
