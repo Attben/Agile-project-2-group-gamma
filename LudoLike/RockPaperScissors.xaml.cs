@@ -20,6 +20,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.System;
 using Windows.Media.Core;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -225,11 +226,6 @@ namespace LudoLike
 
         }
 
-        private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
-        {
-
-        }
-
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
         {
 
@@ -239,6 +235,12 @@ namespace LudoLike
         {
             RockPaperscissorsCanvas.RemoveFromVisualTree();
             RockPaperscissorsCanvas = null;
+        }
+
+
+        private async void MainGrid_OnPointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { KeyDownControl.Focus(FocusState.Keyboard); });
         }
     }
 }
