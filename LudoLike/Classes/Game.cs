@@ -283,6 +283,13 @@ namespace LudoLike
                 tile.Draw(drawArgs);
             }
         }
-    // Might have to make another drawmethod for drawing minigame 
+        // Might have to make another drawmethod for drawing minigame 
+
+
+        void Stealpoints(int player1, int player2, int points)//steals from player1 and gives to plaýer2
+        {
+            _players[player1].ChangeScore(-points);
+            _players[player2].ChangeScore(points);
+        }
     }
 }
