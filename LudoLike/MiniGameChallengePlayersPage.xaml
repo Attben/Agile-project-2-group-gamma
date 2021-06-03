@@ -11,7 +11,7 @@
     <Grid>
         <StackPanel x:Name="MainContainer" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="Gray">
             <TextBlock FontSize="22" HorizontalAlignment="Center" FocusVisualPrimaryBrush="White" Foreground="Gray">CHOOSE WHICH PLAYER TO CHALLENGE</TextBlock>
-            <TextBlock x:Name="ErrorMessage" FontSize="22" HorizontalAlignment="Center" FocusVisualPrimaryBrush="Red" Foreground="Gray"></TextBlock>
+            <TextBlock x:Name="ErrorMessage" FontSize="22" HorizontalAlignment="Center" FocusVisualPrimaryBrush="Red" Foreground="Red"></TextBlock>
             <StackPanel x:Name="PlayerButtonContainer" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" Orientation="Vertical">
                 <Button x:Name="Player1Button" Margin="10" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center" Click="PlayerButton_Click"/>
                 <Button x:Name="Player2Button" RelativePanel.Below="Player1Button" Margin="10" Content="" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center" Click="PlayerButton_Click"/>

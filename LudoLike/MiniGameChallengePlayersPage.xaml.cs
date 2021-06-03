@@ -177,8 +177,15 @@ namespace LudoLike
 
         private void AcceptButtonClick(object sender, RoutedEventArgs e)
         {
-            _navParams.ChallengedPlayers = _challengedPlayers;
-            Frame.Navigate(_navParams.MiniGamePage, _navParams);
+            if(_challengedPlayers.Count() == _navParams.PlayersToChallenge)
+            {
+                _navParams.ChallengedPlayers = _challengedPlayers;
+                Frame.Navigate(_navParams.MiniGamePage, _navParams);
+            }
+            else
+            {
+                ErrorMessage.Text = $"YOU HAVE TO CHALLENGE {_navParams.PlayersToChallenge} PLAYER(S)";
+            }
         }
     }
 }
