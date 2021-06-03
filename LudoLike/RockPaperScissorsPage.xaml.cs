@@ -29,8 +29,9 @@ namespace LudoLike
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class RockPaperScissors : Page
+    public sealed partial class RockPaperScissorsPage : Page
     {
+        private MiniGameNavigationParams _navParams;
         private Player _player1;
         private Player _player2;
         private CanvasBitmap _backGround;
@@ -53,15 +54,17 @@ namespace LudoLike
             rock, paper, scissors
         }
 
-        public RockPaperScissors()
+        public RockPaperScissorsPage()
         {
             this.InitializeComponent();
-
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            _navParams = (MiniGameNavigationParams)e.Parameter;
+            _player1 = _navParams.InvokingPlayer;
+            _player2 = _navParams.ChallengedPlayers[0];
         }
         private void CanvasCreateResources(CanvasAnimatedControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
         {
@@ -72,6 +75,7 @@ namespace LudoLike
         private void CreateTextFormat()
         {
             _textFormat.FontFamily = "Helvetica";
+            _textFormat.FontSize = 40;
         }
 
         async Task CreateResourcesAsync(CanvasAnimatedControl sender)
@@ -122,23 +126,30 @@ namespace LudoLike
         {
             args.DrawingSession.DrawImage(_backGround, new Rect(0, 0, sender.Size.Width, sender.Size.Height));
             DrawControls(sender, args);
-
-            if (_countDrawingSessions == true)
+            if (!_countDrawingSessions)
             {
-                _drawSessions += 1;
-
-            }
-            if (_drawSessions <= 360)
-            {
-
+                args.DrawingSession.DrawText($"PRESS SPACE TO START..", (float)sender.Size.Width / 2 - 200, (float)sender.Size.Height / 6, Windows.UI.Colors.Black, _textFormat);
                 Rect p1HandHolder = new Rect(sender.Size.Width / 5, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
                 args.DrawingSession.DrawImage(_leftHandImages[0], p1HandHolder);
 
                 Rect p2HandHolder = new Rect(sender.Size.Width / 5 * 3, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
                 args.DrawingSession.DrawImage(_rightHandImages[0], p2HandHolder);
+            }
+            if (_countDrawingSessions)
+            {
+                _drawSessions += 1;
 
-                args.DrawingSession.DrawText($"iterations Time: {Math.Floor((decimal)_drawSessions / 60)}", (float)sender.Size.Width / 2 - 25, (float)sender.Size.Height / 3, Windows.UI.Colors.Black);
+            }
 
+            
+            if (_countDrawingSessions && _drawSessions <= 360)
+            {
+                args.DrawingSession.DrawText($"{Math.Floor((decimal)_drawSessions / 60)}", (float)sender.Size.Width / 2 - 20, (float)sender.Size.Height / 6, Windows.UI.Colors.Black, _textFormat);
+                Rect p1HandHolder = new Rect(sender.Size.Width / 5, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
+                args.DrawingSession.DrawImage(_leftHandImages[0], p1HandHolder);
+
+                Rect p2HandHolder = new Rect(sender.Size.Width / 5 * 3, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
+                args.DrawingSession.DrawImage(_rightHandImages[0], p2HandHolder);
             }
             else if (_drawSessions > 360 && _drawSessions <= 420)
             {
@@ -151,10 +162,9 @@ namespace LudoLike
             } 
             else if (_drawSessions == 421)
             {
-
                 _winner = CheckWinner();
             }
-            else
+            else if (_drawSessions > 421)/*if (_drawSessions > 421 && _drawSessions < 600)*/
             {
                 Rect p1HandHolder = new Rect(sender.Size.Width / 5, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
                 args.DrawingSession.DrawImage(_leftHandImages[(int)_p1Hand], p1HandHolder);
@@ -165,7 +175,9 @@ namespace LudoLike
                 args.DrawingSession.DrawText($"Game Over", (float)sender.Size.Width / 2, (float)sender.Size.Height / 2, Windows.UI.Colors.Black);
                 args.DrawingSession.DrawText($"{_winner}", (float)sender.Size.Width / 2, (float)sender.Size.Height / 2 + 50, Windows.UI.Colors.Black);
             }
+            
         }
+
 
         private string CheckWinner()
         {
@@ -178,11 +190,15 @@ namespace LudoLike
                 (_p1Hand == _moveChoices.rock && _p2Hand == _moveChoices.scissors))
             {
                 Classes.SoundMixer.PlayRandomSound(_soundLists[(int)_p1Hand]);
+                _player1.ChangeScore(200);
+                _player2.ChangeScore(-200);
                 return "Player 1 Wins!";
             }
             else //It's not a draw, and player1 didn't win, so player 2 must've won.
             {
                 Classes.SoundMixer.PlayRandomSound(_soundLists[(int)_p2Hand]);
+                _player2.ChangeScore(200);
+                _player1.ChangeScore(-200);
                 return "Player 2 Wins!";
             }
         }
@@ -216,10 +232,7 @@ namespace LudoLike
                     _p2Hand = _moveChoices.scissors;
                     break;
                 case VirtualKey.Space:
-                    if (_countDrawingSessions == false)
-                    {
-                        _countDrawingSessions = true;
-                    }
+                    _countDrawingSessions = true;
                     break;
                 default:
                     break;

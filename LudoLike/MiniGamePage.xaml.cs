@@ -39,7 +39,7 @@ namespace LudoLike
         private void RockPaperScissorsButton_Click(object sender, RoutedEventArgs e)
         {
             _navParams.PlayersToChallenge = 1;
-            _navParams.MiniGamePage = typeof(RockPaperScissors);
+            _navParams.MiniGamePage = typeof(RockPaperScissorsPage);
             Frame.Navigate(typeof(MiniGameChallengePlayersPage), _navParams);
         }
     }

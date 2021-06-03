@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="LudoLike.RockPaperScissors"
+    x:Class="LudoLike.RockPaperScissorsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:LudoLike"
@@ -17,6 +17,6 @@
             CreateResources="CanvasCreateResources"
             Update="CanvasUpdate" Loaded="Canvas_Loaded"/>
         <local:KeyDownControl x:Name="KeyDownControl"/>
-
+        
     </Grid>
 </Page>

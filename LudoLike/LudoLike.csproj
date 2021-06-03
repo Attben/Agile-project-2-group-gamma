@@ -125,6 +125,7 @@
     <Compile Include="Classes\GameStateManager.cs" />
     <Compile Include="Classes\KeyDownControl.cs" />
     <Compile Include="Classes\MiniGameNavigationParams.cs" />
+    <Compile Include="Classes\RockPaperScissorGame.cs" />
     <Compile Include="Highscore.xaml.cs">
       <DependentUpon>Highscore.xaml</DependentUpon>
     </Compile>
@@ -144,8 +145,8 @@
     <Compile Include="MiniGameChallengePlayersPage.xaml.cs">
       <DependentUpon>MiniGameChallengePlayersPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="RockPaperScissors.xaml.cs">
-      <DependentUpon>RockPaperScissors.xaml</DependentUpon>
+    <Compile Include="RockPaperScissorsPage.xaml.cs">
+      <DependentUpon>RockPaperScissorsPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="MiniGamePage.xaml.cs">
       <DependentUpon>MiniGamePage.xaml</DependentUpon>
@@ -252,7 +253,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="RockPaperScissors.xaml">
+    <Page Include="RockPaperScissorsPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

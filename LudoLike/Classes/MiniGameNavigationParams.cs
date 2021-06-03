@@ -9,6 +9,7 @@ namespace LudoLike
 {
     class MiniGameNavigationParams
     {
+        public Minigame MiniGame;
         public Type MiniGamePage;
         public Player InvokingPlayer;
         public List<Player> OtherPlayers = new List<Player>();
