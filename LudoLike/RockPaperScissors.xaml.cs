@@ -192,21 +192,27 @@ namespace LudoLike
             switch (e.Key)
             {
                 case VirtualKey.Number1:
+                case VirtualKey.NumberPad1:
                     _p1Hand = _moveChoices.rock;
                     break;
                 case VirtualKey.Number2:
+                case VirtualKey.NumberPad2:
                     _p1Hand = _moveChoices.paper;
                     break;
                 case VirtualKey.Number3:
+                case VirtualKey.NumberPad3:
                     _p1Hand = _moveChoices.scissors;
                     break;
                 case VirtualKey.Number7:
+                case VirtualKey.NumberPad7:
                     _p2Hand = _moveChoices.rock;
                     break;
                 case VirtualKey.Number8:
+                case VirtualKey.NumberPad8:
                     _p2Hand = _moveChoices.paper;
                     break;
                 case VirtualKey.Number9:
+                case VirtualKey.NumberPad9:
                     _p2Hand = _moveChoices.scissors;
                     break;
                 case VirtualKey.Space:
