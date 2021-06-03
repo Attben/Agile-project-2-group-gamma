@@ -32,7 +32,7 @@ namespace LudoLike
 
         public override bool TileEvent(Player player)
         {
-            //Do something with _amount
+            base.TileEvent(player);
             player.ChangeScore(_amount);
             return true;
         }

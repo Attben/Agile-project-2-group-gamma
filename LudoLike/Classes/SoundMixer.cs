@@ -38,6 +38,6 @@ namespace LudoLike.Classes
 
     public enum SoundChannels
     {
-        music, sfx1
+        music, sfx1, sfx2
     }
 }

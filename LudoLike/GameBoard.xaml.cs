@@ -154,6 +154,11 @@ namespace LudoLike
             Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap1.wav")));
             Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap2.wav")));
             Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap3.wav")));
+            Tile.TileEventSounds.Add("Tile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/PlasticTap1.wav")));
+            Tile.TileEventSounds.Add("StaticTile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/PlasticTap2.wav")));
+            Tile.TileEventSounds.Add("MinigameTile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Challenge.wav")));
+            Tile.TileEventSounds.Add("ScoreTile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/MoneyShake.wav")));
+            Tile.TileEventSounds.Add("TeleportTile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Teleport.wav")));
         }
 
         /// <summary>
