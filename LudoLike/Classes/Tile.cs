@@ -7,6 +7,7 @@ using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.Media.Core;
 
 namespace LudoLike
 {
@@ -17,8 +18,11 @@ namespace LudoLike
     {
         public static Dictionary<string, CanvasBitmap> TileImages = new Dictionary<string, CanvasBitmap>();
         public CanvasBitmap TileImage;
+        public static readonly Dictionary<string, MediaSource> TileEventSounds = new Dictionary<string, MediaSource>();
         public Rect TargetRectangle;
         public Vector2 GridPosition;
+
+        protected MediaSource _tileEventSound;
 
         /// <summary>
         /// Use this constructor when you want to override the regular TileImage.
@@ -37,6 +41,7 @@ namespace LudoLike
         {
             TargetRectangle = targetRectangle;
             GridPosition = gridPosition;
+            _tileEventSound = TileEventSounds[this.GetType().Name];
         }
 
         /// <summary>
@@ -46,11 +51,10 @@ namespace LudoLike
         /// true if the tile is supposed to disappear when activated.
         /// false if the tile is supposed to be kept on the board.
         /// </returns>
-        public virtual bool TileEvent()
-        {
-            //Intentionally left blank in base class.
-            return false;
-        }
+        //public virtual bool TileEvent()
+        //{
+        //    return false;
+        //}
 
         /// <summary>
         /// Activates the function of the tile. 
@@ -61,7 +65,8 @@ namespace LudoLike
         /// </returns>
         public virtual bool TileEvent(Player player)
         {
-            //Intentionally left blank in base class.
+            //Parameter player is currently unused in base class, but exists for inheritance reasons.
+            Classes.SoundMixer.PlaySound(_tileEventSound, Classes.SoundChannels.sfx2);
             return false;
         }
 
