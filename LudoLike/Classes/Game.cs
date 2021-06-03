@@ -15,7 +15,7 @@ namespace LudoLike
     /// </summary>
     public class Game
     {
-        private List<Player> _players;
+        public readonly List<Player> _players;
         public LudoBoard Board;
         public List<Tile> Tiles;
         public int CurrentPlayerTurn { get; private set; }

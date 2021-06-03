@@ -1,4 +1,4 @@
-﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
@@ -31,6 +31,7 @@ namespace LudoLike
         public override bool TileEvent(Player player)
         {
             base.TileEvent(player);
+            GameBoard.InvokeMiniGameEvent(player);
             //Do something to start the _minigame.
             return false;
         }
