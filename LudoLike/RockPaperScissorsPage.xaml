@@ -1,5 +1,5 @@
 ﻿<Page
-    x:Class="LudoLike.RockPaperScissors"
+    x:Class="LudoLike.RockPaperScissorsPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:LudoLike"
@@ -11,12 +11,11 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid KeyDown="RockPaperScissorsGrid_KeyDown">
+        <local:KeyDownControl x:Name="KeyDownControl"/>
         <canvas:CanvasAnimatedControl
             x:Name="RockPaperscissorsCanvas"
             Draw="CanvasDraw"
             CreateResources="CanvasCreateResources"
-            PointerPressed="CanvasPointerPressed"
             Update="CanvasUpdate" Loaded="Canvas_Loaded"/>
-        <local:KeyDownControl x:Name="KeyDownControl"/>
     </Grid>
 </Page>

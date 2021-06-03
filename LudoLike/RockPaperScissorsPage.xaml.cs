@@ -27,8 +27,9 @@ namespace LudoLike
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class RockPaperScissors : Page
+    public sealed partial class RockPaperScissorsPage : Page
     {
+        private MiniGameNavigationParams _navParams;
         private Player _player1;
         private Player _player2;
         private CanvasBitmap _backGround;
@@ -41,15 +42,17 @@ namespace LudoLike
         private int _drawSessions;
         private bool _countDrawingSessions = false;
         private string _winner;
-        public RockPaperScissors()
+        public RockPaperScissorsPage()
         {
             this.InitializeComponent();
-
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
+            _navParams = (MiniGameNavigationParams)e.Parameter;
+            _player1 = _navParams.InvokingPlayer;
+            _player2 = _navParams.ChallengedPlayers[0];
         }
         private void CanvasCreateResources(CanvasAnimatedControl sender, Microsoft.Graphics.Canvas.UI.CanvasCreateResourcesEventArgs args)
         {
@@ -127,7 +130,7 @@ namespace LudoLike
 
                 _winner = CheckWinner();
             }
-            else
+            else if (_drawSessions > 421)/*if (_drawSessions > 421 && _drawSessions < 600)*/
             {
                 Rect p1HandHolder = new Rect(sender.Size.Width / 5, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
                 args.DrawingSession.DrawImage(_leftHandImages[_p1Hand], p1HandHolder);
@@ -138,17 +141,24 @@ namespace LudoLike
                 args.DrawingSession.DrawText($"Game Over", (float)sender.Size.Width / 2, (float)sender.Size.Height / 2, Windows.UI.Colors.Black);
                 args.DrawingSession.DrawText($"{_winner}", (float)sender.Size.Width / 2, (float)sender.Size.Height / 2 + 50, Windows.UI.Colors.Black);
             }
+            else
+            {
+
+            }
         }
+
 
         private string CheckWinner()
         {
 
             if ((_p1Hand == 1 && _p2Hand == 0) || (_p1Hand == 2 && _p2Hand == 1) || (_p1Hand == 0 && _p2Hand == 2))
             {
+                _player1.ChangeScore(-200);
                 return "Player 1 Wins!";
             }
             else if ((_p1Hand == 0 && _p2Hand == 1) || (_p1Hand == 1 && _p2Hand == 2) || (_p1Hand == 2 && _p2Hand == 0))
             {
+                _player2.ChangeScore(200);
                 return "Player 2 Wins!";
             }
             else
@@ -180,10 +190,7 @@ namespace LudoLike
                     _p2Hand = 2;
                     break;
                 case VirtualKey.Space:
-                    if (_countDrawingSessions == false)
-                    {
-                        _countDrawingSessions = true;
-                    }
+                    _countDrawingSessions = true;
                     break;
                 default:
                     break;
@@ -192,11 +199,6 @@ namespace LudoLike
         }
 
         private void CanvasUpdate(ICanvasAnimatedControl sender, CanvasAnimatedUpdateEventArgs args)
-        {
-
-        }
-
-        private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
         {
 
         }

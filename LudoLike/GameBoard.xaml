@@ -74,6 +74,7 @@
             CreateResources="CanvasCreateResources"
             PointerPressed="CanvasPointerPressed"
             Update="CanvasUpdate" Loaded="Canvas_Loaded"/>
+        <Button x:Name="MiniGameButton" Width="200" Height="200" Click="OpenMinigame"/>
         <Button x:Name="RollButton" Style="{StaticResource RollButtonStyle}" Height="200" Margin="0, 0, 200, 200" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="200" Click="RollDie" PointerEntered="ChangePointerHand" PointerExited="ChangePointerRegular"/>
     </Grid>
 </Page>
