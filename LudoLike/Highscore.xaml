@@ -16,11 +16,11 @@
             FontSize="55"
             HorizontalAlignment="Left"
             Height="800"
-            Margin="640,204,0,0"
+            Margin="210,204,0,0"
             Text=""
             TextWrapping="Wrap"
             VerticalAlignment="Top"
-            Width="480"/>
+            Width="431"/>
         <TextBlock FontFamily="Sylfaen" FontSize="90" HorizontalAlignment="Center" HorizontalTextAlignment="Center" Height="144" Margin="0,61,0,0" Text="High score" TextWrapping="Wrap" VerticalAlignment="Top" Width="590"/>
         <TextBlock
             x:Name="HighscoreScores"
@@ -30,11 +30,11 @@
             HorizontalAlignment="Left"
             HorizontalTextAlignment="Right"
             Height="800"
-            Margin="1120,204,0,0"
+            Margin="665,204,0,0"
             Text=""
             TextWrapping="Wrap"
             VerticalAlignment="Top"
-            Width="160"/>
+            Width="400"/>
         <Button Background="SeaShell" Content="← Back" FontSize="60" Height="99" HorizontalContentAlignment="Left" Margin="85,81,0,0" VerticalAlignment="Top" Width="250" Click="BackButtonClick"/>
     </Grid>
 </Page>

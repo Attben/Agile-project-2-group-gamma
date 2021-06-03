@@ -213,7 +213,6 @@
     <Content Include="Assets\Sounds\WoodenTap1.wav" />
     <Content Include="Assets\Sounds\WoodenTap2.wav" />
     <Content Include="Assets\Sounds\WoodenTap3.wav" />
-    <Content Include="Data\Highscores.txt" />
     <Content Include="Properties\Default.rd.xml" />
     <Content Include="Assets\LockScreenLogo.scale-200.png" />
     <Content Include="Assets\SplashScreen.scale-200.png" />
@@ -265,7 +264,9 @@
       <Version>1.26.0</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Data\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>
