@@ -7,15 +7,16 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     mc:Ignorable="d"
     Unloaded="Page_Unloaded"
-    
+    KeyDown="RockPaperScissorsGrid_KeyDown"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid KeyDown="RockPaperScissorsGrid_KeyDown">
-        <local:KeyDownControl x:Name="KeyDownControl"/>
+    <Grid x:Name="MainGrid" PointerReleased="MainGrid_OnPointerReleased">
         <canvas:CanvasAnimatedControl
             x:Name="RockPaperscissorsCanvas"
             Draw="CanvasDraw"
             CreateResources="CanvasCreateResources"
             Update="CanvasUpdate" Loaded="Canvas_Loaded"/>
+        <local:KeyDownControl x:Name="KeyDownControl"/>
+
     </Grid>
 </Page>

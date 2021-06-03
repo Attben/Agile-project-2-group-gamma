@@ -109,7 +109,7 @@ namespace LudoLike
                                 piece.position = piece.StartPosition; // might wanna use the move method of piece when implemented
                                 _players[CurrentPlayerTurn].ChangeScore(100); //100 points is placeholder
                                 _players[i].ChangeScore(-100);
-                                SoundMixer.PlaySound(Player.PieceCollisionSounds[new Random().Next(Player.PieceCollisionSounds.Count)]);
+                                SoundMixer.PlayRandomSound(Player.PieceCollisionSounds);
                             }
                         }
                     }
@@ -283,6 +283,13 @@ namespace LudoLike
                 tile.Draw(drawArgs);
             }
         }
-    // Might have to make another drawmethod for drawing minigame 
+        // Might have to make another drawmethod for drawing minigame 
+
+
+        void Stealpoints(int player1, int player2, int points)//steals from player1 and gives to plaýer2
+        {
+            _players[player1].ChangeScore(-points);
+            _players[player2].ChangeScore(points);
+        }
     }
 }

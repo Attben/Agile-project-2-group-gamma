@@ -19,6 +19,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.System;
+using Windows.Media.Core;
+using Windows.UI.Core;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=234238
 
@@ -36,12 +38,22 @@ namespace LudoLike
         private CanvasTextFormat _textFormat = new CanvasTextFormat();
         private List<CanvasBitmap> _rightHandImages = new List<CanvasBitmap>();
         private List<CanvasBitmap> _leftHandImages = new List<CanvasBitmap>();
+        private List<List<MediaSource>> _soundLists = new List<List<MediaSource>>();
+        private List<MediaSource> _rockSounds = new List<MediaSource>();
+        private List<MediaSource> _paperSounds = new List<MediaSource>();
+        private List<MediaSource> _scissorsSounds = new List<MediaSource>();
         private Random _rngImage = new Random();
-        private int _p1Hand;
-        private int _p2Hand;
+        private _moveChoices _p1Hand;
+        private _moveChoices _p2Hand;
         private int _drawSessions;
         private bool _countDrawingSessions = false;
         private string _winner;
+
+        private enum _moveChoices
+        {
+            rock, paper, scissors
+        }
+
         public RockPaperScissorsPage()
         {
             this.InitializeComponent();
@@ -67,6 +79,7 @@ namespace LudoLike
 
         async Task CreateResourcesAsync(CanvasAnimatedControl sender)
         {
+            //Images
             _backGround = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/TestBackground.png"));
             _rightHandImages.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RPS/rockright.png")));
             _rightHandImages.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RPS/paperright.png")));
@@ -74,6 +87,20 @@ namespace LudoLike
             _leftHandImages.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RPS/rockleft.png")));
             _leftHandImages.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RPS/paperleft.png")));
             _leftHandImages.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RPS/scissorleft.png")));
+            //Sounds
+            _rockSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Rock1.wav")));
+            _rockSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Rock2.wav")));
+            _rockSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Rock3.wav")));
+            _paperSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/PaperBag1.wav")));
+            _paperSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/PaperBag2.wav")));
+            _scissorsSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Scissors1.wav")));
+            _scissorsSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Scissors2.wav")));
+            _scissorsSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Scissors3.wav")));
+            _scissorsSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Scissors4.wav")));
+
+            _soundLists.Add(_rockSounds);
+            _soundLists.Add(_paperSounds);
+            _soundLists.Add(_scissorsSounds);
         }
         private void DrawControls(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
@@ -133,10 +160,10 @@ namespace LudoLike
             else if (_drawSessions > 421)/*if (_drawSessions > 421 && _drawSessions < 600)*/
             {
                 Rect p1HandHolder = new Rect(sender.Size.Width / 5, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
-                args.DrawingSession.DrawImage(_leftHandImages[_p1Hand], p1HandHolder);
+                args.DrawingSession.DrawImage(_leftHandImages[(int)_p1Hand], p1HandHolder);
 
                 Rect p2HandHolder = new Rect(sender.Size.Width / 5 * 3, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
-                args.DrawingSession.DrawImage(_rightHandImages[_p2Hand], p2HandHolder);
+                args.DrawingSession.DrawImage(_rightHandImages[(int)_p2Hand], p2HandHolder);
 
                 args.DrawingSession.DrawText($"Game Over", (float)sender.Size.Width / 2, (float)sender.Size.Height / 2, Windows.UI.Colors.Black);
                 args.DrawingSession.DrawText($"{_winner}", (float)sender.Size.Width / 2, (float)sender.Size.Height / 2 + 50, Windows.UI.Colors.Black);
@@ -150,20 +177,23 @@ namespace LudoLike
 
         private string CheckWinner()
         {
-
-            if ((_p1Hand == 1 && _p2Hand == 0) || (_p1Hand == 2 && _p2Hand == 1) || (_p1Hand == 0 && _p2Hand == 2))
+            if(_p1Hand == _p2Hand) //If both players chose the same move, it's a draw.
             {
+                return "No winner!";
+            }
+            else if ((_p1Hand == _moveChoices.paper && _p2Hand == _moveChoices.rock) ||
+                (_p1Hand == _moveChoices.scissors && _p2Hand == _moveChoices.paper) ||
+                (_p1Hand == _moveChoices.rock && _p2Hand == _moveChoices.scissors))
+            {
+                Classes.SoundMixer.PlayRandomSound(_soundLists[(int)_p1Hand]);
                 _player1.ChangeScore(-200);
                 return "Player 1 Wins!";
             }
-            else if ((_p1Hand == 0 && _p2Hand == 1) || (_p1Hand == 1 && _p2Hand == 2) || (_p1Hand == 2 && _p2Hand == 0))
+            else //It's not a draw, and player1 didn't win, so player 2 must've won.
             {
+                Classes.SoundMixer.PlayRandomSound(_soundLists[(int)_p2Hand]);
                 _player2.ChangeScore(200);
                 return "Player 2 Wins!";
-            }
-            else
-            {
-                return "No Winner!";
             }
         }
 
@@ -172,22 +202,22 @@ namespace LudoLike
             switch (e.Key)
             {
                 case VirtualKey.Number1:
-                    _p1Hand = 0;
+                    _p1Hand = _moveChoices.rock;
                     break;
                 case VirtualKey.Number2:
-                    _p1Hand = 1;
+                    _p1Hand = _moveChoices.paper;
                     break;
                 case VirtualKey.Number3:
-                    _p1Hand = 2;
+                    _p1Hand = _moveChoices.scissors;
                     break;
                 case VirtualKey.Number7:
-                    _p2Hand = 0;
+                    _p2Hand = _moveChoices.rock;
                     break;
                 case VirtualKey.Number8:
-                    _p2Hand = 1;
+                    _p2Hand = _moveChoices.paper;
                     break;
                 case VirtualKey.Number9:
-                    _p2Hand = 2;
+                    _p2Hand = _moveChoices.scissors;
                     break;
                 case VirtualKey.Space:
                     _countDrawingSessions = true;
@@ -212,6 +242,13 @@ namespace LudoLike
         {
             RockPaperscissorsCanvas.RemoveFromVisualTree();
             RockPaperscissorsCanvas = null;
+        }
+
+
+        // Source: https://stackoverflow.com/questions/58908845/keydown-event-doesnt-trigger-from-selected-grid-in-uwp
+        private async void MainGrid_OnPointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { KeyDownControl.Focus(FocusState.Keyboard); });
         }
     }
 }
