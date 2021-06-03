@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Windows.Media.Core;
 using Windows.Media.Playback;
 
@@ -15,6 +16,7 @@ namespace LudoLike.Classes
         private static readonly SoundMixer SoundMixerInstance =
             new SoundMixer(Enum.GetNames(typeof(SoundChannels)).Length);
         private readonly MediaPlayer[] _audioChannels;
+        private static readonly Random _sfxRng = new Random(); //Sound effects RNG, used to play random sounds.
 
         private SoundMixer(int channels)
         {
@@ -33,6 +35,11 @@ namespace LudoLike.Classes
             MediaPlayer player = SoundMixerInstance._audioChannels[(int)soundChannel];
             player.Source = soundFile;
             player.Play();
+        }
+
+        public static void PlayRandomSound(List<MediaSource> sounds, SoundChannels soundChannel = SoundChannels.sfx1)
+        {
+            PlaySound(sounds[_sfxRng.Next(sounds.Count)], soundChannel);
         }
     }
 

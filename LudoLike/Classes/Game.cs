@@ -109,7 +109,7 @@ namespace LudoLike
                                 piece.position = piece.StartPosition; // might wanna use the move method of piece when implemented
                                 _players[CurrentPlayerTurn].ChangeScore(100); //100 points is placeholder
                                 _players[i].ChangeScore(-100);
-                                SoundMixer.PlaySound(Player.PieceCollisionSounds[new Random().Next(Player.PieceCollisionSounds.Count)]);
+                                SoundMixer.PlayRandomSound(Player.PieceCollisionSounds);
                             }
                         }
                     }

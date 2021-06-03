@@ -85,7 +85,7 @@ namespace LudoLike
                 try
                 {
                     _pieces[0].Move(path[nextPosition]);
-                    SoundMixer.PlaySound(PieceMovingSounds[new Random().Next(PieceMovingSounds.Count)]);
+                    SoundMixer.PlayRandomSound(PieceMovingSounds);
                 }
                 catch (ArgumentOutOfRangeException)
                 {
