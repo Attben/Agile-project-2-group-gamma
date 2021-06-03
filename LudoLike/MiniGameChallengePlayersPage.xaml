@@ -11,15 +11,16 @@
     <Grid>
         <StackPanel x:Name="MainContainer" VerticalAlignment="Center" HorizontalAlignment="Center" BorderBrush="Gray">
             <TextBlock FontSize="22" HorizontalAlignment="Center" FocusVisualPrimaryBrush="White" Foreground="Gray">CHOOSE WHICH PLAYER TO CHALLENGE</TextBlock>
-            <RelativePanel x:Name="PlayerButtonContainer" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10">
-                <Button x:Name="Player1Button" Margin="10" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center" Click="Player1Button_Click"/>
-                <Button x:Name="Player2Button" RelativePanel.Below="Player1Button" Margin="10" Content="" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center" Click="Player2Button_Click"/>
-                <Button x:Name="Player3Button" RelativePanel.Below="Player2Button" Margin="10" Content="" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center" Click="Player3Button_Click"/>
+            <TextBlock x:Name="ErrorMessage" FontSize="22" HorizontalAlignment="Center" FocusVisualPrimaryBrush="Red" Foreground="Gray"></TextBlock>
+            <StackPanel x:Name="PlayerButtonContainer" HorizontalAlignment="Center" VerticalAlignment="Center" Padding="10" Orientation="Vertical">
+                <Button x:Name="Player1Button" Margin="10" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center" Click="PlayerButton_Click"/>
+                <Button x:Name="Player2Button" RelativePanel.Below="Player1Button" Margin="10" Content="" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center" Click="PlayerButton_Click"/>
+                <Button x:Name="Player3Button" RelativePanel.Below="Player2Button" Margin="10" Content="" VerticalAlignment="Center" Height="100" Width="250" HorizontalAlignment="Center" Click="PlayerButton_Click"/>
             
-            </RelativePanel>
+            </StackPanel>
             <RelativePanel x:Name="NavigationButtonContainer" HorizontalAlignment="Center" VerticalAlignment="Center">
-                <Button x:Name="BackButton" Margin="10" Height="100" Width="250"/>
-                <Button x:Name="AcceptButton" Margin="10" Height="100" Width="250" RelativePanel.RightOf="BackButton"/>
+                <Button x:Name="BackButton" Margin="10" Height="100" Width="250" FontSize="22" Content="Back"/>
+                <Button x:Name="AcceptButton" Margin="10" Height="100" Width="250" RelativePanel.RightOf="BackButton" Click="AcceptButtonClick" FontSize="22" Content="Play" Background="Green"/>
             </RelativePanel>
 
         </StackPanel>

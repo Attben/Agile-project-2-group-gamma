@@ -28,7 +28,7 @@ namespace LudoLike
         public Player(PlayerColors color, List<Vector2> startPositions)
         {
             Score = 0;
-            this.PlayerColor = color;
+            PlayerColor = color;
 
             switch (color)
             {
