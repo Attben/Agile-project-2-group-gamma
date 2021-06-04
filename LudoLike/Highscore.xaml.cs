@@ -71,9 +71,9 @@ namespace LudoLike.Classes
                 HighscoreNames.Text = names.ToString();
                 HighscoreScores.Text = scores.ToString();
             }
-            catch (IOException e)
+            catch (IOException)
             {
-                //TODO: Do something. Maybe log the error somewhere?
+                ErrorPopup("Error: Couldn't read from highscore file.");
             }
         }
 
@@ -91,8 +91,8 @@ namespace LudoLike.Classes
 
                 //Compare incoming player scores to current highscores
 
-                //Add()ing directly to NameScorePair in the loop crashes the program because of
-                //some async shenanigans. Using temp storage as a workaround.
+                //Add()ing directly to nameScorePairs in the loop crashes the program because it
+                //modifies the list while it's being enumerated. Using temp storage as a workaround.
                 var newHighscoreTempStorage = new List<Tuple<string, int>>();
 
                 foreach (Player p in players)
@@ -133,10 +133,20 @@ namespace LudoLike.Classes
                 }
                 await FileIO.WriteTextAsync(HighscoreFile, outputText.ToString());
             }
-            catch (IOException e)
+            catch (IOException)
             {
-                //TODO: Log error or something
+                ErrorPopup("Error: Couldn't write to highscore file.");
             }
+        }
+
+        public static async void ErrorPopup(string message)
+        {
+            await new ContentDialog()
+            {
+                Title = message,
+                PrimaryButtonText = "Ok",
+                IsSecondaryButtonEnabled = false
+            }.ShowAsync();
         }
 
         private static async Task<string> NameEntryDialog(Player player)
