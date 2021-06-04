@@ -122,7 +122,6 @@
     </Compile>
     <Compile Include="Classes\Game.cs" />
     <Compile Include="Classes\Dice.cs" />
-    <Compile Include="Classes\GameStateManager.cs" />
     <Compile Include="Classes\KeyDownControl.cs" />
     <Compile Include="Classes\MiniGameNavigationParams.cs" />
     <Compile Include="Highscore.xaml.cs">
@@ -273,9 +272,7 @@
       <Version>1.26.0</Version>
     </PackageReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\" />
-  </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

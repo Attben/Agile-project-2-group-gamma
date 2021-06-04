@@ -224,7 +224,8 @@ namespace LudoLike
         }
 
         /// <summary>
-        /// Passes the control to the next player.
+        /// Moves a piece, triggers collisions and events at the destination, 
+        /// then passes the control to the next player.
         /// </summary>
         /// <param name="diceRoll"></param>
         public void TakeTurn(int diceRoll)
@@ -233,8 +234,11 @@ namespace LudoLike
 
             CheckTilesForCollisions();
             CheckSpecialTile();
-            //Pass control to the next player
-            CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
+            if (diceRoll != 6) //Player gets another turn when rolling a 6.
+            {
+                //Pass control to the next player
+                CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
+            }
         }
 
         /// <summary>

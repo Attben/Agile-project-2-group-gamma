@@ -35,21 +35,21 @@ namespace LudoLike
         private Player _player1;
         private Player _player2;
         private CanvasBitmap _backGround;
-        private CanvasTextFormat _textFormat = new CanvasTextFormat();
-        private List<CanvasBitmap> _rightHandImages = new List<CanvasBitmap>();
-        private List<CanvasBitmap> _leftHandImages = new List<CanvasBitmap>();
-        private List<List<MediaSource>> _soundLists = new List<List<MediaSource>>();
-        private List<MediaSource> _rockSounds = new List<MediaSource>();
-        private List<MediaSource> _paperSounds = new List<MediaSource>();
-        private List<MediaSource> _scissorsSounds = new List<MediaSource>();
-        private Random _rngImage = new Random();
-        private _moveChoices _p1Hand;
-        private _moveChoices _p2Hand;
+        private readonly CanvasTextFormat _textFormat = new CanvasTextFormat();
+        private readonly List<CanvasBitmap> _rightHandImages = new List<CanvasBitmap>();
+        private readonly List<CanvasBitmap> _leftHandImages = new List<CanvasBitmap>();
+        private readonly List<List<MediaSource>> _soundLists = new List<List<MediaSource>>();
+        private readonly List<MediaSource> _rockSounds = new List<MediaSource>();
+        private readonly List<MediaSource> _paperSounds = new List<MediaSource>();
+        private readonly List<MediaSource> _scissorsSounds = new List<MediaSource>();
+        private readonly Random _rngImage = new Random();
+        private MoveChoices _p1Hand;
+        private MoveChoices _p2Hand;
         private int _drawSessions;
         private bool _countDrawingSessions = false;
         private string _winner;
 
-        private enum _moveChoices
+        private enum MoveChoices
         {
             rock, paper, scissors
         }
@@ -191,9 +191,9 @@ namespace LudoLike
             {
                 return "No winner!";
             }
-            else if ((_p1Hand == _moveChoices.paper && _p2Hand == _moveChoices.rock) ||
-                (_p1Hand == _moveChoices.scissors && _p2Hand == _moveChoices.paper) ||
-                (_p1Hand == _moveChoices.rock && _p2Hand == _moveChoices.scissors))
+            else if ((_p1Hand == MoveChoices.paper && _p2Hand == MoveChoices.rock) ||
+                (_p1Hand == MoveChoices.scissors && _p2Hand == MoveChoices.paper) ||
+                (_p1Hand == MoveChoices.rock && _p2Hand == MoveChoices.scissors))
             {
                 Classes.SoundMixer.PlayRandomSound(_soundLists[(int)_p1Hand]);
                 _player1.ChangeScore(200);
@@ -220,27 +220,27 @@ namespace LudoLike
             {
                 case VirtualKey.Number1:
                 case VirtualKey.NumberPad1:
-                    _p1Hand = _moveChoices.rock;
+                    _p1Hand = MoveChoices.rock;
                     break;
                 case VirtualKey.Number2:
                 case VirtualKey.NumberPad2:
-                    _p1Hand = _moveChoices.paper;
+                    _p1Hand = MoveChoices.paper;
                     break;
                 case VirtualKey.Number3:
                 case VirtualKey.NumberPad3:
-                    _p1Hand = _moveChoices.scissors;
+                    _p1Hand = MoveChoices.scissors;
                     break;
                 case VirtualKey.Number7:
                 case VirtualKey.NumberPad7:
-                    _p2Hand = _moveChoices.rock;
+                    _p2Hand = MoveChoices.rock;
                     break;
                 case VirtualKey.Number8:
                 case VirtualKey.NumberPad8:
-                    _p2Hand = _moveChoices.paper;
+                    _p2Hand = MoveChoices.paper;
                     break;
                 case VirtualKey.Number9:
                 case VirtualKey.NumberPad9:
-                    _p2Hand = _moveChoices.scissors;
+                    _p2Hand = MoveChoices.scissors;
                     break;
                 case VirtualKey.Space:
                     _countDrawingSessions = true;

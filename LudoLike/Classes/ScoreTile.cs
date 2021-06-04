@@ -15,7 +15,7 @@ namespace LudoLike
     /// </summary>
     class ScoreTile : Tile
     {
-        private int _amount;
+        private readonly int _amount;
 
         /// <summary>
         /// Creates a Tile on the rectangle. Points represents the points to gain when stepped on.

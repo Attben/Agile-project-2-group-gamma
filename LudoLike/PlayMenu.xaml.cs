@@ -28,17 +28,12 @@ namespace LudoLike
 
         private void SliderValueChanged(object sender, RangeBaseValueChangedEventArgs e)
         {
-            double text = this._slider.Value;
-            string ok = "0";
-            this.amountOfPlayersBox.Text = text.ToString(ok);
-
+            string numberFormatString = "0";
+            this.amountOfPlayersBox.Text = _slider.Value.ToString(numberFormatString);
         }
 
         private void StartGame(object sender, RoutedEventArgs e)
         {
-
-            double text = this._slider.Value;
-            string ok = "0";
             //switch page
             this.Frame.Navigate(typeof(GameBoard), _slider.Value);
         }
