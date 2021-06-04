@@ -14,9 +14,9 @@ namespace LudoLike
         private int _animationTimer = 0;
         private readonly int _min, _max; //Range of possible values when rolling this die.
         private CanvasBitmap CurrentDieImage;
-        private Random _prng;
-        private float _diceWidth = 200;
-        private float _diceHeight = 200;
+        private readonly Random _prng;
+        private readonly float _diceWidth = 200;
+        private readonly float _diceHeight = 200;
         private Rect _diceHolder;
         private Rect _glowHolder;
         public static List<CanvasBitmap> GlowEffects = new List<CanvasBitmap>();
