@@ -40,7 +40,6 @@ namespace LudoLike
         public int NumberOfPlayers;
         public static CanvasBitmap BackGround;
         private Dice _dice;
-        private GameStateManager _gameStateManager = new GameStateManager();
 
         private Game _game;
 
@@ -101,7 +100,7 @@ namespace LudoLike
             await LoadGlowEffects(sender);
             await LoadTileImages(sender);
             LoadSounds();
-            
+
             _dice = new Dice(0, 6);
             _game.AddPlayers(NumberOfPlayers);
             _game.CreateStaticTiles();
@@ -129,7 +128,7 @@ namespace LudoLike
         /// </summary>
         /// <param name="sender"></param>
         /// <returns></returns>
-        async Task LoadPlayerPieceImages(CanvasAnimatedControl sender) 
+        async Task LoadPlayerPieceImages(CanvasAnimatedControl sender)
         {
             Piece.Red = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RedPiece.png"));
             Piece.Blue = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BluePiece.png"));
@@ -200,7 +199,7 @@ namespace LudoLike
 
         private void UpdateButtonSizeAndPosition()
         {
-            
+
         }
 
         /// <summary>
@@ -220,28 +219,21 @@ namespace LudoLike
 
         private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            var position = e.GetCurrentPoint(Canvas).Position;
-            if (_gameStateManager.CurrentGameState == GameState.NewGame)
-            {
-                var action = Canvas.RunOnGameLoopThreadAsync(() =>
-               {
-                   _gameStateManager.CurrentGameState = GameState.Playing;
-               });
-            }
-            if (_gameStateManager.CurrentGameState == GameState.Playing)
-            {
-                var action = Canvas.RunOnGameLoopThreadAsync(() =>
-                {
-                    _gameStateManager.CurrentGameState = GameState.GameOver;
-                });
-            }
+            //Currently unused. Including a few commented-out lines
+            //as an example of what this method might be used for later.
+
+            // var position = e.GetCurrentPoint(Canvas).Position;
+            // var action = Canvas.RunOnGameLoopThreadAsync(() =>
+            //{
+            //    do something
+            //});
         }
 
         private void CanvasUpdate(
             ICanvasAnimatedControl sender,
             CanvasAnimatedUpdateEventArgs args)
         {
-            _gameStateManager.Update();
+            //Currently unused.
         }
 
         /// <summary>
@@ -256,7 +248,7 @@ namespace LudoLike
 
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
         {
-            
+
         }
         /// <summary>
         /// Changes cursor to hand when hovering the die.
@@ -290,9 +282,11 @@ namespace LudoLike
 
         public async void StartMiniGame(Player invokingPlayer)
         {
-            MiniGameNavigationParams navParams = new MiniGameNavigationParams();
-            navParams.InvokingPlayer = invokingPlayer;
-            navParams.OtherPlayers = _game._players.Where(player => player != invokingPlayer).ToList();
+            MiniGameNavigationParams navParams = new MiniGameNavigationParams
+            {
+                InvokingPlayer = invokingPlayer,
+                OtherPlayers = _game._players.Where(player => player != invokingPlayer).ToList()
+            };
             AppWindow appWindow = await AppWindow.TryCreateAsync();
             Frame appWindowContentFrame = new Frame();
             appWindowContentFrame.Navigate(typeof(MiniGamePage), navParams);
