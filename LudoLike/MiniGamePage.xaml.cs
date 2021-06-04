@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Navigation;
 namespace LudoLike
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This is a page shown when a player piece steps on a minigametile.
     /// </summary>
     public sealed partial class MiniGamePage : Page
     {

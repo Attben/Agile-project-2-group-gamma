@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Navigation;
 namespace LudoLike
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// This page is shown when a player has chosen a minigame to play.
     /// </summary>
     public sealed partial class MiniGameChallengePlayersPage : Page
     {
@@ -29,7 +29,9 @@ namespace LudoLike
             this.InitializeComponent();
         }
 
-
+        /// <summary>
+        /// Creates playerbuttons depending on how many players are in the current game.
+        /// </summary>
         private void CreatePlayerButtons()
         {
             if(_navParams.OtherPlayers.Count() == 3)
@@ -52,6 +54,10 @@ namespace LudoLike
             }
         }
 
+        /// <summary>
+        /// Sets the display settings for each button depending on which player they represent.
+        /// </summary>
+        /// <param name="player"></param>
         private void SetButtonProperties(Player player)
         {
             Button button;
@@ -82,6 +88,11 @@ namespace LudoLike
             button.Opacity = 0.8;
         }
 
+        /// <summary>
+        /// Sets a new brush depending on playercolor.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <returns>The a brush with colors in line with the incoming players color.</returns>
         private SolidColorBrush CreateButtonBorder(Player player)
         {
             if (player.PlayerColor == PlayerColors.Red) 
@@ -109,6 +120,9 @@ namespace LudoLike
             CreatePlayerButtons();
         }
 
+        /// <summary>
+        /// Resets all playerbuttons to an unchosen state.
+        /// </summary>
         private void ResetAllButtons()
         {
             Player1Button.BorderThickness = new Thickness(0);
@@ -119,7 +133,11 @@ namespace LudoLike
             Player3Button.Opacity = 0.8;
         }
 
-
+        /// <summary>
+        /// Handles clicking for all player buttons. Changes states of them depending on how many players can be challenged at the current minigame.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PlayerButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -216,6 +234,11 @@ namespace LudoLike
             button.Opacity = 1;
         }
 
+        /// <summary>
+        /// Tries to launch the minigame page and start the mini game. Checks so that enough players are challenged for the chosen game.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void AcceptButtonClick(object sender, RoutedEventArgs e)
         {
             if(_challengedPlayers.Count() == _navParams.PlayersToChallenge)

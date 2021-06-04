@@ -63,7 +63,7 @@ namespace LudoLike
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            _navParams = (MiniGameNavigationParams)e.Parameter;
+            _navParams = (MiniGameNavigationParams)e.Parameter;     // Unpack and set player and game information
             _player1 = _navParams.InvokingPlayer;
             _player2 = _navParams.ChallengedPlayers[0];
         }
@@ -110,6 +110,12 @@ namespace LudoLike
             _soundLists.Add(_paperSounds);
             _soundLists.Add(_scissorsSounds);
         }
+
+        /// <summary>
+        /// Draws the control view.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void DrawControls(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
             Rect p1ControlHolder = new Rect(sender.Size.Width / 5, sender.Size.Height / 3, sender.Size.Width / 5, sender.Size.Height / 7);
@@ -129,6 +135,12 @@ namespace LudoLike
             args.DrawingSession.DrawText("8", new Rect(p2ControlHolder.X + p2ControlHolder.Width / 3, p2ControlHolder.Y, p2ControlHolder.Width / 3, p2ControlHolder.Height / 2), Windows.UI.Colors.Black, _textFormat);
             args.DrawingSession.DrawText("9", new Rect(p2ControlHolder.X + p2ControlHolder.Width / 3 * 2, p2ControlHolder.Y, p2ControlHolder.Width / 3, p2ControlHolder.Height / 2), Windows.UI.Colors.Black, _textFormat);
         }
+
+        /// <summary>
+        /// Draws the page depending on how much time its been since the player started it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void CanvasDraw(ICanvasAnimatedControl sender, CanvasAnimatedDrawEventArgs args)
         {
             args.DrawingSession.DrawImage(_backGround, new Rect(0, 0, sender.Size.Width, sender.Size.Height));
@@ -222,7 +234,7 @@ namespace LudoLike
         }
 
         /// <summary>
-        /// 
+        /// Controls what happens when allowed buttons are pressed.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -258,7 +270,7 @@ namespace LudoLike
                     _countDrawingSessions = true;
                     if(_drawSessions > 550)
                     {
-                        NavigateFromRockPaperScissorsPage();
+                        CloseMiniGame();
                     }
                     break;
                 default:
@@ -285,19 +297,27 @@ namespace LudoLike
 
 
         // Source: https://stackoverflow.com/questions/58908845/keydown-event-doesnt-trigger-from-selected-grid-in-uwp
+        /// <summary>
+        /// Allows the player to click the canvas without losing the key down event to break.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private async void MainGrid_OnPointerReleased(object sender, PointerRoutedEventArgs e)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { KeyDownControl.Focus(FocusState.Keyboard); });
         }
 
-        private async void NavigateFromRockPaperScissorsPage()
+        /// <summary>
+        /// Closes the app window.
+        /// </summary>
+        private async void CloseMiniGame()
         {
             await Window.CloseAsync();
         }
 
         private void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            Window = GameBoard.AppWindows[UIContext];
+            Window = GameBoard.AppWindows[UIContext];   // Set a referens to the current window
         }
     }
 }

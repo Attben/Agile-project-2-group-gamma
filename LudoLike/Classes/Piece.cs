@@ -11,6 +11,9 @@ using Windows.Foundation;
 
 namespace LudoLike
 {
+    /// <summary>
+    /// Represents a Ludo pice on the board.
+    /// </summary>
     public class Piece
     {
         public Vector2 StartPosition;

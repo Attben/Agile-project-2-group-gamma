@@ -16,6 +16,9 @@ namespace LudoLike
         Red, Blue, Yellow, Green
     }
 
+    /// <summary>
+    /// Represents a player in the Ludo game.
+    /// </summary>
     public class Player
     {
         public static Dictionary<PlayerColors, Windows.UI.Color> WindowsPlayerColors = new Dictionary<PlayerColors, Windows.UI.Color>()
