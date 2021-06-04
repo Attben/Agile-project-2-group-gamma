@@ -12,7 +12,7 @@ using Windows.Foundation;
 namespace LudoLike
 {
     /// <summary>
-    /// Represents a Ludo pice on the board.
+    /// Represents a Ludo piece on the board.
     /// </summary>
     public class Piece
     {
