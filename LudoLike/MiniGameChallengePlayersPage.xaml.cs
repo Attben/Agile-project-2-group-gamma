@@ -109,6 +109,17 @@ namespace LudoLike
             CreatePlayerButtons();
         }
 
+        private void ResetAllButtons()
+        {
+            Player1Button.BorderThickness = new Thickness(0);
+            Player1Button.Opacity = 0.8;
+            Player2Button.BorderThickness = new Thickness(0);
+            Player2Button.Opacity = 0.8;
+            Player3Button.BorderThickness = new Thickness(0);
+            Player3Button.Opacity = 0.8;
+        }
+
+
         private void PlayerButton_Click(object sender, RoutedEventArgs e)
         {
             Button button = sender as Button;
@@ -124,8 +135,18 @@ namespace LudoLike
                     }
                     else if (_challengedPlayers.Count() >= _navParams.PlayersToChallenge)
                     {
-                        ErrorMessage.Text = $"YOU CAN ONLY CHALLENGE {_navParams.PlayersToChallenge} PLAYERS";
-                        return;
+                        if (_navParams.PlayersToChallenge == 1)
+                        {
+                            _challengedPlayers.Add(_navParams.OtherPlayers[0]);
+                            _challengedPlayers.RemoveAt(0);
+                            ResetAllButtons();
+                            break;
+                        }
+                        else
+                        {
+                            ErrorMessage.Text = $"YOU CAN ONLY CHALLENGE {_navParams.PlayersToChallenge} PLAYERS";
+                            return;
+                        }
                     }
                     else
                     {
@@ -142,8 +163,18 @@ namespace LudoLike
                     }
                     else if (_challengedPlayers.Count() >= _navParams.PlayersToChallenge)
                     {
-                        ErrorMessage.Text = $"YOU CAN ONLY CHALLENGE {_navParams.PlayersToChallenge} PLAYERS";
-                        return;
+                        if (_navParams.PlayersToChallenge == 1)
+                        {
+                            _challengedPlayers.Add(_navParams.OtherPlayers[1]);
+                            _challengedPlayers.RemoveAt(0);
+                            ResetAllButtons();
+                            break;
+                        }
+                        else
+                        {
+                            ErrorMessage.Text = $"YOU CAN ONLY CHALLENGE {_navParams.PlayersToChallenge} PLAYERS";
+                            return;
+                        }
                     }
                     else
                     {
@@ -160,8 +191,18 @@ namespace LudoLike
                     }
                     else if (_challengedPlayers.Count() >= _navParams.PlayersToChallenge)
                     {
-                        ErrorMessage.Text = $"YOU CAN ONLY CHALLENGE {_navParams.PlayersToChallenge} PLAYERS";
-                        return;
+                        if (_navParams.PlayersToChallenge == 1)
+                        {
+                            _challengedPlayers.RemoveAt(0);
+                            _challengedPlayers.Add(_navParams.OtherPlayers[2]);
+                            ResetAllButtons();
+                            break;
+                        }
+                        else
+                        {
+                            ErrorMessage.Text = $"YOU CAN ONLY CHALLENGE {_navParams.PlayersToChallenge} PLAYERS";
+                            return;
+                        }
                     }
                     else
                     {
