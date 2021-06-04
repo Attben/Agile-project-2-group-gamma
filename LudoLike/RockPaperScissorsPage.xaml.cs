@@ -155,7 +155,7 @@ namespace LudoLike
             {
                 if (_drawSessions <= 360)
                 {
-                    args.DrawingSession.DrawText($"{Math.Floor((decimal)_drawSessions / 60)}", (float)sender.Size.Width / 2, (float)sender.Size.Height / 6, Windows.UI.Colors.Black, _textFormat);
+                    args.DrawingSession.DrawText($"{6 - Math.Floor((decimal)_drawSessions / 60)}", (float)sender.Size.Width / 2, (float)sender.Size.Height / 6, Windows.UI.Colors.Black, _textFormat);
                     Rect p1HandHolder = new Rect(sender.Size.Width / 5, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
                     args.DrawingSession.DrawImage(_leftHandImages[0], p1HandHolder);
 
