@@ -125,7 +125,6 @@
     <Compile Include="Classes\GameStateManager.cs" />
     <Compile Include="Classes\KeyDownControl.cs" />
     <Compile Include="Classes\MiniGameNavigationParams.cs" />
-    <Compile Include="Classes\RockPaperScissorGame.cs" />
     <Compile Include="Highscore.xaml.cs">
       <DependentUpon>Highscore.xaml</DependentUpon>
     </Compile>

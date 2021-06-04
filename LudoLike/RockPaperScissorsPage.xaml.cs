@@ -27,7 +27,7 @@ using Windows.UI.Core;
 namespace LudoLike
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Holds logic and layots for the minigame Rock Paper Scissors.
     /// </summary>
     public sealed partial class RockPaperScissorsPage : Page
     {
@@ -72,6 +72,9 @@ namespace LudoLike
             args.TrackAsyncAction(CreateResourcesAsync(sender).AsAsyncAction());
         }
 
+        /// <summary>
+        /// Sets up textformat used in the RPS mini game.
+        /// </summary>
         private void CreateTextFormat()
         {
             _textFormat.FontFamily = "Helvetica";
@@ -178,7 +181,10 @@ namespace LudoLike
             
         }
 
-
+        /// <summary>
+        /// Checks which player won the RPS challenge.
+        /// </summary>
+        /// <returns>A string with the winner message.</returns>
         private string CheckWinner()
         {
             if(_p1Hand == _p2Hand) //If both players chose the same move, it's a draw.
@@ -203,6 +209,11 @@ namespace LudoLike
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RockPaperScissorsGrid_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             switch (e.Key)
