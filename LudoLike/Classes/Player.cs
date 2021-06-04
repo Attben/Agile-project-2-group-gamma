@@ -18,6 +18,13 @@ namespace LudoLike
 
     public class Player
     {
+        public static Dictionary<PlayerColors, Windows.UI.Color> WindowsPlayerColors = new Dictionary<PlayerColors, Windows.UI.Color>()
+        {
+            {PlayerColors.Red, Windows.UI.Colors.Red },
+            {PlayerColors.Blue, Windows.UI.Colors.Blue },
+            {PlayerColors.Yellow, Windows.UI.Colors.Yellow },
+            {PlayerColors.Green, Windows.UI.Colors.Green }
+        };
         public int Score { get; private set; }
         public PlayerColors PlayerColor;
         public Windows.UI.Color UIcolor;
@@ -25,6 +32,7 @@ namespace LudoLike
 
         public static List<MediaSource> PieceCollisionSounds = new List<MediaSource>();
         public static List<MediaSource> PieceMovingSounds = new List<MediaSource>();
+        
 
         public Player(PlayerColors color, List<Vector2> startPositions)
         {

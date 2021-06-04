@@ -129,6 +129,9 @@ namespace LudoLike
         {
             args.DrawingSession.DrawImage(_backGround, new Rect(0, 0, sender.Size.Width, sender.Size.Height));
             DrawControls(sender, args);
+            args.DrawingSession.DrawText($"Player 1", (float)sender.Size.Width / 5 + 40, (float)sender.Size.Height / 2 - 80, Player.WindowsPlayerColors[_player1.PlayerColor], _textFormat);
+            args.DrawingSession.DrawText($"Player 2", (float)sender.Size.Width / 5 * 3 + 40, (float)sender.Size.Height / 2 - 80, Player.WindowsPlayerColors[_player2.PlayerColor], _textFormat);
+
             if (!_countDrawingSessions)
             {
                 args.DrawingSession.DrawText($"PRESS SPACE TO START..", (float)sender.Size.Width / 2 - 200, (float)sender.Size.Height / 6, Windows.UI.Colors.Black, _textFormat);
