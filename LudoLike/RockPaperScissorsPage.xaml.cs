@@ -31,6 +31,7 @@ namespace LudoLike
     /// </summary>
     public sealed partial class RockPaperScissorsPage : Page
     {
+        AppWindow Window;
         private MiniGameNavigationParams _navParams;
         private Player _player1;
         private Player _player2;
@@ -174,7 +175,7 @@ namespace LudoLike
                 {
                     _winner = CheckWinner();
                 }
-                else if (_drawSessions > 421 && _drawSessions < 600)
+                else if (_drawSessions > 421 && _drawSessions < 550)
                 {
                     Rect p1HandHolder = new Rect(sender.Size.Width / 5, sender.Size.Height / 2, sender.Size.Width / 5, sender.Size.Height / 5);
                     args.DrawingSession.DrawImage(_leftHandImages[(int)_p1Hand], p1HandHolder);
@@ -185,9 +186,9 @@ namespace LudoLike
                     args.DrawingSession.DrawText("Game Over", (float)sender.Size.Width / 2, (float)sender.Size.Height / 8, Windows.UI.Colors.Black, _textFormat);
                     args.DrawingSession.DrawText($"{_winner}", (float)sender.Size.Width / 2, (float)sender.Size.Height / 8 + 50, Windows.UI.Colors.Black, _textFormat);
                 }
-                if (_drawSessions > 600)
+                else
                 {
-                    // Close the app window here somehow
+                    args.DrawingSession.DrawText($"Press space to close the game", (float)sender.Size.Width / 2, (float)sender.Size.Height / 8 + 50, Windows.UI.Colors.Black, _textFormat);
                 }
             }
         }
@@ -255,6 +256,10 @@ namespace LudoLike
                     break;
                 case VirtualKey.Space:
                     _countDrawingSessions = true;
+                    if(_drawSessions > 550)
+                    {
+                        NavigateFromRockPaperScissorsPage();
+                    }
                     break;
                 default:
                     break;
@@ -283,6 +288,16 @@ namespace LudoLike
         private async void MainGrid_OnPointerReleased(object sender, PointerRoutedEventArgs e)
         {
             await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { KeyDownControl.Focus(FocusState.Keyboard); });
+        }
+
+        private async void NavigateFromRockPaperScissorsPage()
+        {
+            await Window.CloseAsync();
+        }
+
+        private void Page_Loaded(object sender, RoutedEventArgs e)
+        {
+            Window = GameBoard.AppWindows[UIContext];
         }
     }
 }
