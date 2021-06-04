@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
@@ -34,6 +35,9 @@ namespace LudoLike
     /// </summary>
     public sealed partial class GameBoard : Page
     {
+        // Track all open subwindows
+        public static Dictionary<UIContext, AppWindow> AppWindows = new Dictionary<UIContext, AppWindow>();
+
         public delegate void MiniGameDelegate(Player invokingPlayer);
         public static event MiniGameDelegate MiniGameEvent;
 
@@ -289,8 +293,19 @@ namespace LudoLike
             };
             AppWindow appWindow = await AppWindow.TryCreateAsync();
             Frame appWindowContentFrame = new Frame();
+
             appWindowContentFrame.Navigate(typeof(MiniGamePage), navParams);
             ElementCompositionPreview.SetAppWindowContent(appWindow, appWindowContentFrame);
+            AppWindows.Add(appWindowContentFrame.UIContext, appWindow);
+
+            // This is for removing the AppWindow from the tracked windows
+            appWindow.Closed += delegate
+            {
+                AppWindows.Remove(appWindowContentFrame.UIContext);
+                appWindowContentFrame.Content = null;
+                appWindow = null;
+            };
+
             await appWindow.TryShowAsync();
         }
     }
