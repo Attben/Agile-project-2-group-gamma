@@ -107,7 +107,7 @@ namespace LudoLike
         public LudoBoard()
         {
             ScaleBoard();
-            LudoBoard.TileGridPositions = CreateTileGrid();
+            TileGridPositions = CreateTileGrid();
         }
 
         /// <summary>
@@ -119,9 +119,9 @@ namespace LudoLike
             ScaleBoard();
             args.DrawingSession.FillRectangle(MainBoard, Windows.UI.Colors.White);
             args.DrawingSession.FillRectangle(RedNest, Windows.UI.Colors.Red);
+            args.DrawingSession.FillRectangle(BlueNest, Windows.UI.Colors.Blue);
             args.DrawingSession.FillRectangle(YellowNest, Windows.UI.Colors.Yellow);
             args.DrawingSession.FillRectangle(GreenNest, Windows.UI.Colors.LawnGreen);
-            args.DrawingSession.FillRectangle(BlueNest, Windows.UI.Colors.Blue);
         }
 
         /// <summary>
