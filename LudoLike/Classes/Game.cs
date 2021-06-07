@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -23,9 +23,10 @@ namespace LudoLike
         //Audio
         public static MediaSource BackgroundMusic;
 
-        //Used for displaying the current score
+        //Used for displaying the current history and score
         private readonly CanvasTextFormat _textFormat;
         private Rect _scoreBox;
+        private TurnHistoryHandler _turnHistory;
 
         public Game()
         {
@@ -47,6 +48,16 @@ namespace LudoLike
                 Width = 175,
                 Height = 6 * _textFormat.FontSize
             };
+            _turnHistory = new TurnHistoryHandler(
+                _textFormat,
+                new Rect
+                {
+                    //TODO: Refactor ugly magic constants.
+                    X = 30,
+                    Y = 240,
+                    Width = 175,
+                    Height = 22 * _textFormat.FontSize
+                });
         }
 
         /// <summary>
@@ -230,7 +241,9 @@ namespace LudoLike
         /// <param name="diceRoll"></param>
         public void TakeTurn(int diceRoll)
         {
-            _players[CurrentPlayerTurn].MovePiece(diceRoll);
+            Player currentPlayer = _players[CurrentPlayerTurn];
+            _turnHistory.Add(currentPlayer, $"{currentPlayer.PlayerColor} ︵🎲 {diceRoll}");
+            currentPlayer.MovePiece(diceRoll);
 
             CheckTilesForCollisions();
             CheckSpecialTile();
@@ -248,6 +261,7 @@ namespace LudoLike
         public void DrawMainContent(CanvasAnimatedDrawEventArgs drawArgs)
         {
             Board.Draw(drawArgs);
+            _turnHistory.Draw(drawArgs);
             DrawScore(drawArgs);
             DrawTiles(drawArgs);
             foreach (Player player in _players)
@@ -290,7 +304,7 @@ namespace LudoLike
         // Might have to make another drawmethod for drawing minigame 
 
 
-        void Stealpoints(int player1, int player2, int points)//steals from player1 and gives to pla�er2
+        void Stealpoints(int player1, int player2, int points)//steals from player1 and gives to plaýer2
         {
             _players[player1].ChangeScore(-points);
             _players[player2].ChangeScore(points);
