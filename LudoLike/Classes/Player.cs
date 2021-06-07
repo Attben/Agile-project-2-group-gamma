@@ -35,12 +35,15 @@ namespace LudoLike
 
         public static List<MediaSource> PieceCollisionSounds = new List<MediaSource>();
         public static List<MediaSource> PieceMovingSounds = new List<MediaSource>();
+
+        private TurnHistoryHandler _turnHistory;
         
 
-        public Player(PlayerColors color, List<Vector2> startPositions)
+        public Player(PlayerColors color, List<Vector2> startPositions, TurnHistoryHandler turnHistory)
         {
             Score = 0;
             PlayerColor = color;
+            _turnHistory = turnHistory;
 
             switch (color)
             {
@@ -69,6 +72,7 @@ namespace LudoLike
         public void ChangeScore(int amount)
         {
             Score += amount;
+            _turnHistory.Add(this, $"💲{amount}");
         }
 
         public void DrawPieces(CanvasAnimatedDrawEventArgs drawArgs)

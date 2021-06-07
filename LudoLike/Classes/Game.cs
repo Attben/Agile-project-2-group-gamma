@@ -71,16 +71,16 @@ namespace LudoLike
                 switch (i)
                 {
                     case 0:
-                        _players.Add(new Player(PlayerColors.Red, LudoBoard.NestTilesPositions["Red"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Red, LudoBoard.NestTilesPositions["Red"], _turnHistory)); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 1:
-                        _players.Add(new Player(PlayerColors.Blue, LudoBoard.NestTilesPositions["Blue"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Blue, LudoBoard.NestTilesPositions["Blue"], _turnHistory)); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 2:
-                        _players.Add(new Player(PlayerColors.Yellow, LudoBoard.NestTilesPositions["Yellow"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Yellow, LudoBoard.NestTilesPositions["Yellow"], _turnHistory)); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 3:
-                        _players.Add(new Player(PlayerColors.Green, LudoBoard.NestTilesPositions["Green"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Green, LudoBoard.NestTilesPositions["Green"], _turnHistory)); // assumes first four tiles are Home/Nests tiles
                         break;
 
                 }
@@ -242,7 +242,7 @@ namespace LudoLike
         public void TakeTurn(int diceRoll)
         {
             Player currentPlayer = _players[CurrentPlayerTurn];
-            _turnHistory.Add(currentPlayer, $"{currentPlayer.PlayerColor} ︵🎲 {diceRoll}");
+            _turnHistory.Add(currentPlayer, $"︵🎲 {diceRoll}");
             currentPlayer.MovePiece(diceRoll);
 
             CheckTilesForCollisions();

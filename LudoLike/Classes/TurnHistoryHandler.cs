@@ -44,11 +44,12 @@ namespace LudoLike.Classes
             for (int n = 0; n < _actions.Count; ++n)
             {
                 int reverseIndex = _actions.Count - 1 - n;
+                Tuple<Player, string> backElement = _actions.ElementAt(reverseIndex);
                 drawArgs.DrawingSession.DrawText(
-                    _actions.ElementAt(reverseIndex).Item2, //Item2 is a string describing what happened in the turn.
+                    $"{backElement.Item1.PlayerColor} " + backElement.Item2, //Item1 is the player who performed the action, Item2 is a string describing what happened in the turn.
                     (float)_guiBox.X + 30f,
                     (float)_guiBox.Y + _textFormat.FontSize * (n + 1),
-                    _actions.ElementAt(reverseIndex).Item1.UIcolor); //Item1 is the player who performed the action.
+                    _actions.ElementAt(reverseIndex).Item1.UIcolor); //
             }
         }
     }
