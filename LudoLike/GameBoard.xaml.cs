@@ -43,17 +43,18 @@ namespace LudoLike
         public delegate void MiniGameDelegate(Player invokingPlayer);
         public static event MiniGameDelegate MiniGameEvent;
 
-        public static ColorSourceEffect PlayableEffect;
-
         public static CanvasBitmap BackGround;
         public int NumberOfPlayers;
         private Dice _dice;
 
+        // Stores the current pointer position
         public double PointerX;
         public double PointerY;
 
-
-        public static Vector2 CurrentTileVector;
+        // Variables used for checking where on the board the user is clicking
+        public static bool UserClickedBoard;
+        public static Vector2? CurrentTileVector;
+        public static Vector2? ClickedTileVector;
 
 
         private Game _game;
@@ -227,24 +228,55 @@ namespace LudoLike
             ICanvasAnimatedControl sender,
             CanvasAnimatedDrawEventArgs drawArgs)
         {
+            AnimationHandler.UpdateEffectOpacity();
             drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BackGround));
             _dice.Draw(drawArgs, _game.CurrentPlayerTurn);
+            
             _game.DrawMainContent(drawArgs);
+            if (CurrentTileVector.HasValue)
+            {
+                drawArgs.DrawingSession.DrawText(($"CurrentTileVector X: {CurrentTileVector.Value.X}, Y: {CurrentTileVector.Value.Y}"), 300, 100, Windows.UI.Colors.Black);
+
+            }
+            if (ClickedTileVector.HasValue)
+            {
+                drawArgs.DrawingSession.DrawText(($"ClickedTileVector X: {ClickedTileVector.Value.X}, Y: {ClickedTileVector.Value.Y}"), 300, 150, Windows.UI.Colors.Black);
+
+            }
         }
 
 
 
-
+        /// <summary>
+        /// Checks where the user clicks on the canvas. If a board tile is clicked, it stores it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
         {
             //Currently unused. Including a few commented-out lines
             //as an example of what this method might be used for later.
+            //var action = Canvas.RunOnGameLoopThreadAsync(() =>
+            //{
 
-            var position = e.GetCurrentPoint(Canvas).Position;
-            var action = Canvas.RunOnGameLoopThreadAsync(() =>
+            //});
+            if (ClickedTileVector != null)
             {
-
-            });
+                if (_game._players[_game.CurrentPlayerTurn].ChosenPiece != null)
+                {
+                    if (_game._players[_game.CurrentPlayerTurn].ChosenPiece.AllowedDestinationTileVector != null)
+                    {
+                        if (CurrentTileVector == _game._players[_game.CurrentPlayerTurn].ChosenPiece.AllowedDestinationTileVector.Value)
+                        {
+                            // Fire move function here
+                            //_game.TakeTurn(_game._players[_game.CurrentPlayerTurn]);
+                            _game.TakeTurn(_game._players[_game.CurrentPlayerTurn]);
+                        }
+                    }
+                }
+            }
+            ClickedTileVector = CurrentTileVector;
+            
         }
 
         private void CanvasUpdate(
@@ -261,7 +293,15 @@ namespace LudoLike
         /// <param name="e"></param>
         private void RollDie(object sender, RoutedEventArgs e)
         {
-            _game.TakeTurn(_dice.Roll() + 1);
+            if (!Game.CurrentDiceRoll.HasValue)
+            {
+                Game.CurrentDiceRoll = _dice.Roll() + 1;
+                if (!_game._players[_game.CurrentPlayerTurn].CheckPossibilityToMove(Game.CurrentDiceRoll.Value))
+                {
+                    Game.CurrentDiceRoll = null;
+                    _game.NextPlayerTurn();
+                }
+            }
         }
 
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
@@ -338,15 +378,18 @@ namespace LudoLike
                 if (e.GetCurrentPoint(Canvas).Position.Y > _game.Board.MainBoard.Y && e.GetCurrentPoint(Canvas).Position.Y < _game.Board.MainBoard.Y + _game.Board.MainBoard.Height)
                 {
                     CalculateCurrentTileVector();
+                    UserClickedBoard = true;
                 }
                 else
                 {
-                    CurrentTileVector = new Vector2(100, 100);
+                    UserClickedBoard = false;
+                    CurrentTileVector = null;
                 }
             }
             else
             {
-                CurrentTileVector = new Vector2(100, 100);
+                UserClickedBoard = false;
+                CurrentTileVector = null;
             }
         }
 

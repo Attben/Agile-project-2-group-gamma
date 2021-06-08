@@ -33,7 +33,7 @@ namespace LudoLike
         {
             base.TileEvent(player);
             //Do something to transport a Player to _destinationTile.
-            player._pieces[0].Move(_destinationTile);
+            player.ChosenPiece.Move(_destinationTile);
             return false;
         }
 

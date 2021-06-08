@@ -120,6 +120,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Classes\AnimationHandler.cs" />
     <Compile Include="Classes\Game.cs" />
     <Compile Include="Classes\Dice.cs" />
     <Compile Include="Classes\KeyDownControl.cs" />
