@@ -310,5 +310,14 @@ namespace LudoLike
             RollButton.IsEnabled = false;
             await appWindow.TryShowAsync();
         }
+
+        private void CheckEndGame()
+        {
+            if (_game.piecesInGoal == 0)
+            {
+                this.Frame.Navigate(typeof(gameover), _game._players);
+            }
+        }
     }
 }
+

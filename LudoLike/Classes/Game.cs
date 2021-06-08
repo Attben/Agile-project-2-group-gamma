@@ -26,6 +26,7 @@ namespace LudoLike
         //Used for displaying the current score
         private readonly CanvasTextFormat _textFormat;
         private Rect _scoreBox;
+        public int piecesInGoal;
 
         public Game()
         {
@@ -74,6 +75,8 @@ namespace LudoLike
 
                 }
             }
+
+            piecesInGoal = _players.Count * 4;
         }
 
         //does not adapt to only 2 or 3 players
@@ -294,6 +297,21 @@ namespace LudoLike
         {
             _players[player1].ChangeScore(-points);
             _players[player2].ChangeScore(points);
+        }
+
+        public void CheckPiecesAtGoal()//checks if any of the pieces is at the goal and gives points depending on how early it is
+        {
+            Vector2 goal = new Vector2(5, 5);
+
+            foreach (Piece piece in _players[CurrentPlayerTurn]._pieces)
+            {
+                if (piece.position == goal)
+                {
+                    _players[CurrentPlayerTurn].ChangeScore(piecesInGoal * 100);
+                    piecesInGoal--;
+                    _players[CurrentPlayerTurn]._pieces.Remove(piece); //removes piece from list
+                }
+            }
         }
     }
 }
