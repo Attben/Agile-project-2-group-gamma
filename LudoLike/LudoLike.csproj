@@ -124,6 +124,7 @@
     <Compile Include="Classes\Dice.cs" />
     <Compile Include="Classes\KeyDownControl.cs" />
     <Compile Include="Classes\MiniGameNavigationParams.cs" />
+    <Compile Include="Classes\TurnHistoryHandler.cs" />
     <Compile Include="Highscore.xaml.cs">
       <DependentUpon>Highscore.xaml</DependentUpon>
     </Compile>

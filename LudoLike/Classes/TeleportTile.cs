@@ -27,6 +27,7 @@ namespace LudoLike
         {
             _destinationTile = destination;
             TileImage = TileImages["Teleport"];
+            TurnHistoryString = "🏃‍♀️ミ✨";
         }
 
         public override bool TileEvent(Player player)

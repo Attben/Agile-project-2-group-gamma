@@ -1,4 +1,4 @@
-﻿using LudoLike.Classes;
+using LudoLike.Classes;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
@@ -37,13 +37,16 @@ namespace LudoLike
         public static List<MediaSource> PieceCollisionSounds = new List<MediaSource>();
         public static List<MediaSource> PieceMovingSounds = new List<MediaSource>();
 
+        private readonly TurnHistoryHandler _turnHistory;
+
         static float effectOpacity = 0;
         static bool effectOpacityUp = true;
 
-        public Player(PlayerColors color, List<Vector2> startPositions)
+        public Player(PlayerColors color, List<Vector2> startPositions, TurnHistoryHandler turnHistory)
         {
             Score = 0;
             PlayerColor = color;
+            _turnHistory = turnHistory;
 
             switch (color)
             {
@@ -69,9 +72,21 @@ namespace LudoLike
             }
         }
 
+        /// <summary>
+        /// Add a move to the turn history.
+        /// This method is mostly a workaround to avoid being forced to add a TurnHistoryHandler
+        /// to all of the constructors in the various Tile classes.
+        /// </summary>
+        /// <param name="move">A string describing the move that was made.</param>
+        public void AddMoveToTurnHistory(string move)
+        {
+            _turnHistory.Add(this, move);
+        }
+
         public void ChangeScore(int amount)
         {
             Score += amount;
+            AddMoveToTurnHistory($"💲{amount}");
         }
 
         public void DrawPieces(CanvasAnimatedDrawEventArgs drawArgs)

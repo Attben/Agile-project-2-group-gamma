@@ -1,4 +1,4 @@
-using Microsoft.Graphics.Canvas;
+﻿using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
@@ -26,6 +26,7 @@ namespace LudoLike
         public MinigameTile(Rect targetRectangle, Minigame game, Vector2 gridPosition) : base(targetRectangle, gridPosition)
         {
             _minigame = game;
+            TurnHistoryString = "🎮";
         }
 
         public override bool TileEvent(Player player)
