@@ -36,7 +36,7 @@ namespace LudoLike
         public static List<MediaSource> PieceCollisionSounds = new List<MediaSource>();
         public static List<MediaSource> PieceMovingSounds = new List<MediaSource>();
 
-        private TurnHistoryHandler _turnHistory;
+        private readonly TurnHistoryHandler _turnHistory;
         
 
         public Player(PlayerColors color, List<Vector2> startPositions, TurnHistoryHandler turnHistory)

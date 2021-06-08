@@ -26,7 +26,7 @@ namespace LudoLike
         //Used for displaying the current history and score
         private readonly CanvasTextFormat _textFormat;
         private Rect _scoreBox;
-        private TurnHistoryHandler _turnHistory;
+        private readonly TurnHistoryHandler _turnHistory;
 
         public Game()
         {

@@ -16,8 +16,8 @@ namespace LudoLike.Classes
     public class TurnHistoryHandler
     {
         private readonly int _maxHistoryLength = 20;
-        private CanvasTextFormat _textFormat;
-        private Queue<Tuple<Player, string>> _actions;
+        private readonly CanvasTextFormat _textFormat;
+        private readonly Queue<Tuple<Player, string>> _actions;
         private Rect _guiBox;
 
         public TurnHistoryHandler(CanvasTextFormat textFormat, Rect guiBox)
@@ -49,7 +49,7 @@ namespace LudoLike.Classes
                     $"{backElement.Item1.PlayerColor} " + backElement.Item2, //Item1 is the player who performed the action, Item2 is a string describing what happened in the turn.
                     (float)_guiBox.X + 30f,
                     (float)_guiBox.Y + _textFormat.FontSize * (n + 1),
-                    _actions.ElementAt(reverseIndex).Item1.UIcolor); //
+                    backElement.Item1.UIcolor);
             }
         }
     }
