@@ -16,6 +16,7 @@ namespace LudoLike
     class ScoreTile : Tile
     {
         private readonly int _amount;
+        private bool _isConsumed = false;
 
         /// <summary>
         /// Creates a Tile on the rectangle. Points represents the points to gain when stepped on.
@@ -30,17 +31,28 @@ namespace LudoLike
             TurnHistoryString = "💰";
         }
 
-        public override bool TileEvent(Player player)
+        public override void TileEvent(Player player)
         {
             base.TileEvent(player);
-            player.ChangeScore(_amount);
-            return true;
+            if (!this._isConsumed)
+            {
+                player.ChangeScore(_amount);
+                this._isConsumed = true;
+                _tileEventSound = Tile.TileEventSounds["Tile"];
+                TurnHistoryString = null;
+            }
         }
 
         public override void Draw(CanvasAnimatedDrawEventArgs drawArgs)
         {
-            base.Draw(drawArgs);
-            drawArgs.DrawingSession.DrawImage(TileImage, TargetRectangle);
+            if (this._isConsumed)
+            {
+                base.Draw(drawArgs);
+            }
+            else
+            {
+                drawArgs.DrawingSession.DrawImage(TileImage, TargetRectangle);
+            }
         }
     }
 }
