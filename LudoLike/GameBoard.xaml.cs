@@ -232,7 +232,7 @@ namespace LudoLike
             _game.DrawMainContent(drawArgs);
             drawArgs.DrawingSession.DrawText($"Double X: {PointerX}, Y: {PointerY}", 300, 100, Colors.Black);
             drawArgs.DrawingSession.DrawText($"Current Tile Vector: {CurrentTileVector.X}, Y: {CurrentTileVector.Y}", 300, 50, Colors.Black);
-
+            
 
         }
 
