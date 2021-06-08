@@ -30,12 +30,11 @@ namespace LudoLike
             TurnHistoryString = "🏃‍♀️ミ✨";
         }
 
-        public override bool TileEvent(Player player)
+        public override void TileEvent(Player player)
         {
             base.TileEvent(player);
             //Do something to transport a Player to _destinationTile.
             player._pieces[0].Move(_destinationTile);
-            return false;
         }
 
         public override void Draw(CanvasAnimatedDrawEventArgs drawArgs)

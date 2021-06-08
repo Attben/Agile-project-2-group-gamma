@@ -64,14 +64,13 @@ namespace LudoLike
         /// <code>true</code> if the tile is supposed to disappear when activated.
         /// <code>false</code> if the tile is supposed to be kept on the board.
         /// </returns>
-        public virtual bool TileEvent(Player player)
+        public virtual void TileEvent(Player player)
         {
             if(TurnHistoryString != null)
             {
                 player.AddMoveToTurnHistory(TurnHistoryString);
             }
             Classes.SoundMixer.PlaySound(_tileEventSound, Classes.SoundChannels.sfx2);
-            return false;
         }
 
 

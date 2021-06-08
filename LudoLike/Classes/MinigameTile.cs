@@ -29,12 +29,11 @@ namespace LudoLike
             TurnHistoryString = "🎮";
         }
 
-        public override bool TileEvent(Player player)
+        public override void TileEvent(Player player)
         {
             base.TileEvent(player);
             GameBoard.InvokeMiniGameEvent(player);
             //Do something to start the _minigame.
-            return false;
         }
 
         public override void Draw(CanvasAnimatedDrawEventArgs drawArgs)
