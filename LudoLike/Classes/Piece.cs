@@ -1,4 +1,5 @@
 ﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
@@ -19,6 +20,7 @@ namespace LudoLike
         public Vector2 StartPosition;
         public Vector2 position;
         public CanvasBitmap _pieceImage;
+        public bool HoverOver = false;
 
         public static CanvasBitmap Red;
         public static CanvasBitmap Blue;
@@ -58,8 +60,28 @@ namespace LudoLike
         }
 
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs, Rect targetRectangle)
-        {
-            drawArgs.DrawingSession.DrawImage(this._pieceImage, targetRectangle);
+        { 
+            drawArgs.DrawingSession.DrawImage(_pieceImage, targetRectangle);
+
+            //drawArgs.DrawingSession.DrawImage(PlayableEffect, targetRectangle);
         }
+
+        /// <summary>
+        /// Draws the piece aswell as a hovereffect on the underlying grid.
+        /// </summary>
+        /// <param name="drawArgs"></param>
+        /// <param name="targetRectangle"></param>
+        /// <param name="effectColor"></param>
+        /// <param name="opacity"></param>
+        public void Draw(CanvasAnimatedDrawEventArgs drawArgs, Rect targetRectangle, Windows.UI.Color effectColor, float opacity)
+        {
+            ColorSourceEffect effect = new ColorSourceEffect()
+            {
+                Color = effectColor
+            };
+            drawArgs.DrawingSession.DrawImage(effect, (float)targetRectangle.X, (float)targetRectangle.Y, targetRectangle, opacity);
+            drawArgs.DrawingSession.DrawImage(_pieceImage, targetRectangle);
+        }
+
     }
 }
