@@ -124,9 +124,6 @@
     <Compile Include="Classes\Dice.cs" />
     <Compile Include="Classes\KeyDownControl.cs" />
     <Compile Include="Classes\MiniGameNavigationParams.cs" />
-    <Compile Include="gameover.xaml.cs">
-      <DependentUpon>gameover.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Highscore.xaml.cs">
       <DependentUpon>Highscore.xaml</DependentUpon>
     </Compile>
@@ -238,10 +235,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="gameover.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Highscore.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

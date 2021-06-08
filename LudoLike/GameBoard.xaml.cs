@@ -301,13 +301,11 @@ namespace LudoLike
             // This is for removing the AppWindow from the tracked windows
             appWindow.Closed += delegate
             {
-                RollButton.IsEnabled = true;
                 AppWindows.Remove(appWindowContentFrame.UIContext);
                 appWindowContentFrame.Content = null;
                 appWindow = null;
             };
 
-            RollButton.IsEnabled = false;
             await appWindow.TryShowAsync();
         }
     }
