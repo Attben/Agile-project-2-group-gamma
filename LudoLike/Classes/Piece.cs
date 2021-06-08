@@ -60,8 +60,9 @@ namespace LudoLike
         }
 
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs, Rect targetRectangle)
-        {
+        { 
             drawArgs.DrawingSession.DrawImage(_pieceImage, targetRectangle);
+
             //drawArgs.DrawingSession.DrawImage(PlayableEffect, targetRectangle);
         }
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs, Rect targetRectangle, Windows.UI.Color effectColor, float opacity)

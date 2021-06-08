@@ -121,11 +121,12 @@ namespace LudoLike
                     }
                     else
                     {
-                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, effectOpacity / 10000);
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.LawnGreen, effectOpacity / 10000);
                     }
                 }
                 else
                 {
+                    
                     p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position]);
                 }
             }
