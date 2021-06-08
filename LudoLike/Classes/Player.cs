@@ -69,10 +69,21 @@ namespace LudoLike
             }
         }
 
+        /// <summary>
+        /// Add a move to the turn history.
+        /// This method is mostly a workaround to avoid being forced to add a TurnHistoryHandler
+        /// to all of the constructors in the various Tile classes.
+        /// </summary>
+        /// <param name="move">A string describing the move that was made.</param>
+        public void AddMoveToTurnHistory(string move)
+        {
+            _turnHistory.Add(this, move);
+        }
+
         public void ChangeScore(int amount)
         {
             Score += amount;
-            _turnHistory.Add(this, $"💲{amount}");
+            AddMoveToTurnHistory($"💲{amount}");
         }
 
         public void DrawPieces(CanvasAnimatedDrawEventArgs drawArgs)

@@ -27,8 +27,8 @@ namespace LudoLike
         {
             _amount = points;
             TileImage = TileImages["Score"];
+            TurnHistoryString = "💰";
         }
-
 
         public override bool TileEvent(Player player)
         {
