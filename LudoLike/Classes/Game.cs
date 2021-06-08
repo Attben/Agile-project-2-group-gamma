@@ -131,36 +131,14 @@ namespace LudoLike
 
         public void CheckSpecialTile()
         {
+            //TODO: Refactor Tile logic to avoid inefficiently checking *every single tile* on *every single move*.
             for (int i = 0; i < Tiles.Count(); i++)
             {
                 if (_players[CurrentPlayerTurn].ReturnPiecePostitions()[0] == Tiles[i].GridPosition)
                 {
-                    if (Tiles[i].GetType() != (typeof(StaticTile)))
-                    {
-                        if (Tiles[i].TileEvent(_players[CurrentPlayerTurn])) 
-                        {
-                            StaticTile newTile = new StaticTile(Tiles[i].TargetRectangle, "Regular", Tiles[i].GridPosition);
-                            Tiles[i] = newTile;
-                            break;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
+                    Tiles[i].TileEvent(_players[CurrentPlayerTurn]);
                 }
             }
-        }
-        // TODO: Test this method and integrate the functionality to the game
-        public void NextTurn()
-        {
-            CurrentPlayerTurn++;
-
-            if (CurrentPlayerTurn == 4)
-            {
-                CurrentPlayerTurn = 0;
-            }
-            //method to change color and visuals/ maybe
         }
 
         /// <summary>
@@ -309,7 +287,6 @@ namespace LudoLike
                 tile.Draw(drawArgs);
             }
         }
-        // Might have to make another drawmethod for drawing minigame 
 
         public void ApplyTileHoverEffect(CanvasAnimatedDrawEventArgs drawArgs)
         {
