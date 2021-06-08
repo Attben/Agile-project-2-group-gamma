@@ -107,6 +107,10 @@ namespace LudoLike
             }
         }
 
+        /// <summary>
+        /// Specifically used draw function used for the current player. Allows for hovering over pieces.
+        /// </summary>
+        /// <param name="drawArgs"></param>
         public void DrawCurrentPlayerPieces(CanvasAnimatedDrawEventArgs drawArgs)
         {
             UpdateEffectOpacity();

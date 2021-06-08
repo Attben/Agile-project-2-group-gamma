@@ -65,6 +65,14 @@ namespace LudoLike
 
             //drawArgs.DrawingSession.DrawImage(PlayableEffect, targetRectangle);
         }
+
+        /// <summary>
+        /// Draws the piece aswell as a hovereffect on the underlying grid.
+        /// </summary>
+        /// <param name="drawArgs"></param>
+        /// <param name="targetRectangle"></param>
+        /// <param name="effectColor"></param>
+        /// <param name="opacity"></param>
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs, Rect targetRectangle, Windows.UI.Color effectColor, float opacity)
         {
             ColorSourceEffect effect = new ColorSourceEffect()

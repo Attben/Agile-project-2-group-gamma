@@ -230,10 +230,6 @@ namespace LudoLike
             drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BackGround));
             _dice.Draw(drawArgs, _game.CurrentPlayerTurn);
             _game.DrawMainContent(drawArgs);
-            drawArgs.DrawingSession.DrawText($"Double X: {PointerX}, Y: {PointerY}", 300, 100, Colors.Black);
-            drawArgs.DrawingSession.DrawText($"Current Tile Vector: {CurrentTileVector.X}, Y: {CurrentTileVector.Y}", 300, 50, Colors.Black);
-            
-
         }
 
 
@@ -327,6 +323,11 @@ namespace LudoLike
             await appWindow.TryShowAsync();
         }
 
+        /// <summary>
+        /// Used to update the position of the cursor.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CheckCursorPosition(object sender, PointerRoutedEventArgs e)
         {
             PointerX = e.GetCurrentPoint(Canvas).Position.X;
@@ -336,7 +337,7 @@ namespace LudoLike
             {
                 if (e.GetCurrentPoint(Canvas).Position.Y > _game.Board.MainBoard.Y && e.GetCurrentPoint(Canvas).Position.Y < _game.Board.MainBoard.Y + _game.Board.MainBoard.Height)
                 {
-                    CurrentTileVector = new Vector2((float)Math.Floor((PointerX - _game.Board.MainBoard.X) / (_game.Board.MainBoard.Width / 11)), (float)Math.Floor((PointerY - _game.Board.MainBoard.Y) / (_game.Board.MainBoard.Height / 11)));
+                    CalculateCurrentTileVector();
                 }
                 else
                 {
@@ -347,6 +348,14 @@ namespace LudoLike
             {
                 CurrentTileVector = new Vector2(100, 100);
             }
+        }
+
+        /// <summary>
+        /// Calculates what grid the cursor is on when hovering over the main board.
+        /// </summary>
+        private void CalculateCurrentTileVector()
+        {
+            CurrentTileVector = new Vector2((float)Math.Floor((PointerX - _game.Board.MainBoard.X) / (_game.Board.MainBoard.Width / 11)), (float)Math.Floor((PointerY - _game.Board.MainBoard.Y) / (_game.Board.MainBoard.Height / 11)));
         }
     }
 }
