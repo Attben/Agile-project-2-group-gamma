@@ -15,6 +15,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.UI;
+using Windows.UI.Composition;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
@@ -38,12 +39,22 @@ namespace LudoLike
         // Track all open subwindows
         public static Dictionary<UIContext, AppWindow> AppWindows = new Dictionary<UIContext, AppWindow>();
 
+        // Event for invoking minigames
         public delegate void MiniGameDelegate(Player invokingPlayer);
         public static event MiniGameDelegate MiniGameEvent;
 
-        public int NumberOfPlayers;
+        public static ColorSourceEffect PlayableEffect;
+
         public static CanvasBitmap BackGround;
+        public int NumberOfPlayers;
         private Dice _dice;
+
+        public double PointerX;
+        public double PointerY;
+
+
+        public static Vector2 CurrentTileVector;
+
 
         private Game _game;
 
@@ -104,11 +115,12 @@ namespace LudoLike
             await LoadGlowEffects(sender);
             await LoadTileImages(sender);
             LoadSounds();
-
             _dice = new Dice(0, 6);
             _game.AddPlayers(NumberOfPlayers);
             _game.CreateStaticTiles();
             _game.CreateDynamicTiles();
+
+            
 
 
             SoundMixer.PlaySound(Game.BackgroundMusic, SoundChannels.music);
@@ -218,19 +230,21 @@ namespace LudoLike
             drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BackGround));
             _dice.Draw(drawArgs, _game.CurrentPlayerTurn);
             _game.DrawMainContent(drawArgs);
-
         }
+
+
+
 
         private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
         {
             //Currently unused. Including a few commented-out lines
             //as an example of what this method might be used for later.
 
-            // var position = e.GetCurrentPoint(Canvas).Position;
-            // var action = Canvas.RunOnGameLoopThreadAsync(() =>
-            //{
-            //    do something
-            //});
+            var position = e.GetCurrentPoint(Canvas).Position;
+            var action = Canvas.RunOnGameLoopThreadAsync(() =>
+            {
+
+            });
         }
 
         private void CanvasUpdate(
@@ -307,6 +321,41 @@ namespace LudoLike
             };
 
             await appWindow.TryShowAsync();
+        }
+
+        /// <summary>
+        /// Used to update the position of the cursor.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckCursorPosition(object sender, PointerRoutedEventArgs e)
+        {
+            PointerX = e.GetCurrentPoint(Canvas).Position.X;
+            PointerY = e.GetCurrentPoint(Canvas).Position.Y;
+            // Check if pointer is inside the mainboard
+            if (e.GetCurrentPoint(Canvas).Position.X > _game.Board.MainBoard.X && e.GetCurrentPoint(Canvas).Position.X < _game.Board.MainBoard.X + _game.Board.MainBoard.Width)
+            {
+                if (e.GetCurrentPoint(Canvas).Position.Y > _game.Board.MainBoard.Y && e.GetCurrentPoint(Canvas).Position.Y < _game.Board.MainBoard.Y + _game.Board.MainBoard.Height)
+                {
+                    CalculateCurrentTileVector();
+                }
+                else
+                {
+                    CurrentTileVector = new Vector2(100, 100);
+                }
+            }
+            else
+            {
+                CurrentTileVector = new Vector2(100, 100);
+            }
+        }
+
+        /// <summary>
+        /// Calculates what grid the cursor is on when hovering over the main board.
+        /// </summary>
+        private void CalculateCurrentTileVector()
+        {
+            CurrentTileVector = new Vector2((float)Math.Floor((PointerX - _game.Board.MainBoard.X) / (_game.Board.MainBoard.Width / 11)), (float)Math.Floor((PointerY - _game.Board.MainBoard.Y) / (_game.Board.MainBoard.Height / 11)));
         }
     }
 }

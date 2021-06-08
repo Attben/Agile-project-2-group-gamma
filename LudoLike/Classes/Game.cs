@@ -7,6 +7,7 @@ using Microsoft.Graphics.Canvas.Text;
 using Windows.Foundation;
 using Windows.Media.Core;
 using LudoLike.Classes;
+using Microsoft.Graphics.Canvas.Effects;
 
 namespace LudoLike
 {
@@ -114,7 +115,7 @@ namespace LudoLike
                         //looks for piece of another player to send back to home/nest
                         foreach (Piece piece in _players[i]._pieces)
                         {
-                            if (piece.position == same[0] && piece.position != LudoBoard.RedPath[44])
+                            if (piece.position == same[0] && piece.position != LudoBoard.StaticTilesPositions["Middle"][0])
                             {
                                 //moves piece to nest/home
                                 piece.position = piece.StartPosition; // might wanna use the move method of piece when implemented
@@ -266,7 +267,14 @@ namespace LudoLike
             DrawTiles(drawArgs);
             foreach (Player player in _players)
             {
-                player.DrawPieces(drawArgs);
+                if (_players.IndexOf(player) == CurrentPlayerTurn)
+                {
+                    player.DrawCurrentPlayerPieces(drawArgs);
+                }
+                else
+                {
+                    player.DrawPieces(drawArgs);
+                }
             }
         }
 
@@ -302,6 +310,11 @@ namespace LudoLike
             }
         }
         // Might have to make another drawmethod for drawing minigame 
+
+        public void ApplyTileHoverEffect(CanvasAnimatedDrawEventArgs drawArgs)
+        {
+
+        }
 
 
         void Stealpoints(int player1, int player2, int points)//steals from player1 and gives to plaýer2
