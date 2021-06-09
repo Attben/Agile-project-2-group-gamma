@@ -243,6 +243,7 @@ namespace LudoLike
             CanvasAnimatedDrawEventArgs drawArgs)
         {
             AnimationHandler.UpdateEffectOpacity();
+            AnimationHandler.UpdateGlowHolderAddedSize();
             drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BackGround));
             _dice.Draw(drawArgs, _game.CurrentPlayerTurn);
             

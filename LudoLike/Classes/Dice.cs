@@ -35,8 +35,13 @@ namespace LudoLike
 
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs, int playerTurn)
         {
-            _diceHolder = new Rect(Scaling.bWidth - Scaling.Xpos(_diceWidth * 2), Scaling.bHeight - Scaling.Ypos(_diceHeight * 2), Scaling.Xpos(200), Scaling.Ypos(200));
-            _glowHolder = new Rect(Scaling.bWidth - Scaling.Xpos(_diceWidth * 2) - Scaling.Xpos(_diceWidth / 2), Scaling.bHeight - Scaling.Ypos(_diceHeight * 2) - Scaling.Ypos(_diceHeight / 2), Scaling.Xpos(_diceHeight*2), Scaling.Ypos(_diceHeight*2));
+            _diceHolder = new Rect(Scaling.bWidth - Scaling.Xpos(_diceWidth * 2), 
+                                   Scaling.bHeight - Scaling.Ypos(_diceHeight * 2),
+                                   Scaling.Xpos(200), Scaling.Ypos(200));
+            _glowHolder = new Rect(Scaling.bWidth - Scaling.Xpos(_diceWidth * 2) - Scaling.Xpos(_diceWidth / 2) - Scaling.Xpos(AnimationHandler.GlowHolderAddedSize / 2), 
+                                   Scaling.bHeight - Scaling.Ypos(_diceHeight * 2) - Scaling.Ypos(_diceHeight / 2) - Scaling.Ypos(AnimationHandler.GlowHolderAddedSize / 2), 
+                                   Scaling.Xpos(_diceHeight * 2 + AnimationHandler.GlowHolderAddedSize), 
+                                   Scaling.Ypos(_diceHeight * 2 + AnimationHandler.GlowHolderAddedSize));
             if (_animationTimer == 0)
             {
                 drawArgs.DrawingSession.DrawImage(GlowEffects[playerTurn], _glowHolder);
