@@ -262,6 +262,7 @@ namespace LudoLike
         private void RollDie(object sender, RoutedEventArgs e)
         {
             _game.TakeTurn(_dice.Roll() + 1);
+            CheckEndGame();
         }
 
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
@@ -315,11 +316,13 @@ namespace LudoLike
             // This is for removing the AppWindow from the tracked windows
             appWindow.Closed += delegate
             {
+                RollButton.IsEnabled = true;
                 AppWindows.Remove(appWindowContentFrame.UIContext);
                 appWindowContentFrame.Content = null;
                 appWindow = null;
             };
 
+            RollButton.IsEnabled = false;
             await appWindow.TryShowAsync();
         }
 
@@ -356,6 +359,14 @@ namespace LudoLike
         private void CalculateCurrentTileVector()
         {
             CurrentTileVector = new Vector2((float)Math.Floor((PointerX - _game.Board.MainBoard.X) / (_game.Board.MainBoard.Width / 11)), (float)Math.Floor((PointerY - _game.Board.MainBoard.Y) / (_game.Board.MainBoard.Height / 11)));
+        }
+
+        private void CheckEndGame()
+        {
+            if (_game.piecesInGoal == 0)
+            {
+                this.Frame.Navigate(typeof(gameover), _game._players);
+            }
         }
     }
 }

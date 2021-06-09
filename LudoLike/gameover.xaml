@@ -1,0 +1,24 @@
+﻿<Page
+    x:Class="LudoLike.gameover"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:LudoLike"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid KeyUp="Grid_KeyUp">
+        <TextBlock Text="Game Over" HorizontalAlignment="Center" FontSize="150"/>
+        <ListView x:Name="playerlist" Background="Gray" Height="600" Width="652" Margin="0,0,250,0" IsEnabled="False">
+            <ListView.Resources>
+                <x:Double x:Key="ListViewItemDisabledThemeOpacity">1</x:Double>
+            </ListView.Resources>
+        </ListView>
+        <ListView x:Name="scorelist" Background="Gray" Height="600" Width="250" Margin="0,0,-650,0" IsEnabled="False">
+            <ListView.Resources>
+                <x:Double x:Key="ListViewItemDisabledThemeOpacity">1</x:Double>
+            </ListView.Resources>
+        </ListView>
+    </Grid>
+</Page>

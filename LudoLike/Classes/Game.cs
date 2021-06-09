@@ -28,6 +28,7 @@ namespace LudoLike
         private readonly CanvasTextFormat _textFormat;
         private Rect _scoreBox;
         private readonly TurnHistoryHandler _turnHistory;
+        public int piecesInGoal;
 
         public Game()
         {
@@ -86,6 +87,7 @@ namespace LudoLike
 
                 }
             }
+            piecesInGoal = _players.Count * 4;
         }
 
         //does not adapt to only 2 or 3 players
@@ -226,9 +228,15 @@ namespace LudoLike
 
             CheckTilesForCollisions();
             CheckSpecialTile();
+            CheckPiecesAtGoal();
             if (diceRoll != 6) //Player gets another turn when rolling a 6.
             {
                 //Pass control to the next player
+                CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
+            }
+
+            if (currentPlayer._pieces.Count == 0)
+            {
                 CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
             }
         }
@@ -298,6 +306,26 @@ namespace LudoLike
         {
             _players[player1].ChangeScore(-points);
             _players[player2].ChangeScore(points);
+        }
+
+        public void CheckPiecesAtGoal()//checks if any of the pieces is at the goal and gives points depending on how early it is
+        {
+            Vector2 goal = new Vector2(5, 5);
+            int delpiece = 10;
+
+            for (int i = 0; i < _players[CurrentPlayerTurn]._pieces.Count; i++)
+            {
+                if (_players[CurrentPlayerTurn]._pieces[i].position == goal)
+                {
+                    _players[CurrentPlayerTurn].ChangeScore(piecesInGoal * 100);
+                    piecesInGoal--;
+                    delpiece = i; //removes piece from list
+                }
+            }
+            if (delpiece != 10)
+            {
+                _players[CurrentPlayerTurn]._pieces.RemoveAt(delpiece);
+            }
         }
     }
 }
