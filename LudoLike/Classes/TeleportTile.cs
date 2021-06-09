@@ -27,9 +27,10 @@ namespace LudoLike
         {
             _destinationTile = destination;
             TileImage = TileImages["Teleport"];
+            TurnHistoryString = "🏃‍♀️ミ✨";
         }
 
-        public override bool TileEvent(Player player)
+        public override void TileEvent(Player player)
         {
             base.TileEvent(player);
             //Do something to transport a Player to _destinationTile.

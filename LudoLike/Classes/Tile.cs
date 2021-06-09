@@ -20,6 +20,7 @@ namespace LudoLike
         public CanvasBitmap TileImage;
         public static readonly Dictionary<string, MediaSource> TileEventSounds = new Dictionary<string, MediaSource>();
         public Rect TargetRectangle;
+        public string TurnHistoryString { get; protected set; }
         public Vector2 GridPosition;
 
         protected MediaSource _tileEventSound;
@@ -63,11 +64,13 @@ namespace LudoLike
         /// <code>true</code> if the tile is supposed to disappear when activated.
         /// <code>false</code> if the tile is supposed to be kept on the board.
         /// </returns>
-        public virtual bool TileEvent(Player player)
+        public virtual void TileEvent(Player player)
         {
-            //Parameter player is currently unused in base class, but exists for inheritance reasons.
+            if(TurnHistoryString != null)
+            {
+                player.AddMoveToTurnHistory(TurnHistoryString);
+            }
             Classes.SoundMixer.PlaySound(_tileEventSound, Classes.SoundChannels.sfx2);
-            return false;
         }
 
 
