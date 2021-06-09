@@ -83,7 +83,7 @@ namespace LudoLike
                 _players.Add(new Player(color, LudoBoard.NestTilesPositions[color.ToString()], piecesPerPlayer, _turnHistory)); // assumes first four tiles are Home/Nests tiles
             }
 
-            piecesInGoal = _players.Count * 4;
+            piecesInGoal = _players.Count * piecesPerPlayer;
         }
 
         //does not adapt to only 2 or 3 players
