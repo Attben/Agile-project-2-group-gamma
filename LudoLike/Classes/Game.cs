@@ -244,6 +244,10 @@ namespace LudoLike
             {
                 NextPlayerTurn();
             }
+            if (currentPlayer._pieces.Count == 0)
+            {
+                NextPlayerTurn();
+            }
             _turnHistory.Add(currentPlayer, $"︵🎲 {CurrentDiceRoll}");
             CurrentDiceRoll = null;     // Reset the die
         }
