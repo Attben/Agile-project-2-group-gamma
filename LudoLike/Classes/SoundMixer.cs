@@ -25,7 +25,8 @@ namespace LudoLike.Classes
             {
                 _audioChannels[n] = new MediaPlayer()
                 {
-                    AutoPlay = false
+                    AutoPlay = false,
+                    IsLoopingEnabled = (n == (int)SoundChannels.music) //Looping is enabled only on the music channel.
                 };
             }
         }

@@ -7,6 +7,7 @@ using Microsoft.Graphics.Canvas.Text;
 using Windows.Foundation;
 using Windows.Media.Core;
 using LudoLike.Classes;
+using Microsoft.Graphics.Canvas.Effects;
 
 namespace LudoLike
 {
@@ -19,15 +20,17 @@ namespace LudoLike
         public LudoBoard Board;
         public List<Tile> Tiles;
         public int CurrentPlayerTurn { get; private set; }
-
         //Audio
         public static MediaSource BackgroundMusic;
 
-        //Used for displaying the current score
+        //Used for displaying the current history and score
         private readonly CanvasTextFormat _textFormat;
         private Rect _scoreBox;
         public int piecesInGoal;
+        private readonly TurnHistoryHandler _turnHistory;
 
+        // Track the current diceroll for checking move availability
+        public static int? CurrentDiceRoll;
         public Game()
         {
             Board = new LudoBoard();
@@ -48,6 +51,16 @@ namespace LudoLike
                 Width = 175,
                 Height = 6 * _textFormat.FontSize
             };
+            _turnHistory = new TurnHistoryHandler(
+                _textFormat,
+                new Rect
+                {
+                    //TODO: Refactor ugly magic constants.
+                    X = 30,
+                    Y = 240,
+                    Width = 175,
+                    Height = 22 * _textFormat.FontSize
+                });
         }
 
         /// <summary>
@@ -61,16 +74,16 @@ namespace LudoLike
                 switch (i)
                 {
                     case 0:
-                        _players.Add(new Player(PlayerColors.Red, LudoBoard.NestTilesPositions["Red"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Red, LudoBoard.NestTilesPositions["Red"], _turnHistory)); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 1:
-                        _players.Add(new Player(PlayerColors.Blue, LudoBoard.NestTilesPositions["Blue"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Blue, LudoBoard.NestTilesPositions["Blue"], _turnHistory)); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 2:
-                        _players.Add(new Player(PlayerColors.Yellow, LudoBoard.NestTilesPositions["Yellow"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Yellow, LudoBoard.NestTilesPositions["Yellow"], _turnHistory)); // assumes first four tiles are Home/Nests tiles
                         break;
                     case 3:
-                        _players.Add(new Player(PlayerColors.Green, LudoBoard.NestTilesPositions["Green"])); // assumes first four tiles are Home/Nests tiles
+                        _players.Add(new Player(PlayerColors.Green, LudoBoard.NestTilesPositions["Green"], _turnHistory)); // assumes first four tiles are Home/Nests tiles
                         break;
 
                 }
@@ -106,7 +119,7 @@ namespace LudoLike
                         //looks for piece of another player to send back to home/nest
                         foreach (Piece piece in _players[i]._pieces)
                         {
-                            if (piece.position == same[0] && piece.position != LudoBoard.RedPath[44])
+                            if (piece.position == same[0] && piece.position != LudoBoard.StaticTilesPositions["Middle"][0])
                             {
                                 //moves piece to nest/home
                                 piece.position = piece.StartPosition; // might wanna use the move method of piece when implemented
@@ -120,39 +133,16 @@ namespace LudoLike
             }
         }
 
-        public void CheckSpecialTile()
+        public void CheckSpecialTile(Piece piece)
         {
+            //TODO: Refactor Tile logic to avoid inefficiently checking *every single tile* on *every single move*.
             for (int i = 0; i < Tiles.Count(); i++)
             {
-
-                if (_players[CurrentPlayerTurn].ReturnPiecePostitions()[0] == Tiles[i].GridPosition)
+                if (piece.position == Tiles[i].GridPosition)
                 {
-                    if (Tiles[i].GetType() != (typeof(StaticTile)))
-                    {
-                        if (Tiles[i].TileEvent(_players[CurrentPlayerTurn])) 
-                        {
-                            StaticTile newTile = new StaticTile(Tiles[i].TargetRectangle, "Regular", Tiles[i].GridPosition);
-                            Tiles[i] = newTile;
-                            break;
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
+                    Tiles[i].TileEvent(_players[CurrentPlayerTurn]);
                 }
             }
-        }
-        // TODO: Test this method and integrate the functionality to the game
-        public void NextTurn()
-        {
-            CurrentPlayerTurn++;
-
-            if (CurrentPlayerTurn == 4)
-            {
-                CurrentPlayerTurn = 0;
-            }
-            //method to change color and visuals/ maybe
         }
 
         /// <summary>
@@ -232,21 +222,27 @@ namespace LudoLike
         /// then passes the control to the next player.
         /// </summary>
         /// <param name="diceRoll"></param>
-        public void TakeTurn(int diceRoll)
+        public void TakeTurn(Player player)
         {
-            _players[CurrentPlayerTurn].MovePiece(diceRoll);
+            Player currentPlayer = _players[CurrentPlayerTurn];
+            currentPlayer.MovePiece(CurrentDiceRoll.Value, player.ChosenPiece);
+            CheckSpecialTile(player.ChosenPiece);
             CheckTilesForCollisions();
-            CheckSpecialTile();
+            currentPlayer.ResetTurnChoice();
             CheckPiecesAtGoal();
-            if (diceRoll != 6) //Player gets another turn when rolling a 6.
+
+            if (CurrentDiceRoll.Value != 6) //Player gets another turn when rolling a 6.
             {
-                //Pass control to the next player
-                CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
+                NextPlayerTurn();
             }
-            if (_players[CurrentPlayerTurn]._pieces.Count == 0)
-            {
-                CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
-            }
+            _turnHistory.Add(currentPlayer, $"︵🎲 {CurrentDiceRoll}");
+            CurrentDiceRoll = null;     // Reset the die
+        }
+            
+
+        public void NextPlayerTurn()
+        {
+            CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
         }
 
         /// <summary>
@@ -256,11 +252,20 @@ namespace LudoLike
         public void DrawMainContent(CanvasAnimatedDrawEventArgs drawArgs)
         {
             Board.Draw(drawArgs);
+            _turnHistory.Draw(drawArgs);
             DrawScore(drawArgs);
             DrawTiles(drawArgs);
+            
             foreach (Player player in _players)
             {
-                player.DrawPieces(drawArgs);
+                if (_players.IndexOf(player) == CurrentPlayerTurn)
+                {
+                    player.DrawCurrentPlayerPieces(drawArgs);
+                }
+                else
+                {
+                    player.DrawPieces(drawArgs);
+                }
             }
         }
 
@@ -295,10 +300,9 @@ namespace LudoLike
                 tile.Draw(drawArgs);
             }
         }
-        // Might have to make another drawmethod for drawing minigame 
 
 
-        void Stealpoints(int player1, int player2, int points)//steals from player1 and gives to pla�er2
+        void Stealpoints(int player1, int player2, int points)//steals from player1 and gives to plaýer2
         {
             _players[player1].ChangeScore(-points);
             _players[player2].ChangeScore(points);
