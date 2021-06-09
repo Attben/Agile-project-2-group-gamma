@@ -35,7 +35,6 @@ namespace LudoLike
             base.TileEvent(player);
             //Do something to transport a Player to _destinationTile.
             player.ChosenPiece.Move(_destinationTile);
-            return false;
         }
 
         public override void Draw(CanvasAnimatedDrawEventArgs drawArgs)
