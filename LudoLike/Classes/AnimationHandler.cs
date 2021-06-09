@@ -20,10 +20,15 @@ namespace LudoLike
     /// </summary>
     public class AnimationHandler
     {
-        //Blinking effects
+        // Blinking effects
         public static float effectOpacity = 0;
         static float _opacityCoreValue = 5000;
         static bool effectOpacityUp = true;
+
+        // Growing gloweffect on dice
+        public static float GlowHolderAddedSize = 0;
+        static bool GlowHolderAddedSizeUp = false;
+
 
         /// <summary>
         /// Takes a rectangle and creates a blinking animation with the chosen color.
@@ -88,6 +93,33 @@ namespace LudoLike
                 _opacityCoreValue -= 100f;
             }
             effectOpacity = _opacityCoreValue / 10000;
+        }
+
+        /// <summary>
+        /// Updates the added size to the glow effect.
+        /// </summary>
+        static public void UpdateGlowHolderAddedSize()
+        {
+            switch (GlowHolderAddedSize)
+            {
+                case 100:
+                    GlowHolderAddedSizeUp = false;
+                    break;
+                case 0:
+                    GlowHolderAddedSizeUp = true;
+                    break;
+                default:
+                    break;
+            }
+
+            if (GlowHolderAddedSizeUp)
+            {
+                GlowHolderAddedSize += 1f;
+            }
+            else
+            {
+                GlowHolderAddedSize -= 1f;
+            }
         }
     }
 }
