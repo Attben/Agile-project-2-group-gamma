@@ -26,6 +26,7 @@ namespace LudoLike
         //Used for displaying the current history and score
         private readonly CanvasTextFormat _textFormat;
         private Rect _scoreBox;
+        private Rect _turnGraphTarget;
         public int piecesInGoal;
         private readonly TurnHistoryHandler _turnHistory;
 
@@ -50,6 +51,13 @@ namespace LudoLike
                 Y = 30,
                 Width = 175,
                 Height = 6 * _textFormat.FontSize
+            };
+            _turnGraphTarget = new Rect
+            {
+                X = 1200,
+                Y = 30,
+                Width = 350,
+                Height = 148
             };
             _turnHistory = new TurnHistoryHandler(
                 _textFormat,
@@ -255,7 +263,7 @@ namespace LudoLike
             _turnHistory.Draw(drawArgs);
             DrawScore(drawArgs);
             DrawTiles(drawArgs);
-            
+            DrawTurnGraphic(drawArgs);
             foreach (Player player in _players)
             {
                 if (_players.IndexOf(player) == CurrentPlayerTurn)
@@ -300,7 +308,15 @@ namespace LudoLike
                 tile.Draw(drawArgs);
             }
         }
-
+        // Might have to make another drawmethod for drawing minigame 
+        private void DrawTurnGraphic(CanvasAnimatedDrawEventArgs drawArgs)
+        {
+            _turnGraphTarget.X = Scaling.bWidth / 1.3;
+            _turnGraphTarget.Y = Scaling.bHeight / 13;
+            _turnGraphTarget.Width = Scaling.bWidth / 5.5;
+            _turnGraphTarget.Height = Scaling.bHeight / 7.3;
+            drawArgs.DrawingSession.DrawImage(_players[CurrentPlayerTurn]._turnGraphic, _turnGraphTarget);
+        }
 
         void Stealpoints(int player1, int player2, int points)//steals from player1 and gives to plaýer2
         {

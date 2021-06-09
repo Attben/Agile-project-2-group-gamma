@@ -170,19 +170,19 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Assets\Images\BluePiece.png" />
-    <Content Include="Assets\Images\BTurn.png" />
+    <Content Include="Assets\Images\BlueTurn.png" />
     <Content Include="Assets\Images\glowblue.png" />
     <Content Include="Assets\Images\glowgreen.png" />
     <Content Include="Assets\Images\glowred.png" />
     <Content Include="Assets\Images\glowyellow.png" />
-    <Content Include="Assets\Images\GTurn.png" />
+    <Content Include="Assets\Images\GreenTurn.png" />
+    <Content Include="Assets\Images\RedTurn.png" />
     <Content Include="Assets\Images\RPS\paperleft.png" />
     <Content Include="Assets\Images\RPS\paperright.png" />
     <Content Include="Assets\Images\RPS\rockleft.png" />
     <Content Include="Assets\Images\RPS\rockright.png" />
     <Content Include="Assets\Images\RPS\scissorleft.png" />
     <Content Include="Assets\Images\RPS\scissorright.png" />
-    <Content Include="Assets\Images\RTurn.png" />
     <Content Include="Assets\Images\Tiles\bluetile.png" />
     <Content Include="Assets\Images\Die1.png" />
     <Content Include="Assets\Images\Die2.png" />
@@ -204,7 +204,7 @@
     <Content Include="Assets\Images\Tiles\teleporttile.png" />
     <Content Include="Assets\Images\YellowPiece.png" />
     <Content Include="Assets\Images\Tiles\yellowtile.png" />
-    <Content Include="Assets\Images\YTurn.png" />
+    <Content Include="Assets\Images\YellowTurn.png" />
     <Content Include="Assets\Sounds\bass jam.mp3" />
     <Content Include="Assets\Sounds\Challenge.wav" />
     <Content Include="Assets\Sounds\MoneyShake.wav" />

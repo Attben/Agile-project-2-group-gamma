@@ -115,6 +115,7 @@ namespace LudoLike
             await LoadPlayerPieceImages(sender);
             await LoadGlowEffects(sender);
             await LoadTileImages(sender);
+            await LoadTurnGraphics(sender);
             LoadSounds();
             _dice = new Dice(0, 6);
             _game.AddPlayers(NumberOfPlayers);
@@ -200,6 +201,19 @@ namespace LudoLike
             Tile.TileImages["Teleport"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/teleporttile.png"));
             Tile.TileImages["MiniGame"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/gametile.png"));
             Tile.TileImages["Score"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/peng.png"));
+        }
+
+        /// <summary>
+        /// Loads turn graphics.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns></returns>
+        async Task LoadTurnGraphics(CanvasAnimatedControl sender)
+        {
+            Player.RedTurn = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RedTurn.png"));
+            Player.BlueTurn = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BlueTurn.png"));
+            Player.GreenTurn = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/GreenTurn.png"));
+            Player.YellowTurn = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/YellowTurn.png"));
         }
 
         /// <summary>

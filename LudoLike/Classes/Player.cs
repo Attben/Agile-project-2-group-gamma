@@ -1,3 +1,4 @@
+using Microsoft.Graphics.Canvas;
 using LudoLike.Classes;
 using Microsoft.Graphics.Canvas.Effects;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -33,11 +34,18 @@ namespace LudoLike
         public PlayerColors PlayerColor;
         public Windows.UI.Color UIcolor;
         public List<Piece> _pieces;
+        public CanvasBitmap _turnGraphic;
 
         public Piece ChosenPiece;
 
         public static List<MediaSource> PieceCollisionSounds = new List<MediaSource>();
         public static List<MediaSource> PieceMovingSounds = new List<MediaSource>();
+
+        public static CanvasBitmap RedTurn;
+        public static CanvasBitmap BlueTurn;
+        public static CanvasBitmap GreenTurn;
+        public static CanvasBitmap YellowTurn;
+
 
         private readonly TurnHistoryHandler _turnHistory;
 
@@ -52,12 +60,19 @@ namespace LudoLike
             {
                 case PlayerColors.Red:
                     UIcolor = Windows.UI.Colors.Red;
+                    _turnGraphic = RedTurn;
+                    break;
+                case PlayerColors.Green:
+                    UIcolor = Windows.UI.Colors.LawnGreen;
+                    _turnGraphic = GreenTurn;
                     break;
                 case PlayerColors.Blue:
                     UIcolor = Windows.UI.Colors.Blue;
+                    _turnGraphic = BlueTurn;
                     break;
                 case PlayerColors.Yellow:
                     UIcolor = Windows.UI.Colors.Yellow;
+                    _turnGraphic = YellowTurn;
                     break;
                 case PlayerColors.Green:
                     UIcolor = Windows.UI.Colors.LawnGreen;
