@@ -78,12 +78,12 @@ namespace LudoLike
         /// <param name="effectColor"></param>
         /// <param name="effectPlacement"></param>
         /// <param name="opacity"></param>
-        public void Draw(CanvasAnimatedDrawEventArgs drawArgs, Rect targetRectangle, Color effectColor, string effectPlacement)
+        public void Draw(CanvasAnimatedDrawEventArgs drawArgs, Rect targetRectangle, Color effectColor, string effectPlacement, Piece chosenPiece)
         {
             switch (effectPlacement)
             {
                 case "Behind":
-                    if (Clicked)
+                    if (Clicked && ReferenceEquals(this, chosenPiece))
                     {
                         AnimationHandler.DrawBlinkAnimation(drawArgs, targetRectangle, effectColor, EffectSize.Medium);
                         AnimationHandler.DrawBlinkAnimation(drawArgs, LudoBoard.TileGridPositions[AllowedDestinationTileVector.Value], Colors.Yellow, EffectSize.Medium);

@@ -103,18 +103,35 @@ namespace LudoLike
                     else if (LudoBoard.StaticTilesPositions["Middle"].Contains(p.position))
                     {
                         p.RemoveClicked();
-                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, "In front");
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, "In front", ChosenPiece);
                     }
                     else if (GameBoard.UserClickedBoard && GameBoard.ClickedTileVector == p.position)
                     {
-                        p.SetClicked();
-                        ChosenPiece = p;
-                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Yellow, "Behind");
+                        if (ChosenPiece != null)
+                        {
+                            if (!ReferenceEquals(p, ChosenPiece) && p.position == ChosenPiece.position)
+                            {
+                                p.RemoveClicked();
+                                p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                            }
+                            else
+                            {
+                                p.SetClicked();
+                                ChosenPiece = p;
+                                p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                            }
+                        }
+                        else
+                        {
+                            p.SetClicked();
+                            ChosenPiece = p;
+                            p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                        }
                     }
                     else    // The piece is available for moving
                     {
                         p.RemoveClicked();
-                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.LawnGreen, "Behind");
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
                     }
                 }
                 else
@@ -138,26 +155,43 @@ namespace LudoLike
                     if ((Game.CurrentDiceRoll.Value == 1 || Game.CurrentDiceRoll.Value == 6))
                     {
                         p.RemoveClicked();
-                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.LawnGreen, "Behind");
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
                     }
                     else
                     {
                         p.RemoveClicked();
-                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, "In front");
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, "In front", ChosenPiece);
                     }
                 }
                 else if (GameBoard.ClickedTileVector.HasValue && GameBoard.ClickedTileVector == p.position)     // We have clicked on the piece tile
                 {
                     if (Game.CurrentDiceRoll.Value == 1 || Game.CurrentDiceRoll.Value == 6)
                     {
-                        p.SetClicked();
-                        ChosenPiece = p;
-                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Yellow, "Behind");
+                        if (ChosenPiece != null)
+                        {
+                            if (!ReferenceEquals(p, ChosenPiece) && p.position == ChosenPiece.position)
+                            {
+                                p.RemoveClicked();
+                                p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                            }
+                            else
+                            {
+                                p.SetClicked();
+                                ChosenPiece = p;
+                                p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                            }
+                        }
+                        else
+                        {
+                            p.SetClicked();
+                            ChosenPiece = p;
+                            p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                        }
                     }
                     else
                     {
                         p.RemoveClicked();
-                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, "In front");
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, "In front", ChosenPiece);
                     }
                 }
                 else                                                                                            // We have not clicked Anywhere
@@ -165,12 +199,12 @@ namespace LudoLike
                     if (Game.CurrentDiceRoll.Value == 1 || Game.CurrentDiceRoll.Value == 6)
                     {
                         p.RemoveClicked();
-                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.LawnGreen, "Behind");
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
                     }
                     else
                     {
                         p.RemoveClicked();
-                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, "In front");
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, "In front", ChosenPiece);
                     }
                 }
             }
