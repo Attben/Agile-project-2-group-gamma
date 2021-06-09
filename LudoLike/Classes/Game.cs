@@ -26,7 +26,7 @@ namespace LudoLike
         //Used for displaying the current score
         private readonly CanvasTextFormat _textFormat;
         private Rect _scoreBox;
-        private Rect _turnTarget;
+        private Rect _turnGraphTarget;
 
         public Game()
         {
@@ -48,7 +48,7 @@ namespace LudoLike
                 Width = 175,
                 Height = 6 * _textFormat.FontSize
             };
-            _turnTarget = new Rect
+            _turnGraphTarget = new Rect
             {
                 X = 1200,
                 Y = 30,
@@ -299,7 +299,11 @@ namespace LudoLike
         // Might have to make another drawmethod for drawing minigame 
         private void DrawTurnGraphic(CanvasAnimatedDrawEventArgs drawArgs)
         {
-            drawArgs.DrawingSession.DrawImage(_players[CurrentPlayerTurn]._turnGraphic, _turnTarget);
+            _turnGraphTarget.X = Scaling.bWidth / 1.3;
+            _turnGraphTarget.Y = Scaling.bHeight / 13;
+            _turnGraphTarget.Width = Scaling.bWidth / 5.5;
+            _turnGraphTarget.Height = Scaling.bHeight / 7.3;
+            drawArgs.DrawingSession.DrawImage(_players[CurrentPlayerTurn]._turnGraphic, _turnGraphTarget);
         }
 
         void Stealpoints(int player1, int player2, int points)//steals from player1 and gives to plaýer2
