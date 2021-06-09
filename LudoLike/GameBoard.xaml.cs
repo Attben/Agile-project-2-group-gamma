@@ -15,6 +15,7 @@ using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Media.Core;
 using Windows.UI;
+using Windows.UI.Composition;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.WindowManagement;
@@ -38,12 +39,23 @@ namespace LudoLike
         // Track all open subwindows
         public static Dictionary<UIContext, AppWindow> AppWindows = new Dictionary<UIContext, AppWindow>();
 
+        // Event for invoking minigames
         public delegate void MiniGameDelegate(Player invokingPlayer);
         public static event MiniGameDelegate MiniGameEvent;
 
-        public int NumberOfPlayers;
         public static CanvasBitmap BackGround;
+        public int NumberOfPlayers;
         private Dice _dice;
+
+        // Stores the current pointer position
+        public double PointerX;
+        public double PointerY;
+
+        // Variables used for checking where on the board the user is clicking
+        public static bool UserClickedBoard;
+        public static Vector2? CurrentTileVector;
+        public static Vector2? ClickedTileVector;
+
 
         private Game _game;
 
@@ -105,11 +117,12 @@ namespace LudoLike
             await LoadTileImages(sender);
             await LoadTurnGraphics(sender);
             LoadSounds();
-
             _dice = new Dice(0, 6);
             _game.AddPlayers(NumberOfPlayers);
             _game.CreateStaticTiles();
             _game.CreateDynamicTiles();
+
+            
 
 
             SoundMixer.PlaySound(Game.BackgroundMusic, SoundChannels.music);
@@ -229,22 +242,55 @@ namespace LudoLike
             ICanvasAnimatedControl sender,
             CanvasAnimatedDrawEventArgs drawArgs)
         {
+            AnimationHandler.UpdateEffectOpacity();
             drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BackGround));
             _dice.Draw(drawArgs, _game.CurrentPlayerTurn);
+            
             _game.DrawMainContent(drawArgs);
+            if (CurrentTileVector.HasValue)
+            {
+                drawArgs.DrawingSession.DrawText(($"CurrentTileVector X: {CurrentTileVector.Value.X}, Y: {CurrentTileVector.Value.Y}"), 300, 100, Windows.UI.Colors.Black);
 
+            }
+            if (ClickedTileVector.HasValue)
+            {
+                drawArgs.DrawingSession.DrawText(($"ClickedTileVector X: {ClickedTileVector.Value.X}, Y: {ClickedTileVector.Value.Y}"), 300, 150, Windows.UI.Colors.Black);
+
+            }
         }
 
+
+
+        /// <summary>
+        /// Checks where the user clicks on the canvas. If a board tile is clicked, it stores it.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
         {
             //Currently unused. Including a few commented-out lines
             //as an example of what this method might be used for later.
-
-            // var position = e.GetCurrentPoint(Canvas).Position;
-            // var action = Canvas.RunOnGameLoopThreadAsync(() =>
+            //var action = Canvas.RunOnGameLoopThreadAsync(() =>
             //{
-            //    do something
+
             //});
+            if (ClickedTileVector != null)
+            {
+                if (_game._players[_game.CurrentPlayerTurn].ChosenPiece != null)
+                {
+                    if (_game._players[_game.CurrentPlayerTurn].ChosenPiece.AllowedDestinationTileVector != null)
+                    {
+                        if (CurrentTileVector == _game._players[_game.CurrentPlayerTurn].ChosenPiece.AllowedDestinationTileVector.Value)
+                        {
+                            // Fire move function here
+                            //_game.TakeTurn(_game._players[_game.CurrentPlayerTurn]);
+                            _game.TakeTurn(_game._players[_game.CurrentPlayerTurn]);
+                        }
+                    }
+                }
+            }
+            ClickedTileVector = CurrentTileVector;
+            
         }
 
         private void CanvasUpdate(
@@ -261,7 +307,16 @@ namespace LudoLike
         /// <param name="e"></param>
         private void RollDie(object sender, RoutedEventArgs e)
         {
-            _game.TakeTurn(_dice.Roll() + 1);
+            if (!Game.CurrentDiceRoll.HasValue)
+            {
+                Game.CurrentDiceRoll = _dice.Roll() + 1;
+                if (!_game._players[_game.CurrentPlayerTurn].CheckPossibilityToMove(Game.CurrentDiceRoll.Value))
+                {
+                    Game.CurrentDiceRoll = null;
+                    _game.NextPlayerTurn();
+                }
+            }
+            CheckEndGame();
         }
 
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
@@ -315,12 +370,60 @@ namespace LudoLike
             // This is for removing the AppWindow from the tracked windows
             appWindow.Closed += delegate
             {
+                RollButton.IsEnabled = true;
                 AppWindows.Remove(appWindowContentFrame.UIContext);
                 appWindowContentFrame.Content = null;
                 appWindow = null;
             };
 
+            RollButton.IsEnabled = false;
             await appWindow.TryShowAsync();
+        }
+
+        private void CheckEndGame()
+        {
+            if (_game.piecesInGoal == 0)
+            {
+                this.Frame.Navigate(typeof(gameover), _game._players);
+            }
+        }
+        
+        /// <summary>
+        /// Used to update the position of the cursor.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void CheckCursorPosition(object sender, PointerRoutedEventArgs e)
+        {
+            PointerX = e.GetCurrentPoint(Canvas).Position.X;
+            PointerY = e.GetCurrentPoint(Canvas).Position.Y;
+            // Check if pointer is inside the mainboard
+            if (e.GetCurrentPoint(Canvas).Position.X > _game.Board.MainBoard.X && e.GetCurrentPoint(Canvas).Position.X < _game.Board.MainBoard.X + _game.Board.MainBoard.Width)
+            {
+                if (e.GetCurrentPoint(Canvas).Position.Y > _game.Board.MainBoard.Y && e.GetCurrentPoint(Canvas).Position.Y < _game.Board.MainBoard.Y + _game.Board.MainBoard.Height)
+                {
+                    CalculateCurrentTileVector();
+                    UserClickedBoard = true;
+                }
+                else
+                {
+                    UserClickedBoard = false;
+                    CurrentTileVector = null;
+                }
+            }
+            else
+            {
+                UserClickedBoard = false;
+                CurrentTileVector = null;
+            }
+        }
+
+        /// <summary>
+        /// Calculates what grid the cursor is on when hovering over the main board.
+        /// </summary>
+        private void CalculateCurrentTileVector()
+        {
+            CurrentTileVector = new Vector2((float)Math.Floor((PointerX - _game.Board.MainBoard.X) / (_game.Board.MainBoard.Width / 11)), (float)Math.Floor((PointerY - _game.Board.MainBoard.Y) / (_game.Board.MainBoard.Height / 11)));
         }
     }
 }

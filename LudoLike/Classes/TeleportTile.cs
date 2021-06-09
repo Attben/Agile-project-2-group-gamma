@@ -27,14 +27,14 @@ namespace LudoLike
         {
             _destinationTile = destination;
             TileImage = TileImages["Teleport"];
+            TurnHistoryString = "🏃‍♀️ミ✨";
         }
 
-        public override bool TileEvent(Player player)
+        public override void TileEvent(Player player)
         {
             base.TileEvent(player);
             //Do something to transport a Player to _destinationTile.
-            player._pieces[0].Move(_destinationTile);
-            return false;
+            player.ChosenPiece.Move(_destinationTile);
         }
 
         public override void Draw(CanvasAnimatedDrawEventArgs drawArgs)
