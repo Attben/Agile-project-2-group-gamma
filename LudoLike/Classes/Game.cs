@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -26,6 +26,7 @@ namespace LudoLike
         //Used for displaying the current history and score
         private readonly CanvasTextFormat _textFormat;
         private Rect _scoreBox;
+        public int piecesInGoal;
         private readonly TurnHistoryHandler _turnHistory;
 
         // Track the current diceroll for checking move availability
@@ -87,6 +88,8 @@ namespace LudoLike
 
                 }
             }
+
+            piecesInGoal = _players.Count * 4;
         }
 
         //does not adapt to only 2 or 3 players
@@ -226,6 +229,7 @@ namespace LudoLike
             CheckSpecialTile(player.ChosenPiece);
             CheckTilesForCollisions();
             currentPlayer.ResetTurnChoice();
+            CheckPiecesAtGoal();
 
             if (CurrentDiceRoll.Value != 6) //Player gets another turn when rolling a 6.
             {
@@ -302,6 +306,26 @@ namespace LudoLike
         {
             _players[player1].ChangeScore(-points);
             _players[player2].ChangeScore(points);
+        }
+
+        public void CheckPiecesAtGoal()//checks if any of the pieces is at the goal and gives points depending on how early it is
+        {
+            Vector2 goal = new Vector2(5, 5);
+            int delpiece = 10;
+
+            for(int i = 0; i < _players[CurrentPlayerTurn]._pieces.Count; i++)
+            {
+                if (_players[CurrentPlayerTurn]._pieces[i].position == goal)
+                {
+                    _players[CurrentPlayerTurn].ChangeScore(piecesInGoal * 100);
+                    piecesInGoal--;
+                    delpiece = i; //removes piece from list
+                }
+            }
+            if (delpiece != 10)
+            {
+                _players[CurrentPlayerTurn]._pieces.RemoveAt(delpiece);
+            }
         }
     }
 }

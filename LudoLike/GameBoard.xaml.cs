@@ -302,6 +302,7 @@ namespace LudoLike
                     _game.NextPlayerTurn();
                 }
             }
+            CheckEndGame();
         }
 
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
@@ -355,14 +356,24 @@ namespace LudoLike
             // This is for removing the AppWindow from the tracked windows
             appWindow.Closed += delegate
             {
+                RollButton.IsEnabled = true;
                 AppWindows.Remove(appWindowContentFrame.UIContext);
                 appWindowContentFrame.Content = null;
                 appWindow = null;
             };
 
+            RollButton.IsEnabled = false;
             await appWindow.TryShowAsync();
         }
 
+        private void CheckEndGame()
+        {
+            if (_game.piecesInGoal == 0)
+            {
+                this.Frame.Navigate(typeof(gameover), _game._players);
+            }
+        }
+        
         /// <summary>
         /// Used to update the position of the cursor.
         /// </summary>
