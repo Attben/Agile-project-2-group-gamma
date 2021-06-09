@@ -37,7 +37,7 @@ namespace LudoLike
             Board = new LudoBoard();
             _players = new List<Player>();
             Tiles = new List<Tile>();
-            
+
             _textFormat = new CanvasTextFormat()
             {
                 FontFamily = "Helvetica",
@@ -74,27 +74,13 @@ namespace LudoLike
         /// <summary>
         /// Adds players to the game according to the chosen slider value.
         /// </summary>
-        /// <param name="amount"></param>
-        public void AddPlayers(int amount)
+        /// <param name="players"></param>
+        public void AddPlayers(int players, int piecesPerPlayer)
         {
-            for (int i = 0; i < amount; i++)
+            for (int i = 0; i < players; i++)
             {
-                switch (i)
-                {
-                    case 0:
-                        _players.Add(new Player(PlayerColors.Red, LudoBoard.NestTilesPositions["Red"], _turnHistory)); // assumes first four tiles are Home/Nests tiles
-                        break;
-                    case 1:
-                        _players.Add(new Player(PlayerColors.Blue, LudoBoard.NestTilesPositions["Blue"], _turnHistory)); // assumes first four tiles are Home/Nests tiles
-                        break;
-                    case 2:
-                        _players.Add(new Player(PlayerColors.Yellow, LudoBoard.NestTilesPositions["Yellow"], _turnHistory)); // assumes first four tiles are Home/Nests tiles
-                        break;
-                    case 3:
-                        _players.Add(new Player(PlayerColors.Green, LudoBoard.NestTilesPositions["Green"], _turnHistory)); // assumes first four tiles are Home/Nests tiles
-                        break;
-
-                }
+                PlayerColors color = (PlayerColors)i;
+                _players.Add(new Player(color, LudoBoard.NestTilesPositions[color.ToString()], piecesPerPlayer, _turnHistory)); // assumes first four tiles are Home/Nests tiles
             }
 
             piecesInGoal = _players.Count * 4;
@@ -196,7 +182,7 @@ namespace LudoLike
                             }
 
                         }
-                    
+
                     }
                     else if (tileType < 0.2)
                     {
@@ -220,7 +206,7 @@ namespace LudoLike
         /// </summary>
         private void UpdateTilePositions()
         {
-            foreach(Tile tile in Tiles)
+            foreach (Tile tile in Tiles)
             {
                 tile.TargetRectangle = LudoBoard.TileGridPositions[tile.GridPosition];
             }
@@ -251,7 +237,7 @@ namespace LudoLike
             _turnHistory.Add(currentPlayer, $"︵🎲 {CurrentDiceRoll}");
             CurrentDiceRoll = null;     // Reset the die
         }
-            
+
 
         public void NextPlayerTurn()
         {
@@ -334,7 +320,7 @@ namespace LudoLike
             Vector2 goal = new Vector2(5, 5);
             int delpiece = 10;
 
-            for(int i = 0; i < _players[CurrentPlayerTurn]._pieces.Count; i++)
+            for (int i = 0; i < _players[CurrentPlayerTurn]._pieces.Count; i++)
             {
                 if (_players[CurrentPlayerTurn]._pieces[i].position == goal)
                 {

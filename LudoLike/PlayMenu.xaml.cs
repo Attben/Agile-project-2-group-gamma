@@ -26,16 +26,27 @@ namespace LudoLike
             this.InitializeComponent();
         }
 
-        private void SliderValueChanged(object sender, RangeBaseValueChangedEventArgs e)
-        {
-            string numberFormatString = "0";
-            this.amountOfPlayersBox.Text = _slider.Value.ToString(numberFormatString);
-        }
-
         private void StartGame(object sender, RoutedEventArgs e)
         {
+            int[] sliderValues = { (int)_playersSlider.Value, (int)_piecesSlider.Value };
             //switch page
-            this.Frame.Navigate(typeof(GameBoard), _slider.Value);
+            Frame.Navigate(typeof(GameBoard), sliderValues);
+        }
+
+        private void PiecesSliderValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            SliderValueChanged(_piecesSlider, amountOfPiecesBox);
+        }
+
+        private void PlayersSliderValueChanged(object sender, RangeBaseValueChangedEventArgs e)
+        {
+            SliderValueChanged(_playersSlider, amountOfPlayersBox);
+        }
+
+        private void SliderValueChanged(Slider slider, TextBox textBox)
+        {
+            string numberFormatString = "0";
+            textBox.Text = slider.Value.ToString(numberFormatString);
         }
     }
 }

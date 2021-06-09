@@ -50,7 +50,7 @@ namespace LudoLike
         private readonly TurnHistoryHandler _turnHistory;
 
 
-        public Player(PlayerColors color, List<Vector2> startPositions, TurnHistoryHandler turnHistory)
+        public Player(PlayerColors color, List<Vector2> startPositions, int pieceCount, TurnHistoryHandler turnHistory)
         {
             Score = 0;
             PlayerColor = color;
@@ -78,7 +78,7 @@ namespace LudoLike
 
             _pieces = new List<Piece>();
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < pieceCount; i++)
             {
                 _pieces.Add(new Piece(startPositions[i], color));
             }
