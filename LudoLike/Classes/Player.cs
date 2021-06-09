@@ -34,13 +34,13 @@ namespace LudoLike
         public Windows.UI.Color UIcolor;
         public List<Piece> _pieces;
 
+        public Piece ChosenPiece;
+
         public static List<MediaSource> PieceCollisionSounds = new List<MediaSource>();
         public static List<MediaSource> PieceMovingSounds = new List<MediaSource>();
 
         private readonly TurnHistoryHandler _turnHistory;
 
-        static float effectOpacity = 0;
-        static bool effectOpacityUp = true;
 
         public Player(PlayerColors color, List<Vector2> startPositions, TurnHistoryHandler turnHistory)
         {
@@ -91,67 +91,182 @@ namespace LudoLike
 
         public void DrawPieces(CanvasAnimatedDrawEventArgs drawArgs)
         {
-            UpdateEffectOpacity();
             foreach (Piece p in _pieces)
             {
                 p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position]);
             }
         }
         
-        public void UpdateEffectOpacity()
-        {
-            switch (effectOpacity)
-            {
-                case 8000:
-                    effectOpacityUp = false;
-                    break;
-                case 5000:
-                    effectOpacityUp = true;
-                    break;
-                default:
-                    break;
-            }
 
-            if (effectOpacityUp)
-            {
-                effectOpacity += 100f;
-            }
-            else
-            {
-                effectOpacity -= 100f;
-            }
-        }
 
         /// <summary>
-        /// Specifically used draw function used for the current player. Allows for hovering over pieces.
+        /// Specifically used draw function used for the current player. Allows for clicking playable pieces and showing their destination tiles.
         /// </summary>
         /// <param name="drawArgs"></param>
         public void DrawCurrentPlayerPieces(CanvasAnimatedDrawEventArgs drawArgs)
         {
-            UpdateEffectOpacity();
-
             foreach (Piece p in _pieces)
             {
-                if (GameBoard.CurrentTileVector == p.position)  // Check if mouse over is true
+                if (Game.CurrentDiceRoll.HasValue)
                 {
-                    if (LudoBoard.NestTilesPositions[PlayerColor.ToString()].Contains(p.position))  //Check if current Piece is in the players nest
+                    //Check if current Piece is in the players nest
+                    if (LudoBoard.NestTilesPositions[PlayerColor.ToString()].Contains(p.position))
                     {
-                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, effectOpacity / 10000);
+                        HandleClickingOnDifferentPieces(drawArgs, p);
                     }
-                    else
+                    else if (LudoBoard.StaticTilesPositions["Middle"].Contains(p.position))
                     {
-                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.LawnGreen, effectOpacity / 10000);
+                        p.RemoveClicked();
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, "In front", ChosenPiece);
+                    }
+                    else if (GameBoard.UserClickedBoard && GameBoard.ClickedTileVector == p.position)
+                    {
+                        if (ChosenPiece != null)
+                        {
+                            if (!ReferenceEquals(p, ChosenPiece) && p.position == ChosenPiece.position)
+                            {
+                                p.RemoveClicked();
+                                p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                            }
+                            else
+                            {
+                                p.SetClicked();
+                                ChosenPiece = p;
+                                p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                            }
+                        }
+                        else
+                        {
+                            p.SetClicked();
+                            ChosenPiece = p;
+                            p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                        }
+                    }
+                    else    // The piece is available for moving
+                    {
+                        p.RemoveClicked();
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
                     }
                 }
                 else
                 {
-                    
+                    p.RemoveClicked();
                     p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position]);
                 }
             }
         }
+        /// <summary>
+        /// Helper method for easier reding through the large clickinglogic
+        /// </summary>
+        /// <param name="drawArgs"></param>
+        /// <param name="p"></param>
+        private void HandleClickingOnDifferentPieces(CanvasAnimatedDrawEventArgs drawArgs, Piece p)
+        {
+            if (Game.CurrentDiceRoll.HasValue)
+            {
+                if (GameBoard.ClickedTileVector.HasValue && GameBoard.ClickedTileVector != p.position)      // We have clicked somewhere but not on piece tile
+                {
+                    if ((Game.CurrentDiceRoll.Value == 1 || Game.CurrentDiceRoll.Value == 6))
+                    {
+                        p.RemoveClicked();
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                    }
+                    else
+                    {
+                        p.RemoveClicked();
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, "In front", ChosenPiece);
+                    }
+                }
+                else if (GameBoard.ClickedTileVector.HasValue && GameBoard.ClickedTileVector == p.position)     // We have clicked on the piece tile
+                {
+                    if (Game.CurrentDiceRoll.Value == 1 || Game.CurrentDiceRoll.Value == 6)
+                    {
+                        if (ChosenPiece != null)
+                        {
+                            if (!ReferenceEquals(p, ChosenPiece) && p.position == ChosenPiece.position)
+                            {
+                                p.RemoveClicked();
+                                p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                            }
+                            else
+                            {
+                                p.SetClicked();
+                                ChosenPiece = p;
+                                p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                            }
+                        }
+                        else
+                        {
+                            p.SetClicked();
+                            ChosenPiece = p;
+                            p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                        }
+                    }
+                    else
+                    {
+                        p.RemoveClicked();
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, "In front", ChosenPiece);
+                    }
+                }
+                else                                                                                            // We have not clicked Anywhere
+                {
+                    if (Game.CurrentDiceRoll.Value == 1 || Game.CurrentDiceRoll.Value == 6)
+                    {
+                        p.RemoveClicked();
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
+                    }
+                    else
+                    {
+                        p.RemoveClicked();
+                        p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.Black, "In front", ChosenPiece);
+                    }
+                }
+            }
+            else                                                                                                // The dice has not yet been cast
+            {
+                p.RemoveClicked();
+                p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position]);
+            }
+        }
 
-        public void MovePiece(int diceRoll)
+        /// <summary>
+        /// Checks if the player can make any moves on the given dice roll.
+        /// </summary>
+        /// <param name="DiceRoll"></param>
+        /// <returns></returns>
+        public bool CheckPossibilityToMove(int DiceRoll)
+        {
+            if (DiceRoll != 1 && DiceRoll != 6)  // If we roll 2, 3, 4 or 5
+            {
+                foreach (Piece piece in _pieces)
+                {
+                    if (!LudoBoard.NestTilesPositions[PlayerColor.ToString()].Contains(piece.position) &&  // If there is any piece out on the board - return true
+                        !LudoBoard.StaticTilesPositions["Middle"].Contains(piece.position))
+                    {
+                        return true;
+                    }
+                    
+                }
+            }
+            else  // If we roll 1 or 6
+            {
+                foreach (Piece piece in _pieces)
+                {
+                    if (!LudoBoard.StaticTilesPositions["Middle"].Contains(piece.position))  // If any piece is not in the end - return true
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Steps the given piece * diceroll many times.
+        /// </summary>
+        /// <param name="diceRoll"></param>
+        /// <param name="piece"></param>
+        public void MovePiece(int diceRoll, Piece piece)
         {
             int nextPosition;
             var path = LudoBoard.PlayerPaths[(int)PlayerColor];
@@ -160,19 +275,19 @@ namespace LudoLike
                 nextPosition = 0;
                 foreach (Vector2 tile in path)
                 {
-                    if (_pieces[0].position == tile)
+                    if (piece.position == tile)
                     {
                         nextPosition = path.IndexOf(tile) + 1;
                     }
                 }
                 try
                 {
-                    _pieces[0].Move(path[nextPosition]);
+                    piece.Move(path[nextPosition]);
                     SoundMixer.PlayRandomSound(PieceMovingSounds);
                 }
                 catch (ArgumentOutOfRangeException)
                 {
-                    _pieces[0].Move(path[44]);
+                    piece.Move(path[44]);
                     break;
                 }
             }
@@ -189,6 +304,14 @@ namespace LudoLike
             }
 
             return list;
+        }
+
+        /// <summary>
+        /// Resets the chosen piece (the clicked) to null.
+        /// </summary>
+        public void ResetTurnChoice()
+        {
+            ChosenPiece = null;
         }
     }
 }

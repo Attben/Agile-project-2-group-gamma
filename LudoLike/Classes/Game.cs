@@ -20,7 +20,6 @@ namespace LudoLike
         public LudoBoard Board;
         public List<Tile> Tiles;
         public int CurrentPlayerTurn { get; private set; }
-
         //Audio
         public static MediaSource BackgroundMusic;
 
@@ -29,6 +28,8 @@ namespace LudoLike
         private Rect _scoreBox;
         private readonly TurnHistoryHandler _turnHistory;
 
+        // Track the current diceroll for checking move availability
+        public static int? CurrentDiceRoll;
         public Game()
         {
             Board = new LudoBoard();
@@ -129,12 +130,12 @@ namespace LudoLike
             }
         }
 
-        public void CheckSpecialTile()
+        public void CheckSpecialTile(Piece piece)
         {
             //TODO: Refactor Tile logic to avoid inefficiently checking *every single tile* on *every single move*.
             for (int i = 0; i < Tiles.Count(); i++)
             {
-                if (_players[CurrentPlayerTurn].ReturnPiecePostitions()[0] == Tiles[i].GridPosition)
+                if (piece.position == Tiles[i].GridPosition)
                 {
                     Tiles[i].TileEvent(_players[CurrentPlayerTurn]);
                 }
@@ -218,19 +219,26 @@ namespace LudoLike
         /// then passes the control to the next player.
         /// </summary>
         /// <param name="diceRoll"></param>
-        public void TakeTurn(int diceRoll)
+        public void TakeTurn(Player player)
         {
             Player currentPlayer = _players[CurrentPlayerTurn];
-            _turnHistory.Add(currentPlayer, $"︵🎲 {diceRoll}");
-            currentPlayer.MovePiece(diceRoll);
-
+            currentPlayer.MovePiece(CurrentDiceRoll.Value, player.ChosenPiece);
+            CheckSpecialTile(player.ChosenPiece);
             CheckTilesForCollisions();
-            CheckSpecialTile();
-            if (diceRoll != 6) //Player gets another turn when rolling a 6.
+            currentPlayer.ResetTurnChoice();
+
+            if (CurrentDiceRoll.Value != 6) //Player gets another turn when rolling a 6.
             {
-                //Pass control to the next player
-                CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
+                NextPlayerTurn();
             }
+            _turnHistory.Add(currentPlayer, $"︵🎲 {CurrentDiceRoll}");
+            CurrentDiceRoll = null;     // Reset the die
+        }
+            
+
+        public void NextPlayerTurn()
+        {
+            CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
         }
 
         /// <summary>
@@ -243,6 +251,7 @@ namespace LudoLike
             _turnHistory.Draw(drawArgs);
             DrawScore(drawArgs);
             DrawTiles(drawArgs);
+            
             foreach (Player player in _players)
             {
                 if (_players.IndexOf(player) == CurrentPlayerTurn)
@@ -286,11 +295,6 @@ namespace LudoLike
             {
                 tile.Draw(drawArgs);
             }
-        }
-
-        public void ApplyTileHoverEffect(CanvasAnimatedDrawEventArgs drawArgs)
-        {
-
         }
 
 
