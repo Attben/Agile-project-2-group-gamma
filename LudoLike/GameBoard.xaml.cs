@@ -44,7 +44,8 @@ namespace LudoLike
         public static event MiniGameDelegate MiniGameEvent;
 
         public static CanvasBitmap BackGround;
-        public int NumberOfPlayers;
+        private int _numberOfPlayers;
+        private int _piecesPerPlayer;
         private Dice _dice;
 
         // Stores the current pointer position
@@ -78,7 +79,9 @@ namespace LudoLike
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            NumberOfPlayers = int.Parse(e.Parameter.ToString());
+            int[] gameParams = (int[])e.Parameter;
+            _numberOfPlayers = gameParams[0];
+            _piecesPerPlayer = gameParams[1];
             _game = new Game();
         }
 
@@ -107,7 +110,7 @@ namespace LudoLike
         /// </summary>
         /// <param name="sender"></param>
         /// <returns></returns>
-        async Task CreateResourcesAsync(CanvasAnimatedControl sender)
+        private async Task CreateResourcesAsync(CanvasAnimatedControl sender)
         {
             BackGround = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/TestBackground.png"));
 
@@ -118,12 +121,9 @@ namespace LudoLike
             await LoadTurnGraphics(sender);
             LoadSounds();
             _dice = new Dice(0, 6);
-            _game.AddPlayers(NumberOfPlayers);
+            _game.AddPlayers(_numberOfPlayers, _piecesPerPlayer);
             _game.CreateStaticTiles();
             _game.CreateDynamicTiles();
-
-            
-
 
             SoundMixer.PlaySound(Game.BackgroundMusic, SoundChannels.music);
         }
@@ -133,7 +133,7 @@ namespace LudoLike
         /// </summary>
         /// <param name="sender"></param>
         /// <returns></returns>
-        async Task LoadDiceImages(CanvasAnimatedControl sender)
+        private async Task LoadDiceImages(CanvasAnimatedControl sender)
         {
             for (int n = 0; n < 6; ++n)
             {
@@ -146,7 +146,7 @@ namespace LudoLike
         /// </summary>
         /// <param name="sender"></param>
         /// <returns></returns>
-        async Task LoadPlayerPieceImages(CanvasAnimatedControl sender)
+        private async Task LoadPlayerPieceImages(CanvasAnimatedControl sender)
         {
             Piece.Red = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RedPiece.png"));
             Piece.Blue = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BluePiece.png"));
@@ -159,7 +159,7 @@ namespace LudoLike
         /// </summary>
         /// <param name="sender"></param>
         /// <returns></returns>
-        async Task LoadGlowEffects(CanvasAnimatedControl sender)
+        private async Task LoadGlowEffects(CanvasAnimatedControl sender)
         {
             Dice.GlowEffects.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/glowred.png")));
             Dice.GlowEffects.Add(await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/glowblue.png")));
@@ -190,7 +190,7 @@ namespace LudoLike
         /// </summary>
         /// <param name="sender"></param>
         /// <returns></returns>
-        async Task LoadTileImages(CanvasAnimatedControl sender)
+        private async Task LoadTileImages(CanvasAnimatedControl sender)
         {
             Tile.TileImages["Red"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/redtile.png"));
             Tile.TileImages["Blue"] = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Tiles/bluetile.png"));
@@ -208,7 +208,7 @@ namespace LudoLike
         /// </summary>
         /// <param name="sender"></param>
         /// <returns></returns>
-        async Task LoadTurnGraphics(CanvasAnimatedControl sender)
+        private async Task LoadTurnGraphics(CanvasAnimatedControl sender)
         {
             Player.RedTurn = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/RedTurn.png"));
             Player.BlueTurn = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/BlueTurn.png"));
