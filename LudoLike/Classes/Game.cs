@@ -124,6 +124,7 @@ namespace LudoLike
         {
             for (int i = 0; i < Tiles.Count(); i++)
             {
+
                 if (_players[CurrentPlayerTurn].ReturnPiecePostitions()[0] == Tiles[i].GridPosition)
                 {
                     if (Tiles[i].GetType() != (typeof(StaticTile)))
@@ -234,12 +235,16 @@ namespace LudoLike
         public void TakeTurn(int diceRoll)
         {
             _players[CurrentPlayerTurn].MovePiece(diceRoll);
-
             CheckTilesForCollisions();
             CheckSpecialTile();
+            CheckPiecesAtGoal();
             if (diceRoll != 6) //Player gets another turn when rolling a 6.
             {
                 //Pass control to the next player
+                CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
+            }
+            if (_players[CurrentPlayerTurn]._pieces.Count == 0)
+            {
                 CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
             }
         }
@@ -302,15 +307,20 @@ namespace LudoLike
         public void CheckPiecesAtGoal()//checks if any of the pieces is at the goal and gives points depending on how early it is
         {
             Vector2 goal = new Vector2(5, 5);
+            int delpiece = 10;
 
-            foreach (Piece piece in _players[CurrentPlayerTurn]._pieces)
+            for(int i = 0; i < _players[CurrentPlayerTurn]._pieces.Count; i++)
             {
-                if (piece.position == goal)
+                if (_players[CurrentPlayerTurn]._pieces[i].position == goal)
                 {
                     _players[CurrentPlayerTurn].ChangeScore(piecesInGoal * 100);
                     piecesInGoal--;
-                    _players[CurrentPlayerTurn]._pieces.Remove(piece); //removes piece from list
+                    delpiece = i; //removes piece from list
                 }
+            }
+            if (delpiece != 10)
+            {
+                _players[CurrentPlayerTurn]._pieces.RemoveAt(delpiece);
             }
         }
     }

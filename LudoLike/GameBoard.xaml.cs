@@ -248,6 +248,7 @@ namespace LudoLike
         private void RollDie(object sender, RoutedEventArgs e)
         {
             _game.TakeTurn(_dice.Roll() + 1);
+            CheckEndGame();
         }
 
         private void Canvas_Loaded(object sender, RoutedEventArgs e)

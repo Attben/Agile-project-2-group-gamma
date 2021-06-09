@@ -8,14 +8,14 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Grid>
+    <Grid KeyUp="Grid_KeyUp">
         <TextBlock Text="Game Over" HorizontalAlignment="Center" FontSize="150"/>
-        <ListView x:Name="playerlist" Background="Gray" Height="600" Width="652" Margin="0,0,250,0">
+        <ListView x:Name="playerlist" Background="Gray" Height="600" Width="652" Margin="0,0,250,0" IsEnabled="False">
             <ListView.Resources>
                 <x:Double x:Key="ListViewItemDisabledThemeOpacity">1</x:Double>
             </ListView.Resources>
         </ListView>
-        <ListView x:Name="scorelist" Background="Gray" Height="600" Width="250" Margin="0,0,-650,0">
+        <ListView x:Name="scorelist" Background="Gray" Height="600" Width="250" Margin="0,0,-650,0" IsEnabled="False">
             <ListView.Resources>
                 <x:Double x:Key="ListViewItemDisabledThemeOpacity">1</x:Double>
             </ListView.Resources>

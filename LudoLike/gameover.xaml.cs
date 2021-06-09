@@ -33,6 +33,7 @@ namespace LudoLike
         {
             base.OnNavigatedTo(e);
             _players = (List<Player>)e.Parameter;
+            PopulateLists();
         }
 
         private void PopulateLists()
@@ -62,6 +63,11 @@ namespace LudoLike
                 scorelist.Items.Add(playerscore);
 
             }
+        }
+
+        private void Grid_KeyUp(object sender, KeyRoutedEventArgs e)
+        {
+            this.Frame.Navigate(typeof(MainMenu));
         }
     }
 }
