@@ -149,6 +149,7 @@ namespace LudoLike
                 if (piece.position == Tiles[i].GridPosition)
                 {
                     Tiles[i].TileEvent(_players[CurrentPlayerTurn]);
+                    break;
                 }
             }
         }
