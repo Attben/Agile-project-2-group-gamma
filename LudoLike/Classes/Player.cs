@@ -74,9 +74,6 @@ namespace LudoLike
                     UIcolor = Windows.UI.Colors.Yellow;
                     _turnGraphic = YellowTurn;
                     break;
-                case PlayerColors.Green:
-                    UIcolor = Windows.UI.Colors.LawnGreen;
-                    break;
             }
 
             _pieces = new List<Piece>();
