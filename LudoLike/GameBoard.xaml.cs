@@ -276,6 +276,7 @@ namespace LudoLike
             //{
 
             //});
+            UserClickedBoard = true;
             if (ClickedTileVector != null)
             {
                 if (_game._players[_game.CurrentPlayerTurn].ChosenPiece != null)
@@ -284,16 +285,36 @@ namespace LudoLike
                     {
                         if (CurrentTileVector == _game._players[_game.CurrentPlayerTurn].ChosenPiece.AllowedDestinationTileVector.Value)
                         {
-                            // Fire move function here
-                            //_game.TakeTurn(_game._players[_game.CurrentPlayerTurn]);
                             _game.TakeTurn(_game._players[_game.CurrentPlayerTurn]);
                             _dice.SetStandardDieImage();
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    ClickedTileVector = CurrentTileVector;
+                    foreach(Piece piece in _game._players[_game.CurrentPlayerTurn]._pieces)
+                    {
+                        if (piece.position == ClickedTileVector)
+                        {
+                            _game._players[_game.CurrentPlayerTurn].ChosenPiece = piece;
+                            return;
                         }
                     }
                 }
             }
             ClickedTileVector = CurrentTileVector;
-            
+            foreach (Piece piece in _game._players[_game.CurrentPlayerTurn]._pieces)
+            {
+                if (piece.position == ClickedTileVector)
+                {
+                    _game._players[_game.CurrentPlayerTurn].ChosenPiece = piece;
+                    return;
+                }
+            }
+            _game._players[_game.CurrentPlayerTurn].ChosenPiece = null;
+            ClickedTileVector = CurrentTileVector;
         }
 
         private void CanvasUpdate(
@@ -407,17 +428,15 @@ namespace LudoLike
                 if (e.GetCurrentPoint(Canvas).Position.Y > _game.Board.MainBoard.Y && e.GetCurrentPoint(Canvas).Position.Y < _game.Board.MainBoard.Y + _game.Board.MainBoard.Height)
                 {
                     CalculateCurrentTileVector();
-                    UserClickedBoard = true;
+                    
                 }
                 else
                 {
-                    UserClickedBoard = false;
                     CurrentTileVector = null;
                 }
             }
             else
             {
-                UserClickedBoard = false;
                 CurrentTileVector = null;
             }
         }
