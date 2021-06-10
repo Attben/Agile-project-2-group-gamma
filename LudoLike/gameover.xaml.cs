@@ -69,6 +69,7 @@ namespace LudoLike
         private void Grid_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             Classes.Highscore.AddHighscores(_players);
+            Classes.SoundMixer.StopPlaying(Classes.SoundChannels.music);
             this.Frame.Navigate(typeof(MainMenu));
         }
 
