@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -171,6 +171,13 @@
   <ItemGroup>
     <Content Include="Assets\Images\BluePiece.png" />
     <Content Include="Assets\Images\BlueTurn.png" />
+    <Content Include="Assets\Images\Die1.png" />
+    <Content Include="Assets\Images\Die2.png" />
+    <Content Include="Assets\Images\Die3.png" />
+    <Content Include="Assets\Images\Die4.png" />
+    <Content Include="Assets\Images\Die5.png" />
+    <Content Include="Assets\Images\Die6.png" />
+    <Content Include="Assets\Images\Diestandard.png" />
     <Content Include="Assets\Images\glowblue.png" />
     <Content Include="Assets\Images\glowgreen.png" />
     <Content Include="Assets\Images\glowred.png" />
@@ -184,12 +191,6 @@
     <Content Include="Assets\Images\RPS\scissorleft.png" />
     <Content Include="Assets\Images\RPS\scissorright.png" />
     <Content Include="Assets\Images\Tiles\bluetile.png" />
-    <Content Include="Assets\Images\Die1.png" />
-    <Content Include="Assets\Images\Die2.png" />
-    <Content Include="Assets\Images\Die3.png" />
-    <Content Include="Assets\Images\Die4.png" />
-    <Content Include="Assets\Images\Die5.png" />
-    <Content Include="Assets\Images\Die6.png" />
     <Content Include="Assets\Images\GreenPiece.png" />
     <Content Include="Assets\Images\Tiles\gametile.png" />
     <Content Include="Assets\Images\Tiles\greentile.png" />
