@@ -140,6 +140,7 @@ namespace LudoLike
                 Dice.DiceImages[n] = await CanvasBitmap.LoadAsync(sender, new Uri($"ms-appx:///Assets/Images/Die{n + 1}.png"));
             }
             Dice.SpinningDieImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/SpinningDie.png"));
+            Dice.StandardDieImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Diestandard.png"));
         }
         /// <summary>
         /// Loads Player piece images.
@@ -286,6 +287,7 @@ namespace LudoLike
                             // Fire move function here
                             //_game.TakeTurn(_game._players[_game.CurrentPlayerTurn]);
                             _game.TakeTurn(_game._players[_game.CurrentPlayerTurn]);
+                            _dice.SetStandardDieImage();
                         }
                     }
                 }
@@ -315,6 +317,7 @@ namespace LudoLike
                 {
                     Game.CurrentDiceRoll = null;
                     _game.NextPlayerTurn();
+                    _dice.SetStandardDieImage();
                 }
             }
             CheckEndGame();
