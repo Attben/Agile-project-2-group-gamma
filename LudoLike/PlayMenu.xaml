@@ -9,14 +9,15 @@
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Background="LightSlateGray">
-
-        <TextBlock Foreground="Black" FontSize="60" FontFamily="Sylfaen" HorizontalAlignment="Center" Margin="0,100,0,759" Text="Number of players"/>
-        <TextBox Height="80" Width="50" Margin="936,184,934,816" x:Name="amountOfPlayersBox" IsReadOnly="True" Text="2" FontSize="50" BorderThickness="0"/>
-        <Slider Width="400" Height="40" Margin="0,269,0,771" Minimum="2" Maximum="4" ValueChanged="PlayersSliderValueChanged" Value="2" HorizontalAlignment="Center" x:Name="_playersSlider"/>
-        <Button Content="Ok" HorizontalAlignment="Center" Margin="0,755,0,0" VerticalAlignment="Top" Height="85" Width="252" Background="GhostWhite" BorderBrush="Black" BorderThickness="5" Foreground="Black" FontSize="40" Click="StartGame"/>
-        <TextBlock Foreground="Black" FontSize="60" FontFamily="Sylfaen" HorizontalAlignment="Center" Margin="0,371,0,488" Text="Pieces per player"/>
-        <TextBox Height="80" Width="50" Margin="936,455,934,545" x:Name="amountOfPiecesBox" IsReadOnly="True" Text="4" FontSize="50" BorderThickness="0"/>
-        <Slider Width="400" Height="40" Margin="0,540,0,500" Minimum="1" Maximum="4" ValueChanged="PiecesSliderValueChanged" Value="4" HorizontalAlignment="Center" x:Name="_piecesSlider"/>
+        <StackPanel Orientation="Vertical" Padding="50">
+            <TextBlock Margin="20" Foreground="Black" FontSize="60" FontFamily="Sylfaen" HorizontalAlignment="Center" Text="Number of players"/>
+            <TextBox Margin="20" Height="80" Width="50" x:Name="amountOfPlayersBox" IsReadOnly="True" Text="2" FontSize="50" BorderThickness="0"/>
+            <Slider Margin="20" Width="400" Height="40" Minimum="2" Maximum="4" ValueChanged="PlayersSliderValueChanged" Value="2" HorizontalAlignment="Center" x:Name="_playersSlider"/>
+            <TextBlock Margin="20" Foreground="Black" FontSize="60" FontFamily="Sylfaen" HorizontalAlignment="Center" Text="Pieces per player"/>
+            <TextBox Margin="20" Height="80" Width="50" x:Name="amountOfPiecesBox" IsReadOnly="True" Text="4" FontSize="50" BorderThickness="0"/>
+            <Slider Margin="20" Width="400" Height="40" Minimum="1" Maximum="4" ValueChanged="PiecesSliderValueChanged" Value="4" HorizontalAlignment="Center" x:Name="_piecesSlider"/>
+            <Button Margin="20" Content="Ok" HorizontalAlignment="Center" VerticalAlignment="Top" Height="85" Width="252" Background="GhostWhite" BorderBrush="Black" BorderThickness="5" Foreground="Black" FontSize="40" Click="StartGame"/>
+        </StackPanel>
 
 
     </Grid>
