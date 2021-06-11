@@ -17,20 +17,21 @@ namespace LudoLike
         private readonly Random _prng;
         private readonly float _diceWidth = 200;
         private readonly float _diceHeight = 200;
-        private Rect _diceHolder;
+        public Rect _diceHolder;
         private Rect _glowHolder;
         public static List<CanvasBitmap> GlowEffects = new List<CanvasBitmap>();
 
         //Possible improvement: Support rendering of arbitrary values (currently only works with 1-6).
         public static readonly CanvasBitmap[] DiceImages = new CanvasBitmap[6];
         public static CanvasBitmap SpinningDieImage;
+        public static CanvasBitmap StandardDieImage;
 
         public Dice(int min = 0, int max = 6)
         {
             _min = min;
             _max = max;
             _prng = new Random();
-            CurrentDieImage = Dice.DiceImages[2];
+            CurrentDieImage = Dice.StandardDieImage;
         }
 
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs, int playerTurn)
@@ -63,6 +64,14 @@ namespace LudoLike
             CurrentDieImage = Dice.DiceImages[result];
 
             return result;
+        }
+
+        /// <summary>
+        /// Sets the current die image to standard.
+        /// </summary>
+        public void SetStandardDieImage()
+        {
+            CurrentDieImage = StandardDieImage;
         }
     }
 }

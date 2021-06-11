@@ -57,6 +57,8 @@ namespace LudoLike
         public static Vector2? CurrentTileVector;
         public static Vector2? ClickedTileVector;
 
+        public static bool OverDice = false;
+
         private Game _game;
 
         public GameBoard()
@@ -189,6 +191,7 @@ namespace LudoLike
                 Dice.DiceImages[n] = await CanvasBitmap.LoadAsync(sender, new Uri($"ms-appx:///Assets/Images/Die{n + 1}.png"));
             }
             Dice.SpinningDieImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/SpinningDie.png"));
+            Dice.StandardDieImage = await CanvasBitmap.LoadAsync(sender, new Uri("ms-appx:///Assets/Images/Diestandard.png"));
         }
         /// <summary>
         /// Loads Player piece images.
@@ -307,6 +310,7 @@ namespace LudoLike
                 drawArgs.DrawingSession.DrawText(($"ClickedTileVector X: {ClickedTileVector.Value.X}, Y: {ClickedTileVector.Value.Y}"), 300, 150, Windows.UI.Colors.Black);
 
             }
+            drawArgs.DrawingSession.DrawText($"OverDice: {OverDice}", 300, 200, Windows.UI.Colors.Black);
         }
 
 
@@ -324,6 +328,12 @@ namespace LudoLike
             //{
 
             //});
+            if (OverDice)
+            {
+                RollDie();
+                ClickedTileVector = CurrentTileVector;
+                return;
+            }
             if (ClickedTileVector != null)
             {
                 if (_game._players[_game.CurrentPlayerTurn].ChosenPiece != null)
@@ -335,6 +345,7 @@ namespace LudoLike
                             // Fire move function here
                             //_game.TakeTurn(_game._players[_game.CurrentPlayerTurn]);
                             _game.TakeTurn(_game._players[_game.CurrentPlayerTurn]);
+                            _dice.SetStandardDieImage();
                         }
                     }
                 }
@@ -355,7 +366,7 @@ namespace LudoLike
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void RollDie(object sender, RoutedEventArgs e)
+        private void RollDie()
         {
             if (!Game.CurrentDiceRoll.HasValue)
             {
@@ -364,6 +375,7 @@ namespace LudoLike
                 {
                     Game.CurrentDiceRoll = null;
                     _game.NextPlayerTurn();
+                    _dice.SetStandardDieImage();
                 }
             }
             CheckEndGame();
@@ -372,25 +384,6 @@ namespace LudoLike
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
         {
 
-        }
-        /// <summary>
-        /// Changes cursor to hand when hovering the die.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ChangePointerHand(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
-        }
-
-        /// <summary>
-        /// Changes cursor to pointer when un-hovering the die.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ChangePointerRegular(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
         }
 
         private void OpenMinigame(object sender, RoutedEventArgs e)
@@ -420,13 +413,13 @@ namespace LudoLike
             // This is for removing the AppWindow from the tracked windows
             appWindow.Closed += delegate
             {
-                RollButton.IsEnabled = true;
+                //RollButton.IsEnabled = true;
                 AppWindows.Remove(appWindowContentFrame.UIContext);
                 appWindowContentFrame.Content = null;
                 appWindow = null;
             };
 
-            RollButton.IsEnabled = false;
+            //RollButton.IsEnabled = false;
             await appWindow.TryShowAsync();
         }
 
@@ -454,18 +447,35 @@ namespace LudoLike
                 {
                     CalculateCurrentTileVector();
                     UserClickedBoard = true;
-                }
-                else
-                {
-                    UserClickedBoard = false;
-                    CurrentTileVector = null;
+                    if (_game._players.Count != 0 && Game.CurrentDiceRoll != null)  // This check has to be done to prevent from crashing when game starts.
+                    {
+                        var currentPlayerPiecesPositions = _game._players[_game.CurrentPlayerTurn]._pieces.Select(piece => piece.position).ToList();
+                        if (currentPlayerPiecesPositions.Contains(CurrentTileVector.Value))  // Check if we hover over a players piece
+                        {
+                            SwitchCursorStyle(CoreCursorType.Hand);
+                        }
+                        else
+                        {
+                            SwitchCursorStyle(CoreCursorType.Arrow);
+                        }
+                    }
+                    return;
                 }
             }
-            else
+            else if ((PointerX > _dice._diceHolder.X && PointerX < _dice._diceHolder.X + _dice._diceHolder.Width))   // If pointer is inside dice image in X-axis
             {
-                UserClickedBoard = false;
-                CurrentTileVector = null;
+                if ((PointerY > _dice._diceHolder.Y && PointerY < _dice._diceHolder.Y + _dice._diceHolder.Height))
+                {
+                    OverDice = true;
+                    SwitchCursorStyle(CoreCursorType.Hand);
+                    return;
+                }
             }
+
+            SwitchCursorStyle(CoreCursorType.Arrow);
+            UserClickedBoard = false;
+            CurrentTileVector = null;
+            OverDice = false;
         }
 
         /// <summary>
@@ -474,6 +484,25 @@ namespace LudoLike
         private void CalculateCurrentTileVector()
         {
             CurrentTileVector = new Vector2((float)Math.Floor((PointerX - _game.Board.MainBoard.X) / (_game.Board.MainBoard.Width / 11)), (float)Math.Floor((PointerY - _game.Board.MainBoard.Y) / (_game.Board.MainBoard.Height / 11)));
+        }
+
+        /// <summary>
+        /// Changes the cursor type to the one sent in.
+        /// </summary>
+        /// <param name="cursor"></param>
+        public void SwitchCursorStyle(CoreCursorType cursor)
+        {
+            switch (cursor)
+            {
+                case CoreCursorType.Arrow:
+                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
+                    break;
+                case CoreCursorType.Hand:
+                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
