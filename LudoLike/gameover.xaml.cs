@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -67,7 +68,14 @@ namespace LudoLike
 
         private void Grid_KeyUp(object sender, KeyRoutedEventArgs e)
         {
+            Classes.Highscore.AddHighscores(_players);
+            Classes.SoundMixer.StopPlaying(Classes.SoundChannels.music);
             this.Frame.Navigate(typeof(MainMenu));
+        }
+
+        private async void MainGrid_OnPointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            await Dispatcher.RunAsync(CoreDispatcherPriority.Normal, () => { KeyDownControl.Focus(FocusState.Keyboard); });
         }
     }
 }

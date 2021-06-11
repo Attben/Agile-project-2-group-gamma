@@ -42,6 +42,11 @@ namespace LudoLike.Classes
         {
             PlaySound(sounds[_sfxRng.Next(sounds.Count)], soundChannel);
         }
+
+        public static void StopPlaying(SoundChannels soundChannel)
+        {
+            SoundMixerInstance._audioChannels[(int)soundChannel].Source = null; //Why in the world doesn't this class have a less hacky way to stop playback?
+        }
     }
 
     public enum SoundChannels
