@@ -57,7 +57,6 @@ namespace LudoLike
         public static Vector2? CurrentTileVector;
         public static Vector2? ClickedTileVector;
 
-
         private Game _game;
 
         public GameBoard()
@@ -71,6 +70,56 @@ namespace LudoLike
             MiniGameEvent += StartMiniGame;
         }
 
+        /// <summary>
+        /// Frees all allocated game assets.
+        /// Currently mostly used to prevent CreateResourcesAsync() from crashing
+        /// when a new game is launched after one has already finished.
+        /// </summary>
+        public static void DisposeGameAssets()
+        {
+            BackGround?.Dispose();
+            for (int n = 0; n < Dice.DiceImages.Length; ++n)
+            {
+                Dice.DiceImages[n]?.Dispose();
+            }
+            Piece.Red?.Dispose();
+            Piece.Blue?.Dispose();
+            Piece.Yellow?.Dispose();
+            Piece.Green?.Dispose();
+
+            foreach (CanvasBitmap image in Dice.GlowEffects)
+            {
+                image?.Dispose();
+            }
+            Dice.GlowEffects.Clear();
+            Game.BackgroundMusic?.Dispose();
+            foreach (MediaSource sound in Player.PieceCollisionSounds)
+            {
+                sound?.Dispose();
+            }
+            Player.PieceCollisionSounds.Clear();
+            foreach (MediaSource sound in Player.PieceMovingSounds)
+            {
+                sound?.Dispose();
+            }
+            Player.PieceMovingSounds.Clear();
+
+            foreach (MediaSource sound in Tile.TileEventSounds.Values)
+            {
+                sound?.Dispose();
+            }
+            Tile.TileEventSounds.Clear();
+            foreach (CanvasBitmap image in Tile.TileImages.Values)
+            {
+                image?.Dispose();
+            }
+            Tile.TileImages.Clear();
+
+            Player.RedTurn?.Dispose();
+            Player.BlueTurn?.Dispose();
+            Player.GreenTurn?.Dispose();
+            Player.YellowTurn?.Dispose();
+        }
 
         /// <summary>
         /// Creates a game instance and saves slider value of players from play menu.
@@ -93,7 +142,7 @@ namespace LudoLike
         }
 
         /// <summary>
-        /// Sets the hight and width of the canvas.
+        /// Sets the height and width of the canvas.
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
@@ -178,11 +227,11 @@ namespace LudoLike
             Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap1.wav")));
             Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap2.wav")));
             Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap3.wav")));
-            Tile.TileEventSounds.Add("Tile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/PlasticTap1.wav")));
-            Tile.TileEventSounds.Add("StaticTile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/PlasticTap2.wav")));
-            Tile.TileEventSounds.Add("MinigameTile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Challenge.wav")));
-            Tile.TileEventSounds.Add("ScoreTile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/MoneyShake.wav")));
-            Tile.TileEventSounds.Add("TeleportTile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Teleport.wav")));
+            Tile.TileEventSounds["Tile"] = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/PlasticTap1.wav"));
+            Tile.TileEventSounds["StaticTile"] = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/PlasticTap2.wav"));
+            Tile.TileEventSounds["MinigameTile"] = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Challenge.wav"));
+            Tile.TileEventSounds["ScoreTile"] = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/MoneyShake.wav"));
+            Tile.TileEventSounds["TeleportTile"] = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Teleport.wav"));
         }
 
         /// <summary>
@@ -246,7 +295,7 @@ namespace LudoLike
             AnimationHandler.UpdateGlowHolderAddedSize();
             drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BackGround));
             _dice.Draw(drawArgs, _game.CurrentPlayerTurn);
-            
+
             _game.DrawMainContent(drawArgs);
             if (CurrentTileVector.HasValue)
             {
@@ -291,7 +340,7 @@ namespace LudoLike
                 }
             }
             ClickedTileVector = CurrentTileVector;
-            
+
         }
 
         private void CanvasUpdate(
@@ -383,12 +432,12 @@ namespace LudoLike
 
         private void CheckEndGame()
         {
-            if (_game.piecesInGoal == 0)
+            if (_game.remainingPieces == 0)
             {
                 this.Frame.Navigate(typeof(gameover), _game._players);
             }
         }
-        
+
         /// <summary>
         /// Used to update the position of the cursor.
         /// </summary>

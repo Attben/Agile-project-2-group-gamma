@@ -27,7 +27,7 @@ namespace LudoLike
         private readonly CanvasTextFormat _textFormat;
         private Rect _scoreBox;
         private Rect _turnGraphTarget;
-        public int piecesInGoal;
+        public int remainingPieces;
         private readonly TurnHistoryHandler _turnHistory;
 
         // Track the current diceroll for checking move availability
@@ -83,7 +83,7 @@ namespace LudoLike
                 _players.Add(new Player(color, LudoBoard.NestTilesPositions[color.ToString()], piecesPerPlayer, _turnHistory)); // assumes first four tiles are Home/Nests tiles
             }
 
-            piecesInGoal = _players.Count * piecesPerPlayer;
+            remainingPieces = _players.Count * piecesPerPlayer;
         }
 
         //does not adapt to only 2 or 3 players
@@ -324,8 +324,8 @@ namespace LudoLike
             {
                 if (_players[CurrentPlayerTurn]._pieces[i].position == goal)
                 {
-                    _players[CurrentPlayerTurn].ChangeScore(piecesInGoal * 100);
-                    piecesInGoal--;
+                    _players[CurrentPlayerTurn].ChangeScore(remainingPieces * 100);
+                    remainingPieces--;
                     delpiece = i; //removes piece from list
                 }
             }

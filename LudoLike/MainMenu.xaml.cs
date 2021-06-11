@@ -24,6 +24,8 @@ namespace LudoLike
     /// </summary>
     public sealed partial class MainMenu : Page
     {
+        private static bool _gameAssetsLoaded = false;
+
         public MainMenu()
         {
             ApplicationView.PreferredLaunchWindowingMode = ApplicationViewWindowingMode.Maximized;
@@ -45,8 +47,19 @@ namespace LudoLike
                 CreationCollisionOption.OpenIfExists);
         }
 
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+            if (_gameAssetsLoaded)
+            {
+                GameBoard.DisposeGameAssets();
+                _gameAssetsLoaded = false;
+            }
+        }
+
         private void Play_Click(object sender, RoutedEventArgs e)
         {
+            _gameAssetsLoaded = true;
             this.Frame.Navigate(typeof(PlayMenu));
         }
 
