@@ -17,7 +17,7 @@ namespace LudoLike
         private readonly Random _prng;
         private readonly float _diceWidth = 200;
         private readonly float _diceHeight = 200;
-        private Rect _diceHolder;
+        public Rect _diceHolder;
         private Rect _glowHolder;
         public static List<CanvasBitmap> GlowEffects = new List<CanvasBitmap>();
 
