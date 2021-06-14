@@ -57,6 +57,7 @@ namespace LudoLike
         public static Vector2? CurrentTileVector;
         public static Vector2? ClickedTileVector;
 
+        public static bool OverDice = false;
 
         private Game _game;
 
@@ -71,6 +72,56 @@ namespace LudoLike
             MiniGameEvent += StartMiniGame;
         }
 
+        /// <summary>
+        /// Frees all allocated game assets.
+        /// Currently mostly used to prevent CreateResourcesAsync() from crashing
+        /// when a new game is launched after one has already finished.
+        /// </summary>
+        public static void DisposeGameAssets()
+        {
+            BackGround?.Dispose();
+            for (int n = 0; n < Dice.DiceImages.Length; ++n)
+            {
+                Dice.DiceImages[n]?.Dispose();
+            }
+            Piece.Red?.Dispose();
+            Piece.Blue?.Dispose();
+            Piece.Yellow?.Dispose();
+            Piece.Green?.Dispose();
+
+            foreach (CanvasBitmap image in Dice.GlowEffects)
+            {
+                image?.Dispose();
+            }
+            Dice.GlowEffects.Clear();
+            Game.BackgroundMusic?.Dispose();
+            foreach (MediaSource sound in Player.PieceCollisionSounds)
+            {
+                sound?.Dispose();
+            }
+            Player.PieceCollisionSounds.Clear();
+            foreach (MediaSource sound in Player.PieceMovingSounds)
+            {
+                sound?.Dispose();
+            }
+            Player.PieceMovingSounds.Clear();
+
+            foreach (MediaSource sound in Tile.TileEventSounds.Values)
+            {
+                sound?.Dispose();
+            }
+            Tile.TileEventSounds.Clear();
+            foreach (CanvasBitmap image in Tile.TileImages.Values)
+            {
+                image?.Dispose();
+            }
+            Tile.TileImages.Clear();
+
+            Player.RedTurn?.Dispose();
+            Player.BlueTurn?.Dispose();
+            Player.GreenTurn?.Dispose();
+            Player.YellowTurn?.Dispose();
+        }
 
         /// <summary>
         /// Creates a game instance and saves slider value of players from play menu.
@@ -93,7 +144,7 @@ namespace LudoLike
         }
 
         /// <summary>
-        /// Sets the hight and width of the canvas.
+        /// Sets the height and width of the canvas.
         /// </summary>
         /// <param name="width"></param>
         /// <param name="height"></param>
@@ -179,11 +230,11 @@ namespace LudoLike
             Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap1.wav")));
             Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap2.wav")));
             Player.PieceMovingSounds.Add(MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/WoodenTap3.wav")));
-            Tile.TileEventSounds.Add("Tile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/PlasticTap1.wav")));
-            Tile.TileEventSounds.Add("StaticTile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/PlasticTap2.wav")));
-            Tile.TileEventSounds.Add("MinigameTile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Challenge.wav")));
-            Tile.TileEventSounds.Add("ScoreTile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/MoneyShake.wav")));
-            Tile.TileEventSounds.Add("TeleportTile", MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Teleport.wav")));
+            Tile.TileEventSounds["Tile"] = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/PlasticTap1.wav"));
+            Tile.TileEventSounds["StaticTile"] = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/PlasticTap2.wav"));
+            Tile.TileEventSounds["MinigameTile"] = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Challenge.wav"));
+            Tile.TileEventSounds["ScoreTile"] = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/MoneyShake.wav"));
+            Tile.TileEventSounds["TeleportTile"] = MediaSource.CreateFromUri(new Uri("ms-appx:///Assets/Sounds/Teleport.wav"));
         }
 
         /// <summary>
@@ -247,7 +298,7 @@ namespace LudoLike
             AnimationHandler.UpdateGlowHolderAddedSize();
             drawArgs.DrawingSession.DrawImage(Scaling.TransformImage(BackGround));
             _dice.Draw(drawArgs, _game.CurrentPlayerTurn);
-            
+
             _game.DrawMainContent(drawArgs);
             if (CurrentTileVector.HasValue)
             {
@@ -259,6 +310,7 @@ namespace LudoLike
                 drawArgs.DrawingSession.DrawText(($"ClickedTileVector X: {ClickedTileVector.Value.X}, Y: {ClickedTileVector.Value.Y}"), 300, 150, Windows.UI.Colors.Black);
 
             }
+            drawArgs.DrawingSession.DrawText($"OverDice: {OverDice}", 300, 200, Windows.UI.Colors.Black);
         }
 
 
@@ -276,6 +328,12 @@ namespace LudoLike
             //{
 
             //});
+            if (OverDice)
+            {
+                RollDie();
+                ClickedTileVector = CurrentTileVector;
+                return;
+            }
             UserClickedBoard = true;
             if (ClickedTileVector != null)
             {
@@ -329,7 +387,7 @@ namespace LudoLike
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void RollDie(object sender, RoutedEventArgs e)
+        private void RollDie()
         {
             if (!Game.CurrentDiceRoll.HasValue)
             {
@@ -347,25 +405,6 @@ namespace LudoLike
         private void Canvas_Loaded(object sender, RoutedEventArgs e)
         {
 
-        }
-        /// <summary>
-        /// Changes cursor to hand when hovering the die.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ChangePointerHand(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
-        }
-
-        /// <summary>
-        /// Changes cursor to pointer when un-hovering the die.
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void ChangePointerRegular(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
         }
 
         private void OpenMinigame(object sender, RoutedEventArgs e)
@@ -395,24 +434,22 @@ namespace LudoLike
             // This is for removing the AppWindow from the tracked windows
             appWindow.Closed += delegate
             {
-                RollButton.IsEnabled = true;
                 AppWindows.Remove(appWindowContentFrame.UIContext);
                 appWindowContentFrame.Content = null;
                 appWindow = null;
             };
 
-            RollButton.IsEnabled = false;
             await appWindow.TryShowAsync();
         }
 
         private void CheckEndGame()
         {
-            if (_game.piecesInGoal == 0)
+            if (_game.remainingPieces == 0)
             {
                 this.Frame.Navigate(typeof(gameover), _game._players);
             }
         }
-        
+
         /// <summary>
         /// Used to update the position of the cursor.
         /// </summary>
@@ -428,17 +465,35 @@ namespace LudoLike
                 if (e.GetCurrentPoint(Canvas).Position.Y > _game.Board.MainBoard.Y && e.GetCurrentPoint(Canvas).Position.Y < _game.Board.MainBoard.Y + _game.Board.MainBoard.Height)
                 {
                     CalculateCurrentTileVector();
-                    
-                }
-                else
-                {
-                    CurrentTileVector = null;
+                    if (_game._players.Count != 0 && Game.CurrentDiceRoll != null)  // This check has to be done to prevent from crashing when game starts.
+                    {
+                        var currentPlayerPiecesPositions = _game._players[_game.CurrentPlayerTurn]._pieces.Select(piece => piece.position).ToList();
+                        if (currentPlayerPiecesPositions.Contains(CurrentTileVector.Value))  // Check if we hover over a players piece
+                        {
+                            SwitchCursorStyle(CoreCursorType.Hand);
+                        }
+                        else
+                        {
+                            SwitchCursorStyle(CoreCursorType.Arrow);
+                        }
+                    }
+                    return;
                 }
             }
-            else
+            else if ((PointerX > _dice._diceHolder.X && PointerX < _dice._diceHolder.X + _dice._diceHolder.Width))   // If pointer is inside dice image in X-axis
             {
-                CurrentTileVector = null;
+                if ((PointerY > _dice._diceHolder.Y && PointerY < _dice._diceHolder.Y + _dice._diceHolder.Height))
+                {
+                    OverDice = true;
+                    SwitchCursorStyle(CoreCursorType.Hand);
+                    return;
+                }
             }
+
+            SwitchCursorStyle(CoreCursorType.Arrow);
+            UserClickedBoard = false;
+            CurrentTileVector = null;
+            OverDice = false;
         }
 
         /// <summary>
@@ -447,6 +502,25 @@ namespace LudoLike
         private void CalculateCurrentTileVector()
         {
             CurrentTileVector = new Vector2((float)Math.Floor((PointerX - _game.Board.MainBoard.X) / (_game.Board.MainBoard.Width / 11)), (float)Math.Floor((PointerY - _game.Board.MainBoard.Y) / (_game.Board.MainBoard.Height / 11)));
+        }
+
+        /// <summary>
+        /// Changes the cursor type to the one sent in.
+        /// </summary>
+        /// <param name="cursor"></param>
+        public void SwitchCursorStyle(CoreCursorType cursor)
+        {
+            switch (cursor)
+            {
+                case CoreCursorType.Arrow:
+                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Arrow, 1);
+                    break;
+                case CoreCursorType.Hand:
+                    Window.Current.CoreWindow.PointerCursor = new CoreCursor(CoreCursorType.Hand, 1);
+                    break;
+                default:
+                    break;
+            }
         }
     }
 }
