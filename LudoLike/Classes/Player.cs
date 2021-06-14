@@ -143,14 +143,12 @@ namespace LudoLike
                             else
                             {
                                 p.SetClicked();
-                                ChosenPiece = p;
                                 p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
                             }
                         }
                         else
                         {
                             p.SetClicked();
-                            ChosenPiece = p;
                             p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
                         }
                     }
@@ -203,14 +201,12 @@ namespace LudoLike
                             else
                             {
                                 p.SetClicked();
-                                ChosenPiece = p;
                                 p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
                             }
                         }
                         else
                         {
                             p.SetClicked();
-                            ChosenPiece = p;
                             p.Draw(drawArgs, LudoBoard.TileGridPositions[p.position], Windows.UI.Colors.ForestGreen, "Behind", ChosenPiece);
                         }
                     }

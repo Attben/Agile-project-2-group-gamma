@@ -334,6 +334,7 @@ namespace LudoLike
                 ClickedTileVector = CurrentTileVector;
                 return;
             }
+            UserClickedBoard = true;
             if (ClickedTileVector != null)
             {
                 if (_game._players[_game.CurrentPlayerTurn].ChosenPiece != null)
@@ -342,16 +343,36 @@ namespace LudoLike
                     {
                         if (CurrentTileVector == _game._players[_game.CurrentPlayerTurn].ChosenPiece.AllowedDestinationTileVector.Value)
                         {
-                            // Fire move function here
-                            //_game.TakeTurn(_game._players[_game.CurrentPlayerTurn]);
                             _game.TakeTurn(_game._players[_game.CurrentPlayerTurn]);
                             _dice.SetStandardDieImage();
+                            return;
+                        }
+                    }
+                }
+                else
+                {
+                    ClickedTileVector = CurrentTileVector;
+                    foreach(Piece piece in _game._players[_game.CurrentPlayerTurn]._pieces)
+                    {
+                        if (piece.position == ClickedTileVector)
+                        {
+                            _game._players[_game.CurrentPlayerTurn].ChosenPiece = piece;
+                            return;
                         }
                     }
                 }
             }
             ClickedTileVector = CurrentTileVector;
-
+            foreach (Piece piece in _game._players[_game.CurrentPlayerTurn]._pieces)
+            {
+                if (piece.position == ClickedTileVector)
+                {
+                    _game._players[_game.CurrentPlayerTurn].ChosenPiece = piece;
+                    return;
+                }
+            }
+            _game._players[_game.CurrentPlayerTurn].ChosenPiece = null;
+            ClickedTileVector = CurrentTileVector;
         }
 
         private void CanvasUpdate(
@@ -413,13 +434,11 @@ namespace LudoLike
             // This is for removing the AppWindow from the tracked windows
             appWindow.Closed += delegate
             {
-                //RollButton.IsEnabled = true;
                 AppWindows.Remove(appWindowContentFrame.UIContext);
                 appWindowContentFrame.Content = null;
                 appWindow = null;
             };
 
-            //RollButton.IsEnabled = false;
             await appWindow.TryShowAsync();
         }
 
@@ -446,7 +465,6 @@ namespace LudoLike
                 if (e.GetCurrentPoint(Canvas).Position.Y > _game.Board.MainBoard.Y && e.GetCurrentPoint(Canvas).Position.Y < _game.Board.MainBoard.Y + _game.Board.MainBoard.Height)
                 {
                     CalculateCurrentTileVector();
-                    UserClickedBoard = true;
                     if (_game._players.Count != 0 && Game.CurrentDiceRoll != null)  // This check has to be done to prevent from crashing when game starts.
                     {
                         var currentPlayerPiecesPositions = _game._players[_game.CurrentPlayerTurn]._pieces.Select(piece => piece.position).ToList();
