@@ -19,8 +19,8 @@ namespace LudoLike
     public class Piece
     {
         public Vector2 StartPosition;
-        public Vector2 position;
-        public CanvasBitmap _pieceImage;
+        public Vector2 Position;
+        public CanvasBitmap PieceImage;
         public bool HoverOver = false;
 
         public static CanvasBitmap Red;
@@ -35,39 +35,49 @@ namespace LudoLike
         public Piece(Vector2 startPostition, PlayerColors colors)
         {
             StartPosition = startPostition;
-            position = startPostition;
+            Position = startPostition;
             SetPieceColor(colors);
         }
-
-        public void Move(Vector2 newTarget)
+        /// <summary>
+        /// Updates piece position when moving.
+        /// </summary>
+        /// <param name="newTarget"></param>
+        public void UpdatePosition(Vector2 newTarget)
         {
             Thread.Sleep(272);
-            position = newTarget;
+            Position = newTarget;
         }
-
+        /// <summary>
+        /// Loads the correct image based on what colour the piece has.
+        /// </summary>
+        /// <param name="color"></param>
         public void SetPieceColor(PlayerColors color)
         {
             PieceColor = color;
             switch (color)
             {
                 case PlayerColors.Red:
-                    _pieceImage = Red;
+                    PieceImage = Red;
                     break;
                 case PlayerColors.Blue:
-                    _pieceImage = Blue;
+                    PieceImage = Blue;
                     break;
                 case PlayerColors.Yellow:
-                    _pieceImage = Yellow;
+                    PieceImage = Yellow;
                     break;
                 case PlayerColors.Green:
-                    _pieceImage = Green;
+                    PieceImage = Green;
                     break;
             }
         }
-
+        /// <summary>
+        /// Draws the piece
+        /// </summary>
+        /// <param name="drawArgs"></param>
+        /// <param name="targetRectangle"></param>
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs, Rect targetRectangle)
         { 
-            drawArgs.DrawingSession.DrawImage(_pieceImage, targetRectangle);
+            drawArgs.DrawingSession.DrawImage(PieceImage, targetRectangle);
         }
 
         /// <summary>
@@ -92,10 +102,10 @@ namespace LudoLike
                     {
                         AnimationHandler.DrawBlinkAnimation(drawArgs, targetRectangle, effectColor, EffectSize.Small);
                     }
-                    drawArgs.DrawingSession.DrawImage(_pieceImage, targetRectangle);
+                    drawArgs.DrawingSession.DrawImage(PieceImage, targetRectangle);
                     break;
                 case "In front":
-                    drawArgs.DrawingSession.DrawImage(_pieceImage, targetRectangle);
+                    drawArgs.DrawingSession.DrawImage(PieceImage, targetRectangle);
                     AnimationHandler.DrawBlinkAnimation(drawArgs, targetRectangle, effectColor, EffectSize.Small);
                     break;
 
@@ -103,16 +113,19 @@ namespace LudoLike
                     break;
             }
         }
-
+        /// <summary>
+        /// Selects a piece, so that the player can choose to move it.
+        /// </summary>
         public void SetClicked()
         {
             Clicked = true;
             try
             {
-                if (position != StartPosition)
+                if (Position != StartPosition)
                 {
-                    int pathPosition = LudoBoard.PlayerPaths[(int)PieceColor].IndexOf(position);
-                    AllowedDestinationTileVector = LudoBoard.PlayerPaths[(int)PieceColor][pathPosition + Game.CurrentDiceRoll.Value];   // Take off one value from the dice cast
+                    int pathPosition = LudoBoard.PlayerPaths[(int)PieceColor].IndexOf(Position);
+                    // Take off one value from the dice cast
+                    AllowedDestinationTileVector = LudoBoard.PlayerPaths[(int)PieceColor][pathPosition + Game.CurrentDiceRoll.Value];
                 }
                 else
                 {
@@ -124,7 +137,9 @@ namespace LudoLike
                 AllowedDestinationTileVector = LudoBoard.PlayerPaths[(int)PieceColor][LudoBoard.PlayerPaths[(int)PieceColor].Count - 1];
             }
         }
-
+        /// <summary>
+        /// Makes it so that a piece is no longer selected.
+        /// </summary>
         public void RemoveClicked()
         {
             Clicked = false;

@@ -113,10 +113,10 @@ namespace LudoLike
                         //looks for piece of another player to send back to home/nest
                         foreach (Piece piece in _players[i]._pieces)
                         {
-                            if (piece.position == same[0] && piece.position != LudoBoard.StaticTilesPositions["Middle"][0])
+                            if (piece.Position == same[0] && piece.Position != LudoBoard.StaticTilesPositions["Middle"][0])
                             {
                                 //moves piece to nest/home
-                                piece.position = piece.StartPosition; // might wanna use the move method of piece when implemented
+                                piece.Position = piece.StartPosition; // might wanna use the move method of piece when implemented
                                 _players[CurrentPlayerTurn].ChangeScore(100); //100 points is placeholder
                                 _players[i].ChangeScore(-100);
                                 SoundMixer.PlayRandomSound(Player.PieceCollisionSounds);
@@ -132,7 +132,7 @@ namespace LudoLike
             //TODO: Refactor Tile logic to avoid inefficiently checking *every single tile* on *every single move*.
             for (int i = 0; i < Tiles.Count(); i++)
             {
-                if (piece.position == Tiles[i].GridPosition)
+                if (piece.Position == Tiles[i].GridPosition)
                 {
                     Tiles[i].TileEvent(_players[CurrentPlayerTurn]);
                     break;
@@ -322,7 +322,7 @@ namespace LudoLike
 
             for (int i = 0; i < _players[CurrentPlayerTurn]._pieces.Count; i++)
             {
-                if (_players[CurrentPlayerTurn]._pieces[i].position == goal)
+                if (_players[CurrentPlayerTurn]._pieces[i].Position == goal)
                 {
                     _players[CurrentPlayerTurn].ChangeScore(remainingPieces * 100);
                     remainingPieces--;
