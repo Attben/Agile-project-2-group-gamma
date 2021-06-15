@@ -354,7 +354,7 @@ namespace LudoLike
                     ClickedTileVector = CurrentTileVector;
                     foreach(Piece piece in _game._players[_game.CurrentPlayerTurn]._pieces)
                     {
-                        if (piece.position == ClickedTileVector)
+                        if (piece.Position == ClickedTileVector)
                         {
                             _game._players[_game.CurrentPlayerTurn].ChosenPiece = piece;
                             return;
@@ -365,7 +365,7 @@ namespace LudoLike
             ClickedTileVector = CurrentTileVector;
             foreach (Piece piece in _game._players[_game.CurrentPlayerTurn]._pieces)
             {
-                if (piece.position == ClickedTileVector)
+                if (piece.Position == ClickedTileVector)
                 {
                     _game._players[_game.CurrentPlayerTurn].ChosenPiece = piece;
                     return;
@@ -467,7 +467,7 @@ namespace LudoLike
                     CalculateCurrentTileVector();
                     if (_game._players.Count != 0 && Game.CurrentDiceRoll != null)  // This check has to be done to prevent from crashing when game starts.
                     {
-                        var currentPlayerPiecesPositions = _game._players[_game.CurrentPlayerTurn]._pieces.Select(piece => piece.position).ToList();
+                        var currentPlayerPiecesPositions = _game._players[_game.CurrentPlayerTurn]._pieces.Select(piece => piece.Position).ToList();
                         if (currentPlayerPiecesPositions.Contains(CurrentTileVector.Value))  // Check if we hover over a players piece
                         {
                             SwitchCursorStyle(CoreCursorType.Hand);
