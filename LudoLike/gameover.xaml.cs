@@ -23,7 +23,7 @@ namespace LudoLike
     /// </summary>
     public sealed partial class gameover : Page
     {
-        List<Player> _players;
+        List<Player> Players;
 
         public gameover()
         {
@@ -33,7 +33,7 @@ namespace LudoLike
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
-            _players = (List<Player>)e.Parameter;
+            Players = (List<Player>)e.Parameter;
             PopulateLists();
         }
 
@@ -41,7 +41,7 @@ namespace LudoLike
         {
             Brush BlackBrush = new SolidColorBrush(Windows.UI.Colors.Black);
 
-            foreach (Player player in _players)
+            foreach (Player player in Players)
             {
                 int score = player.Score;
                 string color = player.PlayerColor.ToString();
@@ -68,7 +68,7 @@ namespace LudoLike
 
         private void Grid_KeyUp(object sender, KeyRoutedEventArgs e)
         {
-            Classes.Highscore.AddHighscores(_players);
+            Classes.Highscore.AddHighscores(Players);
             Classes.SoundMixer.StopPlaying(Classes.SoundChannels.music);
             this.Frame.Navigate(typeof(MainMenu));
         }

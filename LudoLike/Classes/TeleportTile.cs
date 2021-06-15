@@ -33,7 +33,6 @@ namespace LudoLike
         public override void TileEvent(Player player)
         {
             base.TileEvent(player);
-            //Do something to transport a Player to _destinationTile.
             player.ChosenPiece.UpdatePosition(_destinationTile);
         }
 

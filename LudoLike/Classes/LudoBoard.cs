@@ -107,7 +107,6 @@ namespace LudoLike
         public LudoBoard()
         {
             ScaleBoard();
-             
         }
 
         /// <summary>
@@ -156,7 +155,7 @@ namespace LudoLike
         /// <summary>
         /// Creates a 11x11 grid of rects with their boardposition as vectors.
         /// </summary>
-        /// <returns>A 11x11 dictionary containing vectors and their corresponding rect.</returns>
+        /// <returns>A 11x11 dictionary containing vectors and their corresponding Rect.</returns>
         private Dictionary<Vector2, Rect> CreateTileGrid() 
         {
             Dictionary<Vector2, Rect> returnGrid = new Dictionary<Vector2, Rect>();

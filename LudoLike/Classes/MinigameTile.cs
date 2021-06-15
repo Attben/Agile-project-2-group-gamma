@@ -11,7 +11,7 @@ using Windows.Foundation;
 namespace LudoLike
 {
     /// <summary>
-    /// Represents a tile that wich is stepped on activates a mini game for the players to play.
+    /// Represents a tile that when it is stepped on activates a mini game for the players to play.
     /// </summary>
     class MinigameTile : Tile
     {
@@ -33,7 +33,6 @@ namespace LudoLike
         {
             base.TileEvent(player);
             GameBoard.InvokeMiniGameEvent(player);
-            //Do something to start the _minigame.
         }
 
         public override void Draw(CanvasAnimatedDrawEventArgs drawArgs)

@@ -57,7 +57,7 @@ namespace LudoLike
 
         public RockPaperScissorsPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         protected override void OnNavigatedTo(NavigationEventArgs e)
@@ -85,6 +85,11 @@ namespace LudoLike
 
         }
 
+        /// <summary>
+        /// Creates and stores necessary assets for the mini game.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <returns></returns>
         async Task CreateResourcesAsync(CanvasAnimatedControl sender)
         {
             //Images
@@ -289,6 +294,11 @@ namespace LudoLike
 
         }
 
+        /// <summary>
+        /// Releases all resources from the game.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             RockPaperscissorsCanvas.RemoveFromVisualTree();

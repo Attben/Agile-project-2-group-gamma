@@ -20,12 +20,12 @@ namespace LudoLike
     /// </summary>
     public class AnimationHandler
     {
-        // Blinking effects
+        // Blinking effects on pieces variables
         public static float effectOpacity = 0;
         static float _opacityCoreValue = 5000;
         static bool effectOpacityUp = true;
 
-        // Growing gloweffect on dice
+        // Growing gloweffect on dice variables
         public static float GlowHolderAddedSize = 0;
         static bool GlowHolderAddedSizeUp = false;
 

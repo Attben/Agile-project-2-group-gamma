@@ -27,6 +27,11 @@ namespace LudoLike.Classes
             _guiBox = guiBox;
         }
 
+        /// <summary>
+        /// Adds an action history to the queue.
+        /// </summary>
+        /// <param name="player"></param>
+        /// <param name="action"></param>
         public void Add(Player player, string action)
         {
             if(_actions.Count >= _maxHistoryLength)
@@ -37,16 +42,20 @@ namespace LudoLike.Classes
             _actions.Enqueue(new Tuple<Player, string>(player, action));
         }
 
+        /// <summary>
+        /// Draws the actions of the queue inside the history rectangle.
+        /// </summary>
+        /// <param name="drawArgs"></param>
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
         {
             drawArgs.DrawingSession.FillRoundedRectangle(
-                _guiBox, 10, 10, Windows.UI.Colors.DarkGray); //10, 10 are x- and y-radii for rounded corners
+                _guiBox, 10, 10, Windows.UI.Colors.DarkGray);   // 10, 10 are x- and y-radii for rounded corners
             for (int n = 0; n < _actions.Count; ++n)
             {
                 int reverseIndex = _actions.Count - 1 - n;
                 Tuple<Player, string> backElement = _actions.ElementAt(reverseIndex);
                 drawArgs.DrawingSession.DrawText(
-                    $"{backElement.Item1.PlayerColor} " + backElement.Item2, //Item1 is the player who performed the action, Item2 is a string describing what happened in the turn.
+                    $"{backElement.Item1.PlayerColor} " + backElement.Item2,    // Item1 is the player who performed the action, Item2 is a string describing what happened in the turn.
                     (float)_guiBox.X + 30f,
                     (float)_guiBox.Y + _textFormat.FontSize * (n + 1),
                     backElement.Item1.UIcolor);

@@ -16,7 +16,7 @@ namespace LudoLike.Classes
         private static readonly SoundMixer SoundMixerInstance =
             new SoundMixer(Enum.GetNames(typeof(SoundChannels)).Length);
         private readonly MediaPlayer[] _audioChannels;
-        private static readonly Random _sfxRng = new Random(); //Sound effects RNG, used to play random sounds.
+        private static readonly Random _sfxRng = new Random(); // Sound effects RNG, used to play random sounds.
 
         private SoundMixer(int channels)
         {
@@ -26,7 +26,7 @@ namespace LudoLike.Classes
                 _audioChannels[n] = new MediaPlayer()
                 {
                     AutoPlay = false,
-                    IsLoopingEnabled = (n == (int)SoundChannels.music) //Looping is enabled only on the music channel.
+                    IsLoopingEnabled = (n == (int)SoundChannels.music) // Looping is enabled only on the music channel.
                 };
             }
         }
@@ -45,7 +45,7 @@ namespace LudoLike.Classes
 
         public static void StopPlaying(SoundChannels soundChannel)
         {
-            SoundMixerInstance._audioChannels[(int)soundChannel].Source = null; //Why in the world doesn't this class have a less hacky way to stop playback?
+            SoundMixerInstance._audioChannels[(int)soundChannel].Source = null; // Why in the world doesn't this class have a less hacky way to stop playback?
         }
     }
 

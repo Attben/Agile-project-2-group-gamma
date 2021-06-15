@@ -45,25 +45,11 @@ namespace LudoLike
             _tileEventSound = TileEventSounds[this.GetType().Name];
         }
 
-        /// <summary>
-        /// Activates the function of the tile. 
-        /// </summary>
-        /// <returns>
-        /// true if the tile is supposed to disappear when activated.
-        /// false if the tile is supposed to be kept on the board.
-        /// </returns>
-        //public virtual bool TileEvent()
-        //{
-        //    return false;
-        //}
+
 
         /// <summary>
         /// Activates the function of the tile. 
         /// </summary>
-        /// <returns>
-        /// <code>true</code> if the tile is supposed to disappear when activated.
-        /// <code>false</code> if the tile is supposed to be kept on the board.
-        /// </returns>
         public virtual void TileEvent(Player player)
         {
             if(TurnHistoryString != null)

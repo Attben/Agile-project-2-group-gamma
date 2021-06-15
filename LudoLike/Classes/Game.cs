@@ -16,10 +16,11 @@ namespace LudoLike
     /// </summary>
     public class Game
     {
-        public readonly List<Player> _players;
+        public readonly List<Player> Players;
         public LudoBoard Board;
         public List<Tile> Tiles;
         public int CurrentPlayerTurn { get; private set; }
+        public int RemainingPieces;
         //Audio
         public static MediaSource BackgroundMusic;
 
@@ -27,7 +28,6 @@ namespace LudoLike
         private readonly CanvasTextFormat _textFormat;
         private Rect _scoreBox;
         private Rect _turnGraphTarget;
-        public int remainingPieces;
         private readonly TurnHistoryHandler _turnHistory;
 
         // Track the current diceroll for checking move availability
@@ -35,7 +35,7 @@ namespace LudoLike
         public Game()
         {
             Board = new LudoBoard();
-            _players = new List<Player>();
+            Players = new List<Player>();
             Tiles = new List<Tile>();
 
             _textFormat = new CanvasTextFormat()
@@ -80,45 +80,37 @@ namespace LudoLike
             for (int i = 0; i < players; i++)
             {
                 PlayerColors color = (PlayerColors)i;
-                _players.Add(new Player(color, LudoBoard.NestTilesPositions[color.ToString()], piecesPerPlayer, _turnHistory)); // assumes first four tiles are Home/Nests tiles
+                Players.Add(new Player(color, LudoBoard.NestTilesPositions[color.ToString()], piecesPerPlayer, _turnHistory)); // assumes first four tiles are Home/Nests tiles
             }
 
-            remainingPieces = _players.Count * piecesPerPlayer;
+            RemainingPieces = Players.Count * piecesPerPlayer;
         }
 
-        //does not adapt to only 2 or 3 players
-        // TODO: Test this method and integrate the functionality to to the game
+        /// <summary>
+        /// 
+        /// </summary>
         public void CheckTilesForCollisions()
         {
-            //get list of tiles
-
             List<List<Vector2>> list = new List<List<Vector2>>();
-            for (int i = 0; i < _players.Count; i++)
+            for (int i = 0; i < Players.Count; i++)
             {
-                list.Add(_players[i].ReturnPiecePostitions());
+                list.Add(Players[i].ReturnPiecePostitions());
             }
-            //compare lists
-            //take this turns player pieces locations and comapre to others
-            //List<Tile> same = list[0].Union(list[1]).ToList(); - checks if same vlaues exists in both lists, returns said values into same list // loop to check each piece to send to nest/home
-
-            for (int i = 0; i < _players.Count; i++)
+            
+            for (int i = 0; i < Players.Count; i++)     // Take this turns player pieces locations and comapre to others
             {
                 if (i != CurrentPlayerTurn)
                 {
-                    //creates i list of tiles that two pieces share
-                    List<Vector2> same = list[CurrentPlayerTurn].Intersect(list[i]).ToList();
-                    //checks if current player is in same position as another
-                    if (same.Count != 0)
+                    List<Vector2> same = list[CurrentPlayerTurn].Intersect(list[i]).ToList();   // Creates i list of tiles that two pieces share
+                    if (same.Count != 0)    // Checks if current player is in same position as another
                     {
-                        //looks for piece of another player to send back to home/nest
-                        foreach (Piece piece in _players[i]._pieces)
+                        foreach (Piece piece in Players[i].Pieces)     // Looks for piece of another player to send back to home/nest
                         {
                             if (piece.Position == same[0] && piece.Position != LudoBoard.StaticTilesPositions["Middle"][0])
                             {
-                                //moves piece to nest/home
-                                piece.Position = piece.StartPosition; // might wanna use the move method of piece when implemented
-                                _players[CurrentPlayerTurn].ChangeScore(100); //100 points is placeholder
-                                _players[i].ChangeScore(-100);
+                                piece.Position = piece.StartPosition;   // Moves piece to nest/home
+                                Players[CurrentPlayerTurn].ChangeScore(100);    // 100 points is placeholder
+                                Players[i].ChangeScore(-100);
                                 SoundMixer.PlayRandomSound(Player.PieceCollisionSounds);
                             }
                         }
@@ -127,6 +119,10 @@ namespace LudoLike
             }
         }
 
+        /// <summary>
+        /// Checks if the current tile that the newly moved piece is on is a special tile.
+        /// </summary>
+        /// <param name="piece"></param>
         public void CheckSpecialTile(Piece piece)
         {
             //TODO: Refactor Tile logic to avoid inefficiently checking *every single tile* on *every single move*.
@@ -134,7 +130,7 @@ namespace LudoLike
             {
                 if (piece.Position == Tiles[i].GridPosition)
                 {
-                    Tiles[i].TileEvent(_players[CurrentPlayerTurn]);
+                    Tiles[i].TileEvent(Players[CurrentPlayerTurn]);
                     break;
                 }
             }
@@ -180,9 +176,7 @@ namespace LudoLike
                                 usedVectors.Add(targetVector);
                                 break;
                             }
-
                         }
-
                     }
                     else if (tileType < 0.2)
                     {
@@ -219,18 +213,18 @@ namespace LudoLike
         /// <param name="diceRoll"></param>
         public void TakeTurn(Player player)
         {
-            Player currentPlayer = _players[CurrentPlayerTurn];
+            Player currentPlayer = Players[CurrentPlayerTurn];
             currentPlayer.MovePiece(CurrentDiceRoll.Value, player.ChosenPiece);
             CheckSpecialTile(player.ChosenPiece);
             CheckTilesForCollisions();
             currentPlayer.ResetTurnChoice();
             CheckPiecesAtGoal();
 
-            if (CurrentDiceRoll.Value != 6) //Player gets another turn when rolling a 6.
+            if (CurrentDiceRoll.Value != 6)     // Player gets another turn when rolling a 6.
             {
                 NextPlayerTurn();
             }
-            if (currentPlayer._pieces.Count == 0)
+            if (currentPlayer.Pieces.Count == 0)
             {
                 NextPlayerTurn();
             }
@@ -238,10 +232,12 @@ namespace LudoLike
             CurrentDiceRoll = null;     // Reset the die
         }
 
-
+        /// <summary>
+        /// Changes the player turn to the one next in line.
+        /// </summary>
         public void NextPlayerTurn()
         {
-            CurrentPlayerTurn = ++CurrentPlayerTurn % _players.Count;
+            CurrentPlayerTurn = ++CurrentPlayerTurn % Players.Count;
         }
 
         /// <summary>
@@ -255,9 +251,9 @@ namespace LudoLike
             DrawScore(drawArgs);
             DrawTiles(drawArgs);
             DrawTurnGraphic(drawArgs);
-            foreach (Player player in _players)
+            foreach (Player player in Players)
             {
-                if (_players.IndexOf(player) == CurrentPlayerTurn)
+                if (Players.IndexOf(player) == CurrentPlayerTurn)
                 {
                     player.DrawCurrentPlayerPieces(drawArgs);
                 }
@@ -272,18 +268,17 @@ namespace LudoLike
         /// Draws the score board on the given canvas.
         /// </summary>
         /// <param name="drawArgs"></param>
-        /// 
         private void DrawScore(CanvasAnimatedDrawEventArgs drawArgs)
         {
             drawArgs.DrawingSession.FillRoundedRectangle(
-                _scoreBox, 10, 10, Windows.UI.Colors.DarkGray); //10, 10 are x- and y-radii for rounded corners
-            for (int n = 0; n < _players.Count; ++n)
+                _scoreBox, 10, 10, Windows.UI.Colors.DarkGray);     // 10, 10 are x- and y-radii for rounded corners
+            for (int n = 0; n < Players.Count; ++n)
             {
                 drawArgs.DrawingSession.DrawText(
-                    $"{_players[n].PlayerColor}: {_players[n].Score}",
+                    $"{Players[n].PlayerColor}: {Players[n].Score}",
                     (float)_scoreBox.X + 30f,
                     (float)_scoreBox.Y + _textFormat.FontSize * (n + 1),
-                    _players[n].UIcolor);
+                    Players[n].UIcolor);
             }
         }
 
@@ -299,39 +294,40 @@ namespace LudoLike
                 tile.Draw(drawArgs);
             }
         }
-        // Might have to make another drawmethod for drawing minigame 
+
+        /// <summary>
+        /// Draws the turn square in the top right corner.
+        /// </summary>
+        /// <param name="drawArgs"></param>
         private void DrawTurnGraphic(CanvasAnimatedDrawEventArgs drawArgs)
         {
             _turnGraphTarget.X = Scaling.bWidth / 1.3;
             _turnGraphTarget.Y = Scaling.bHeight / 13;
             _turnGraphTarget.Width = Scaling.bWidth / 5.5;
             _turnGraphTarget.Height = Scaling.bHeight / 7.3;
-            drawArgs.DrawingSession.DrawImage(_players[CurrentPlayerTurn]._turnGraphic, _turnGraphTarget);
+            drawArgs.DrawingSession.DrawImage(Players[CurrentPlayerTurn].TurnGraphic, _turnGraphTarget);
         }
 
-        void Stealpoints(int player1, int player2, int points)//steals from player1 and gives to plaýer2
-        {
-            _players[player1].ChangeScore(-points);
-            _players[player2].ChangeScore(points);
-        }
-
-        public void CheckPiecesAtGoal()//checks if any of the pieces is at the goal and gives points depending on how early it is
+        /// <summary>
+        /// Checks if any of the pieces is at the goal and gives points depending on how early it is.
+        /// </summary>
+        public void CheckPiecesAtGoal()
         {
             Vector2 goal = new Vector2(5, 5);
             int delpiece = 10;
 
-            for (int i = 0; i < _players[CurrentPlayerTurn]._pieces.Count; i++)
+            for (int i = 0; i < Players[CurrentPlayerTurn].Pieces.Count; i++)
             {
-                if (_players[CurrentPlayerTurn]._pieces[i].Position == goal)
+                if (Players[CurrentPlayerTurn].Pieces[i].Position == goal)
                 {
-                    _players[CurrentPlayerTurn].ChangeScore(remainingPieces * 100);
-                    remainingPieces--;
-                    delpiece = i; //removes piece from list
+                    Players[CurrentPlayerTurn].ChangeScore(RemainingPieces * 100);
+                    RemainingPieces--;
+                    delpiece = i;   // Removes piece from list
                 }
             }
             if (delpiece != 10)
             {
-                _players[CurrentPlayerTurn]._pieces.RemoveAt(delpiece);
+                Players[CurrentPlayerTurn].Pieces.RemoveAt(delpiece);
             }
         }
     }

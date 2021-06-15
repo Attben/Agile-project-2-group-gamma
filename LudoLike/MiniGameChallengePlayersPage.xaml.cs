@@ -26,7 +26,7 @@ namespace LudoLike
         private List<Player> _challengedPlayers = new List<Player>();
         public MiniGameChallengePlayersPage()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
 
         /// <summary>

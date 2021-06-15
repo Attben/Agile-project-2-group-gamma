@@ -136,6 +136,11 @@ namespace LudoLike
             _game = new Game();
         }
 
+        /// <summary>
+        /// Calls for creation of necessary resources to display on the canvas e.g CanvasBitmaps etc.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="args"></param>
         private void CanvasCreateResources(
             CanvasAnimatedControl sender,
             CanvasCreateResourcesEventArgs args)
@@ -277,12 +282,6 @@ namespace LudoLike
         {
             Scaling.ScalingInit(e.Size.Width, e.Size.Height);
             ControlProperties(e.Size.Width, e.Size.Height);
-            UpdateButtonSizeAndPosition();
-        }
-
-        private void UpdateButtonSizeAndPosition()
-        {
-
         }
 
         /// <summary>
@@ -322,56 +321,57 @@ namespace LudoLike
         /// <param name="e"></param>
         private void CanvasPointerPressed(object sender, PointerRoutedEventArgs e)
         {
-            //Currently unused. Including a few commented-out lines
-            //as an example of what this method might be used for later.
-            //var action = Canvas.RunOnGameLoopThreadAsync(() =>
-            //{
+            // Currently unused example of what this method might
+            // be used for later:
+            // var action = Canvas.RunOnGameLoopThreadAsync(() =>
+            // {
 
             //});
-            if (OverDice)
+
+            if (OverDice)   // If the cursor is hovered over the dice image when clicked
             {
                 RollDie();
                 ClickedTileVector = CurrentTileVector;
                 return;
             }
             UserClickedBoard = true;
-            if (ClickedTileVector != null)
+            if (ClickedTileVector != null)  // If we have already clicked a tile on the mainboard before
             {
-                if (_game._players[_game.CurrentPlayerTurn].ChosenPiece != null)
+                if (_game.Players[_game.CurrentPlayerTurn].ChosenPiece != null)     // If the current player currently has a piece selected
                 {
-                    if (_game._players[_game.CurrentPlayerTurn].ChosenPiece.AllowedDestinationTileVector != null)
+                    if (_game.Players[_game.CurrentPlayerTurn].ChosenPiece.AllowedDestinationTileVector != null)    // If the piece is actually able to move
                     {
-                        if (CurrentTileVector == _game._players[_game.CurrentPlayerTurn].ChosenPiece.AllowedDestinationTileVector.Value)
-                        {
-                            _game.TakeTurn(_game._players[_game.CurrentPlayerTurn]);
+                        if (CurrentTileVector == _game.Players[_game.CurrentPlayerTurn].ChosenPiece.AllowedDestinationTileVector.Value) // If the clicked event happened on the 
+                        {                                                                                                              // movable position of the piece
+                            _game.TakeTurn(_game.Players[_game.CurrentPlayerTurn]);
                             _dice.SetStandardDieImage();
                             return;
                         }
                     }
                 }
-                else
+                else    // If the user does not have a chosen piece already
                 {
                     ClickedTileVector = CurrentTileVector;
-                    foreach(Piece piece in _game._players[_game.CurrentPlayerTurn]._pieces)
+                    foreach(Piece piece in _game.Players[_game.CurrentPlayerTurn].Pieces)
                     {
                         if (piece.Position == ClickedTileVector)
                         {
-                            _game._players[_game.CurrentPlayerTurn].ChosenPiece = piece;
+                            _game.Players[_game.CurrentPlayerTurn].ChosenPiece = piece;     // Set the clicked piece to chosen
                             return;
                         }
                     }
                 }
             }
-            ClickedTileVector = CurrentTileVector;
-            foreach (Piece piece in _game._players[_game.CurrentPlayerTurn]._pieces)
+            ClickedTileVector = CurrentTileVector;  // This happens when the user has no stored value of the previous clicked tile vector
+            foreach (Piece piece in _game.Players[_game.CurrentPlayerTurn].Pieces)
             {
                 if (piece.Position == ClickedTileVector)
                 {
-                    _game._players[_game.CurrentPlayerTurn].ChosenPiece = piece;
+                    _game.Players[_game.CurrentPlayerTurn].ChosenPiece = piece;
                     return;
                 }
             }
-            _game._players[_game.CurrentPlayerTurn].ChosenPiece = null;
+            _game.Players[_game.CurrentPlayerTurn].ChosenPiece = null;  // If the clicked vector did not have the players piece on it
             ClickedTileVector = CurrentTileVector;
         }
 
@@ -392,7 +392,7 @@ namespace LudoLike
             if (!Game.CurrentDiceRoll.HasValue)
             {
                 Game.CurrentDiceRoll = _dice.Roll() + 1;
-                if (!_game._players[_game.CurrentPlayerTurn].CheckPossibilityToMove(Game.CurrentDiceRoll.Value))
+                if (!_game.Players[_game.CurrentPlayerTurn].CheckPossibilityToMove(Game.CurrentDiceRoll.Value))
                 {
                     Game.CurrentDiceRoll = null;
                     _game.NextPlayerTurn();
@@ -407,22 +407,21 @@ namespace LudoLike
 
         }
 
-        private void OpenMinigame(object sender, RoutedEventArgs e)
-        {
-            MiniGameEvent.Invoke(_game._players[0]);
-        }
-
         public static void InvokeMiniGameEvent(Player player)
         {
             MiniGameEvent.Invoke(player);
         }
 
+        /// <summary>
+        /// Starts the mini game inside a new window.
+        /// </summary>
+        /// <param name="invokingPlayer"></param>
         public async void StartMiniGame(Player invokingPlayer)
         {
             MiniGameNavigationParams navParams = new MiniGameNavigationParams
             {
                 InvokingPlayer = invokingPlayer,
-                OtherPlayers = _game._players.Where(player => player != invokingPlayer).ToList()
+                OtherPlayers = _game.Players.Where(player => player != invokingPlayer).ToList()
             };
             AppWindow appWindow = await AppWindow.TryCreateAsync();
             Frame appWindowContentFrame = new Frame();
@@ -442,11 +441,14 @@ namespace LudoLike
             await appWindow.TryShowAsync();
         }
 
+        /// <summary>
+        /// Checks if the game does has any pieces left. If not, end the game.
+        /// </summary>
         private void CheckEndGame()
         {
-            if (_game.remainingPieces == 0)
+            if (_game.RemainingPieces == 0)
             {
-                this.Frame.Navigate(typeof(gameover), _game._players);
+                this.Frame.Navigate(typeof(gameover), _game.Players);
             }
         }
 
@@ -465,9 +467,9 @@ namespace LudoLike
                 if (e.GetCurrentPoint(Canvas).Position.Y > _game.Board.MainBoard.Y && e.GetCurrentPoint(Canvas).Position.Y < _game.Board.MainBoard.Y + _game.Board.MainBoard.Height)
                 {
                     CalculateCurrentTileVector();
-                    if (_game._players.Count != 0 && Game.CurrentDiceRoll != null)  // This check has to be done to prevent from crashing when game starts.
+                    if (_game.Players.Count != 0 && Game.CurrentDiceRoll != null)  // This check has to be done to prevent from crashing when game starts.
                     {
-                        var currentPlayerPiecesPositions = _game._players[_game.CurrentPlayerTurn]._pieces.Select(piece => piece.Position).ToList();
+                        var currentPlayerPiecesPositions = _game.Players[_game.CurrentPlayerTurn].Pieces.Select(piece => piece.Position).ToList();
                         if (currentPlayerPiecesPositions.Contains(CurrentTileVector.Value))  // Check if we hover over a players piece
                         {
                             SwitchCursorStyle(CoreCursorType.Hand);
@@ -480,9 +482,9 @@ namespace LudoLike
                     return;
                 }
             }
-            else if ((PointerX > _dice._diceHolder.X && PointerX < _dice._diceHolder.X + _dice._diceHolder.Width))   // If pointer is inside dice image in X-axis
+            else if ((PointerX > _dice.DiceHolder.X && PointerX < _dice.DiceHolder.X + _dice.DiceHolder.Width))   // If pointer is inside dice image in X-axis
             {
-                if ((PointerY > _dice._diceHolder.Y && PointerY < _dice._diceHolder.Y + _dice._diceHolder.Height))
+                if ((PointerY > _dice.DiceHolder.Y && PointerY < _dice.DiceHolder.Y + _dice.DiceHolder.Height))
                 {
                     OverDice = true;
                     SwitchCursorStyle(CoreCursorType.Hand);
@@ -501,7 +503,8 @@ namespace LudoLike
         /// </summary>
         private void CalculateCurrentTileVector()
         {
-            CurrentTileVector = new Vector2((float)Math.Floor((PointerX - _game.Board.MainBoard.X) / (_game.Board.MainBoard.Width / 11)), (float)Math.Floor((PointerY - _game.Board.MainBoard.Y) / (_game.Board.MainBoard.Height / 11)));
+            CurrentTileVector = new Vector2((float)Math.Floor((PointerX - _game.Board.MainBoard.X) / (_game.Board.MainBoard.Width / 11)), 
+                                            (float)Math.Floor((PointerY - _game.Board.MainBoard.Y) / (_game.Board.MainBoard.Height / 11)));
         }
 
         /// <summary>

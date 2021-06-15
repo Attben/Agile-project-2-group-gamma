@@ -16,7 +16,7 @@ namespace LudoLike
     class ScoreTile : Tile
     {
         private readonly int _amount;
-        private bool _isConsumed = false;
+        private bool _isConsumed = false;   // Used to remove special pieces that are only to be activated once
 
         /// <summary>
         /// Creates a Tile on the rectangle. Points represents the points to gain when stepped on.

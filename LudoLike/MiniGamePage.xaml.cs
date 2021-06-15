@@ -36,6 +36,11 @@ namespace LudoLike
             _navParams = (MiniGameNavigationParams)e.Parameter;
         }
 
+        /// <summary>
+        /// Navigates to the rock, paper, scissor mini game page.
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void RockPaperScissorsButton_Click(object sender, RoutedEventArgs e)
         {
             _navParams.PlayersToChallenge = 1;

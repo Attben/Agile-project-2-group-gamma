@@ -9,6 +9,9 @@ using Windows.Foundation;
 
 namespace LudoLike
 {
+    /// <summary>
+    /// Represents a Dice and its functions inside the game.
+    /// </summary>
     class Dice
     {
         private int _animationTimer = 0;
@@ -17,7 +20,7 @@ namespace LudoLike
         private readonly Random _prng;
         private readonly float _diceWidth = 200;
         private readonly float _diceHeight = 200;
-        public Rect _diceHolder;
+        public Rect DiceHolder;
         private Rect _glowHolder;
         public static List<CanvasBitmap> GlowEffects = new List<CanvasBitmap>();
 
@@ -34,9 +37,14 @@ namespace LudoLike
             CurrentDieImage = Dice.StandardDieImage;
         }
 
+        /// <summary>
+        /// Draws the Die and its glowing effect.
+        /// </summary>
+        /// <param name="drawArgs"></param>
+        /// <param name="playerTurn"></param>
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs, int playerTurn)
         {
-            _diceHolder = new Rect(Scaling.bWidth - Scaling.Xpos(_diceWidth * 2), 
+            DiceHolder = new Rect(Scaling.bWidth - Scaling.Xpos(_diceWidth * 2), 
                                    Scaling.bHeight - Scaling.Ypos(_diceHeight * 2),
                                    Scaling.Xpos(200), Scaling.Ypos(200));
             _glowHolder = new Rect(Scaling.bWidth - Scaling.Xpos(_diceWidth * 2) - Scaling.Xpos(_diceWidth / 2) - Scaling.Xpos(AnimationHandler.GlowHolderAddedSize / 2), 
@@ -46,16 +54,20 @@ namespace LudoLike
             if (_animationTimer == 0)
             {
                 drawArgs.DrawingSession.DrawImage(GlowEffects[playerTurn], _glowHolder);
-                drawArgs.DrawingSession.DrawImage(CurrentDieImage, _diceHolder);
+                drawArgs.DrawingSession.DrawImage(CurrentDieImage, DiceHolder);
             }
             else
             {
                 drawArgs.DrawingSession.DrawImage(GlowEffects[playerTurn], _glowHolder);
-                drawArgs.DrawingSession.DrawImage(Dice.SpinningDieImage, _diceHolder);
+                drawArgs.DrawingSession.DrawImage(Dice.SpinningDieImage, DiceHolder);
                 --_animationTimer;
             }
         }
 
+        /// <summary>
+        /// Rolls in range of the dice min - max range. Updates the dice picture according the the cast.
+        /// </summary>
+        /// <returns>The cast value.</returns>
         public int Roll()
         {
             CurrentDieImage = Dice.SpinningDieImage;
