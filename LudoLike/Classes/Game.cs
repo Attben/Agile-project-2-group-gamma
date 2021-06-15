@@ -80,10 +80,19 @@ namespace LudoLike
             for (int i = 0; i < players; i++)
             {
                 PlayerColors color = (PlayerColors)i;
-                Players.Add(new Player(color, LudoBoard.NestTilesPositions[color.ToString()], piecesPerPlayer, _turnHistory)); // assumes first four tiles are Home/Nests tiles
+                if (color == PlayerColors.Red)
+                {
+                    Players.Add(new Player(color, LudoBoard.NestTilesPositions[color.ToString()], 0, _turnHistory)); // assumes first four tiles are Home/Nests tiles
+                }
+                else
+                {
+                    Players.Add(new Player(color, LudoBoard.NestTilesPositions[color.ToString()], piecesPerPlayer, _turnHistory)); // assumes first four tiles are Home/Nests tiles
+                }
+                
             }
 
-            RemainingPieces = Players.Count * piecesPerPlayer;
+            //RemainingPieces = Players.Count * piecesPerPlayer;
+            RemainingPieces = 1;
         }
 
         /// <summary>
@@ -224,10 +233,6 @@ namespace LudoLike
             {
                 NextPlayerTurn();
             }
-            if (currentPlayer.Pieces.Count == 0)
-            {
-                NextPlayerTurn();
-            }
             _turnHistory.Add(currentPlayer, $"︵🎲 {CurrentDiceRoll}");
             CurrentDiceRoll = null;     // Reset the die
         }
@@ -238,6 +243,15 @@ namespace LudoLike
         public void NextPlayerTurn()
         {
             CurrentPlayerTurn = ++CurrentPlayerTurn % Players.Count;
+
+            if (RemainingPieces == 0)
+            {
+                return;
+            }
+            else if (Players[CurrentPlayerTurn].Pieces.Count == 0)
+            {
+                NextPlayerTurn();
+            }
         }
 
         /// <summary>

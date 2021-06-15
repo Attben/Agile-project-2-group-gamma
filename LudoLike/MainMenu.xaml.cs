@@ -20,7 +20,7 @@ using Windows.UI.Xaml.Navigation;
 namespace LudoLike
 {
     /// <summary>
-    /// An empty page that can be used on its own or navigated to within a Frame.
+    /// Main Menu for application
     /// </summary>
     public sealed partial class MainMenu : Page
     {
@@ -37,6 +37,9 @@ namespace LudoLike
             //view.TryEnterFullScreenMode();
         }
 
+        /// <summary>
+        /// creates a highscore file, opens exisitng file
+        /// </summary>
         public async void LoadHighscoreLocation()
         {
             StorageFolder AppDataFolder = await ApplicationData.Current.LocalFolder.CreateFolderAsync(
@@ -47,6 +50,9 @@ namespace LudoLike
                 CreationCollisionOption.OpenIfExists);
         }
 
+        /// <summary>
+        /// Changes the player turn to the one next in line.
+        /// </summary>
         protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             base.OnNavigatedTo(e);
@@ -57,24 +63,27 @@ namespace LudoLike
             }
         }
 
+        /// <summary>
+        /// starts the game, navigates to PlayMenu for additional game settings
+        /// </summary>
         private void Play_Click(object sender, RoutedEventArgs e)
         {
             _gameAssetsLoaded = true;
             this.Frame.Navigate(typeof(PlayMenu));
         }
 
+        /// <summary>
+        /// navigates to Highscore Page for current Highscores
+        /// </summary>
         private void Scores_Click(object sender, RoutedEventArgs e)
         {
             //switch page
             this.Frame.Navigate(typeof(Classes.Highscore));
         }
 
-        private void Settings_Click(object sender, RoutedEventArgs e)
-        {
-            //switch page
-            //this.Frame.Navigate(typeof(@pagenamehere@));
-        }
-
+        /// <summary>
+        /// exits the application
+        /// </summary>
         private void Exit_Click(object sender, RoutedEventArgs e)
         {
             Environment.Exit(0);

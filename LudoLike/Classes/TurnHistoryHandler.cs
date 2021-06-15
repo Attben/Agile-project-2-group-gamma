@@ -48,12 +48,21 @@ namespace LudoLike.Classes
         /// <param name="drawArgs"></param>
         public void Draw(CanvasAnimatedDrawEventArgs drawArgs)
         {
+            Tuple<Player, string> backElement;
             drawArgs.DrawingSession.FillRoundedRectangle(
                 _guiBox, 10, 10, Windows.UI.Colors.DarkGray);   // 10, 10 are x- and y-radii for rounded corners
             for (int n = 0; n < _actions.Count; ++n)
             {
+                
                 int reverseIndex = _actions.Count - 1 - n;
-                Tuple<Player, string> backElement = _actions.ElementAt(reverseIndex);
+                try
+                {
+                    backElement = _actions.ElementAt(reverseIndex);
+                }
+                catch (Exception e)
+                {
+                    return;
+                }
                 drawArgs.DrawingSession.DrawText(
                     $"{backElement.Item1.PlayerColor} " + backElement.Item2,    // Item1 is the player who performed the action, Item2 is a string describing what happened in the turn.
                     (float)_guiBox.X + 30f,
