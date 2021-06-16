@@ -80,19 +80,10 @@ namespace LudoLike
             for (int i = 0; i < players; i++)
             {
                 PlayerColors color = (PlayerColors)i;
-                if (color == PlayerColors.Red)
-                {
-                    Players.Add(new Player(color, LudoBoard.NestTilesPositions[color.ToString()], 0, _turnHistory)); // assumes first four tiles are Home/Nests tiles
-                }
-                else
-                {
-                    Players.Add(new Player(color, LudoBoard.NestTilesPositions[color.ToString()], piecesPerPlayer, _turnHistory)); // assumes first four tiles are Home/Nests tiles
-                }
-                
+                Players.Add(new Player(color, LudoBoard.NestTilesPositions[color.ToString()], piecesPerPlayer, _turnHistory)); // assumes first four tiles are Home/Nests tiles
             }
 
-            //RemainingPieces = Players.Count * piecesPerPlayer;
-            RemainingPieces = 1;
+            RemainingPieces = Players.Count * piecesPerPlayer;
         }
 
         /// <summary>
