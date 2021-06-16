@@ -13,8 +13,7 @@
         <TextBlock Foreground="Black" FontSize="60" FontFamily="Sylfaen" HorizontalAlignment="Center" Margin="0,100,0,0">Fia Med Knuff</TextBlock>
         <Button Content="Play" HorizontalAlignment="Center" Margin="0,250,0,0" VerticalAlignment="Top" Height="85" Width="252" Background="GhostWhite" BorderBrush="Red" BorderThickness="5" Foreground="Black" FontSize="40" Click="Play_Click"/>
         <Button Content="Scores" HorizontalAlignment="Center" Margin="0,360,0,0" VerticalAlignment="Top" Height="85" Width="252" Background="GhostWhite" BorderBrush="Green" BorderThickness="5" Foreground="Black" FontSize="40" Click="Scores_Click"/>
-        <Button Content="Settings" HorizontalAlignment="Center" Margin="0,470,0,0" VerticalAlignment="Top" Height="85" Width="252" Background="GhostWhite" BorderBrush="Blue" BorderThickness="5" Foreground="Black" FontSize="40" Click="Settings_Click"/>
-        <Button Content="Exit" HorizontalAlignment="Center" Margin="0,580,0,0" VerticalAlignment="Top" Height="85" Width="252" Background="GhostWhite" BorderBrush="Yellow" BorderThickness="5" Foreground="Black" FontSize="40" Click="Exit_Click"/>
+        <Button Content="Exit" HorizontalAlignment="Center" Margin="0,470,0,0" VerticalAlignment="Top" Height="85" Width="252" Background="GhostWhite" BorderBrush="Yellow" BorderThickness="5" Foreground="Black" FontSize="40" Click="Exit_Click"/>
 
     </Grid>
 </Page>

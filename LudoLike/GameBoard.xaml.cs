@@ -327,7 +327,7 @@ namespace LudoLike
             // {
 
             //});
-
+            
             if (OverDice)   // If the cursor is hovered over the dice image when clicked
             {
                 RollDie();
