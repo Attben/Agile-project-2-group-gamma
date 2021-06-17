@@ -377,8 +377,6 @@ namespace LudoLike
         /// <summary>
         /// Event for clicking the die to roll.
         /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void RollDie()
         {
             if (!Game.CurrentDiceRoll.HasValue)
