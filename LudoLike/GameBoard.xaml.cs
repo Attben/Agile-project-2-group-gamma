@@ -299,20 +299,7 @@ namespace LudoLike
             _dice.Draw(drawArgs, _game.CurrentPlayerTurn);
 
             _game.DrawMainContent(drawArgs);
-            if (CurrentTileVector.HasValue)
-            {
-                drawArgs.DrawingSession.DrawText(($"CurrentTileVector X: {CurrentTileVector.Value.X}, Y: {CurrentTileVector.Value.Y}"), 300, 100, Windows.UI.Colors.Black);
-
-            }
-            if (ClickedTileVector.HasValue)
-            {
-                drawArgs.DrawingSession.DrawText(($"ClickedTileVector X: {ClickedTileVector.Value.X}, Y: {ClickedTileVector.Value.Y}"), 300, 150, Windows.UI.Colors.Black);
-
-            }
-            drawArgs.DrawingSession.DrawText($"OverDice: {OverDice}", 300, 200, Windows.UI.Colors.Black);
         }
-
-
 
         /// <summary>
         /// Checks where the user clicks on the canvas. If a board tile is clicked, it stores it.
@@ -375,11 +362,16 @@ namespace LudoLike
             ClickedTileVector = CurrentTileVector;
         }
 
+        private void Canvas_Loaded(object sender, RoutedEventArgs e)
+        {
+            //Currently unused, but the system requires it to exist.
+        }
+
         private void CanvasUpdate(
             ICanvasAnimatedControl sender,
             CanvasAnimatedUpdateEventArgs args)
         {
-            //Currently unused.
+            //Currently unused, but the system requires it to exist.
         }
 
         /// <summary>
@@ -392,6 +384,7 @@ namespace LudoLike
             if (!Game.CurrentDiceRoll.HasValue)
             {
                 Game.CurrentDiceRoll = _dice.Roll() + 1;
+                SoundMixer.PlaySound(Tile.TileEventSounds["Tile"], SoundChannels.sfx2); //The die currently has no sound effect of its own, so we borrow one from Tile.
                 if (!_game.Players[_game.CurrentPlayerTurn].CheckPossibilityToMove(Game.CurrentDiceRoll.Value))
                 {
                     Game.CurrentDiceRoll = null;
@@ -400,11 +393,6 @@ namespace LudoLike
                 }
             }
             CheckEndGame();
-        }
-
-        private void Canvas_Loaded(object sender, RoutedEventArgs e)
-        {
-
         }
 
         public static void InvokeMiniGameEvent(Player player)
