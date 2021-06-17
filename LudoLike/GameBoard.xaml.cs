@@ -381,7 +381,8 @@ namespace LudoLike
         {
             if (!Game.CurrentDiceRoll.HasValue)
             {
-                Game.CurrentDiceRoll = _dice.Roll() + 1;
+                Game.CurrentDiceRoll = _dice.Roll() + 1; //Dice.Roll() is not nullable, so this is an actual int.
+                _game.AddRollToHistory(Game.CurrentDiceRoll.Value);
                 SoundMixer.PlaySound(Tile.TileEventSounds["Tile"], SoundChannels.sfx2); //The die currently has no sound effect of its own, so we borrow one from Tile.
                 if (!_game.Players[_game.CurrentPlayerTurn].CheckPossibilityToMove(Game.CurrentDiceRoll.Value))
                 {

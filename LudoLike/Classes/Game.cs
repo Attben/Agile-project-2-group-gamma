@@ -86,6 +86,11 @@ namespace LudoLike
             RemainingPieces = Players.Count * piecesPerPlayer;
         }
 
+        public void AddRollToHistory(int roll)
+        {
+            _turnHistory.Add(Players[CurrentPlayerTurn], $"︵🎲 {CurrentDiceRoll}");
+        }
+
         /// <summary>
         /// Finds out whether any Tiles hold Pieces from multiple opposing Players and determines if any of them should be bumped back to the nest.
         /// </summary>
@@ -224,7 +229,6 @@ namespace LudoLike
             {
                 NextPlayerTurn();
             }
-            _turnHistory.Add(currentPlayer, $"︵🎲 {CurrentDiceRoll}");
             CurrentDiceRoll = null;     // Reset the die
         }
 
