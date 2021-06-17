@@ -87,7 +87,7 @@ namespace LudoLike
         }
 
         /// <summary>
-        /// 
+        /// Finds out whether any Tiles hold Pieces from multiple opposing Players and determines if any of them should be bumped back to the nest.
         /// </summary>
         public void CheckTilesForCollisions()
         {
